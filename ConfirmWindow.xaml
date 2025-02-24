@@ -1,0 +1,16 @@
+﻿<Window x:Name="ChangeConfirmWindow" x:Class="WpfApp1.ConfirmWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="ConfirmWindow" Height="300" Width="620" WindowStartupLocation="CenterScreen">
+    <Grid Width="620" Height="300">
+        <Grid x:Name="employeeConfirmationGrid_Copy" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}">
+            <Label x:Name="employeeConfirmationLabel1" Content="Želite li da potvrdite unos?" Margin="100,50,100,0" VerticalAlignment="Top" Height="87" FontSize="48" FontFamily="Agency FB" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Button x:Name="employeeConfirmationButtonYes1" Content="Da" HorizontalAlignment="Left" Margin="50,0,0,50" Height="60" VerticalAlignment="Bottom" Width="120" FontSize="24" FontFamily="Agency FB" Click="employeeConfirmationButtonYesClick"/>
+            <Button x:Name="employeeConfirmationButtonNo1" Content="Ne" HorizontalAlignment="Right" Margin="0,0,50,50" VerticalAlignment="Bottom" Width="120" Height="60" FontSize="24" FontFamily="Agency FB" Click="employeeConfirmationButtonNoClick"/>
+        </Grid>
+    </Grid>
+</Window>

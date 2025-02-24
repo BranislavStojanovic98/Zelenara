@@ -1,0 +1,24 @@
+﻿<Window x:Name="shipmentViewMainWindow" x:Class="WpfApp1.ShipmentViewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="ShipmentViewWindow" Height="700" Width="1000" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+        <Label Content="Unesite podatke" Height="50" Margin="200,10,200,0" VerticalAlignment="Top" FontSize="36" FontFamily="Agency FB" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="Gray" BorderThickness="0,0,0,2"/>
+        <Label Content="Dostavljač:" HorizontalAlignment="Left" Margin="121,150,0,0" VerticalAlignment="Top" FontSize="22"/>
+        <Label Content="Produkt:" HorizontalAlignment="Left" Margin="143,250,0,0" VerticalAlignment="Top" FontSize="22"/>
+        <ListBox x:Name="shipmentViewDeliveriesListBox" Height="364" Margin="0,125,40,0" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Right" Width="397" FontSize="15"/>
+        <Label Content="Količina:" HorizontalAlignment="Left" Margin="145,350,0,0" VerticalAlignment="Top" FontSize="22"/>
+        <Label Content="Proizvođač:" HorizontalAlignment="Left" Margin="114,450,0,0" VerticalAlignment="Top" FontSize="22"/>
+        <ComboBox x:Name="shipmentViewCompanyNameComboBox" HorizontalAlignment="Left" Height="30" Margin="289,155,0,0" VerticalAlignment="Top" Width="150" FontSize="15" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
+        <ComboBox x:Name="shipmentViewProductComboBox" HorizontalAlignment="Left" Margin="289,255,0,0" VerticalAlignment="Top" Width="150" Height="30" FontSize="15" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" BorderBrush="#FFACACAC"/>
+        <TextBox x:Name="shipmentViewQuantityTextBox" HorizontalAlignment="Left" Height="30" Margin="289,355,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" VerticalContentAlignment="Center" FontSize="15" HorizontalContentAlignment="Right"/>
+        <ComboBox x:Name="shipmentViewMakerComboBox" HorizontalAlignment="Left" Height="30" Margin="289,455,0,0" VerticalAlignment="Top" Width="150" FontSize="15" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
+        <Button x:Name="shipmentViewConfirmButton" Content="Potvrdi" HorizontalAlignment="Left" Height="50" Margin="50,0,0,50" VerticalAlignment="Bottom" Width="150" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Click="shipmentViewConfirmButtonConfirm"/>
+        <Button x:Name="shipmentViewCancelButton" Content="Nazad" HorizontalAlignment="Right" Height="50" Margin="0,0,50,50" VerticalAlignment="Bottom" Width="147" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Click="shipmentViewCancleButtonClose"/>
+        <Label Content="Kg" HorizontalAlignment="Left" Margin="444,355,0,0" VerticalAlignment="Top" FontSize="15"/>
+    </Grid>
+</Window>
