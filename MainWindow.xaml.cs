@@ -680,6 +680,44 @@ namespace WpfApp1
         }
 
 
+        //Deselektuje izabranu stavku u tabeli ako se klikne bilo gde van tabele
+        private void deselectTableColumn(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var point = e.GetPosition(adminEmployeeTable);
+            var hitTest = adminEmployeeTable.InputHitTest(point) as UIElement;
+
+            if (hitTest == null || hitTest is not DataGridRow)
+            {
+                adminEmployeeTable.SelectedItem = null;
+            }
+
+        }
+
+        //Deselektuje izabranu stavku u tabeli ako se klikne bilo gde van tabele
+        private void deselectadminDeliveriesDataGrid(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var point = e.GetPosition(adminDeliveriesDataGrid);
+            var hitTest = adminDeliveriesDataGrid.InputHitTest(point) as UIElement;
+
+            if (hitTest == null || hitTest is not DataGridRow)
+            {
+                adminDeliveriesDataGrid.SelectedItem = null;
+            }
+        }
+
+        //Deselektuje izabranu stavku u tabeli ako se klikne bilo gde van tabele
+        private void deselectTransporterListDataGrid(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var point = e.GetPosition(transporterListDataGrid);
+            var hitTest = transporterListDataGrid.InputHitTest(point) as UIElement;
+
+            if(hitTest == null || hitTest is not DataGridRow)
+            {
+                transporterListDataGrid.SelectedItem = null;
+            }
+        }
+
+
         //!!!!!!!!!!!!!  KRAJ FUNKCIJA ISPORUKA GRIDA  !!!!!!!!!!!!!
     }
 }
