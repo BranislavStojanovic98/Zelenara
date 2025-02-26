@@ -120,7 +120,7 @@
                 <Border BorderBrush="Gray" BorderThickness="2,2,2,2" PreviewMouseDown="deselectTableColumn"/>
             </Grid>
         </Grid>
-        <Grid x:Name="adminDeliveriesViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.RowSpan="4" Visibility="Collapsed">
+        <Grid x:Name="adminDeliveriesViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.RowSpan="4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*" MaxHeight="200"/>
