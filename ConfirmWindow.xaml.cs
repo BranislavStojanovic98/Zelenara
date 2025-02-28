@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
+
 namespace WpfApp1
 {
     /// <summary>
@@ -21,6 +23,7 @@ namespace WpfApp1
     {
 
         private MainWindow _mainWindow;
+        private ShipmentViewWindow _shipmentWindow;
         private string _action;
         public ConfirmWindow(MainWindow mainWindow, string action)
         {
@@ -28,8 +31,15 @@ namespace WpfApp1
             _action = action;
             InitializeComponent();
         }
-    
-    private void employeeConfirmationButtonNoClick(object sender, RoutedEventArgs e)
+
+        public ConfirmWindow(ShipmentViewWindow shipmentViewWindow, string action)
+        {
+            _shipmentWindow = shipmentViewWindow;
+            _action = action;
+            InitializeComponent();
+        }
+
+        private void employeeConfirmationButtonNoClick(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
@@ -49,6 +59,12 @@ namespace WpfApp1
             else if(_action == "delete")
             {
                 _mainWindow.IzbrisiZaposlenog();
+            }
+            //TODO Napravi da se DataGrid refreshuje kad se doda nova nabavka!!!
+            else if(_action == "confirmNovuNabavku")
+            {
+                _shipmentWindow.dodajNovuNabavku();
+                _shipmentWindow.Close();
             }
             this.Close();
         }
