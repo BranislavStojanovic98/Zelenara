@@ -25,6 +25,12 @@ namespace WpfApp1
         private MainWindow _mainWindow;
         private ShipmentViewWindow _shipmentWindow;
         private string _action;
+
+        public ConfirmWindow()
+        {
+            InitializeComponent();
+        }
+
         public ConfirmWindow(MainWindow mainWindow, string action)
         {
             _mainWindow = mainWindow;
@@ -56,17 +62,46 @@ namespace WpfApp1
                 // Call the method to edit the selected employee
                 _mainWindow.editTabelaZaposlenih(); // Assuming EditZaposleni is a method in MainWindow
             }
-            else if(_action == "delete")
+            else if (_action == "delete")
             {
                 _mainWindow.IzbrisiZaposlenog();
             }
             //TODO Napravi da se DataGrid refreshuje kad se doda nova nabavka!!!
-            else if(_action == "confirmNovuNabavku")
+            else if (_action == "addNewNabavka")
             {
                 _shipmentWindow.dodajNovuNabavku();
                 _shipmentWindow.Close();
             }
+            else if (_action == "deleteSelectedNabavku")
+            {
+                _mainWindow.deleteSelectedNabavku();
+            }
+            else if (_action == "addNewIsporuka")
+            {
+                if (this.Owner is ShipmentViewWindow shipmentViewWindow && shipmentViewWindow.Owner is MainWindow mainWindow)
+                {
+                    mainWindow.addNewIsporuka(shipmentViewWindow);
+                    _mainWindow = mainWindow;
+                }
+            }
+            else if (_action == "deleteSelectedIsporuku")
+            {
+                _mainWindow.deleteSelectedIsporuka();
+            }
+
+            if (this.Owner is ShipmentViewWindow shipmentViewWindow1)
+            {
+                shipmentViewWindow1.Close();
+            }
+
             this.Close();
+
+
+            if (_mainWindow != null)
+            {
+                _mainWindow.Activate();
+                _mainWindow.Focus();
+            }
         }
     }
 }

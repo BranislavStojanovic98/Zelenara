@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using WpfApp1.database.grids;
 using WpfApp1.database.items;
 using System.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WpfApp1
 {
@@ -429,19 +430,21 @@ namespace WpfApp1
 
         //!!!!!!!!!!!!!  POCETAK DUGMADI ISPORUKE GRIDA  !!!!!!!!!!!!!
 
-        
+
 
         //Otvara prozor za dodavanje NARUDZBI
         private void addDeliveryOrderButton(object sender, RoutedEventArgs e)
         {
-            ShipmentViewWindow shipmentViewWindow = new ShipmentViewWindow();
+            ShipmentViewWindow shipmentViewWindow = new ShipmentViewWindow("addNewNabavka");
+            shipmentViewWindow.Owner = this;
             shipmentViewWindow.ShowDialog();
         }
 
         //Otvara prozor za dodavanje ISPORUKA
         private void adminDeliveriesShipmentButton(object sender, RoutedEventArgs e)
         {
-            ShipmentViewWindow shipmentViewWindow = new ShipmentViewWindow();
+            ShipmentViewWindow shipmentViewWindow = new ShipmentViewWindow(this, "addNewIsporuka");
+            shipmentViewWindow.Owner = this;
             shipmentViewWindow.ShowDialog();
         }
 
@@ -619,27 +622,21 @@ namespace WpfApp1
         //Prikazuje u drugu tabelu sve isporuke izabrane nabavke
         private void adminDeliveriesLoadSelectedDelivery(object sender, SelectionChangedEventArgs e)
         {
-            string connectionString = "Server=localhost,3306;Database=projektni;Uid=root;Pwd=root;"; // Replace with your connection string
+            string connectionString = "Server=localhost,3306;Database=projektni;Uid=root;Pwd=root;";
             try
             {
-                var selectedRow = adminDeliveriesDataGrid.SelectedItem; // Replace with your actual class type
-
-                // Get the transporter name (or ID, depending on your table structure)
+                var selectedRow = adminDeliveriesDataGrid.SelectedItem;
                 var transporterName = (selectedRow as PregledNabavkiView)?.IdNabavke;
-                
 
                 using (MySqlConnection con = new MySqlConnection(connectionString))
                 {
                     con.Open();
 
-                    
-                    // Create the ObservableCollection that will hold the data
                     observablePregledIsporukaNabavki.Clear();
-
 
                     // Query to retrieve data from the database
                     string query = "SELECT * FROM projektni.pregled_isporuka_nabake WHERE IDNabavke = @idnabavke";
-                    
+
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
                         observablePregledIsporukaNabavki.Clear();
@@ -654,14 +651,15 @@ namespace WpfApp1
 
                                 // Add the data to the ObservableCollection
                                 observablePregledIsporukaNabavki.Add(new PregledIsporukaNabavke(
-                                    reader.GetInt32(0),   // idNabavke
+                                    reader.GetInt32(0),   // idProdukta
                                     reader.GetString(1),  // nazivProdukta
                                     reader.GetString(2),  // vrstaProdukta
                                     reader.GetInt32(3),   // kolicinaProdukta
                                     reader.GetString(4),  // proizvodjac
                                     reader.GetDecimal(5), // ukupnaCenaProdukta
                                     datumDostave,   // datumDostave
-                                    reader.GetInt32(7) 
+                                    reader.GetInt32(7), // IdNabavke
+                                    reader.GetInt32(8)  // IdIsporuke
                                 ));
                             }
                         }
@@ -711,13 +709,289 @@ namespace WpfApp1
             var point = e.GetPosition(transporterListDataGrid);
             var hitTest = transporterListDataGrid.InputHitTest(point) as UIElement;
 
-            if(hitTest == null || hitTest is not DataGridRow)
+            if (hitTest == null || hitTest is not DataGridRow)
             {
                 transporterListDataGrid.SelectedItem = null;
             }
         }
 
+        //Brisanje unosa iz "isporuka_produkta", "isporuka" tabela u MySQL
+        public void deleteIsporuke(int isporukaId)
+        {
+            string connectionString = "Server = localhost,3306; Database = projektni; Uid = root; Pwd = root;";
 
-        //!!!!!!!!!!!!!  KRAJ FUNKCIJA ISPORUKA GRIDA  !!!!!!!!!!!!!
+            try
+            {
+
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    try
+                    {
+                        //Brisanje iz "isporuka_produkta" tabele
+                        string deleteIPquery = "DELETE FROM isporuka_produkta WHERE DOSTAVA_idIsporuke=@ID_isporuke";
+                        using (MySqlCommand deleteFromIsProdukta = new MySqlCommand(deleteIPquery, connection))
+                        {
+                            deleteFromIsProdukta.Parameters.AddWithValue("@ID_isporuke", isporukaId);
+                            deleteFromIsProdukta.ExecuteNonQuery();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Greska kod birsanja u isporuka_produkta: " + ex.Message);
+                    }
+                    try
+                    {
+                        //Brisanje iz "isporuka" tabele
+                        string deleteIquery = "DELETE FROM isporuka WHERE idIsporuke=@ID_isporuke";
+                        using (MySqlCommand deleteFromIsporuka = new MySqlCommand(deleteIquery, connection))
+                        {
+                            deleteFromIsporuka.Parameters.AddWithValue("@ID_isporuke", isporukaId);
+                            deleteFromIsporuka.ExecuteNonQuery();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Greska kod birsanja u isporuka: " + ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error connecting to the database: " + ex.Message);
+            }
+        }
+
+        //Dugme za brisanje izabrane nabavke u DataGridu u adminDeliveriesViewGrid-u
+        private void deleteDeliveryOrderButton(object sender, RoutedEventArgs e)
+        {
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "deleteSelectedNabavku");
+            confirmWindow.ShowDialog();
+        }
+
+        //Brise se izabrana nabavka iz tabele i baze
+        public void deleteSelectedNabavku()
+        {
+            string connectionString = "Server = localhost,3306; Database = projektni; Uid = root; Pwd = root;";
+            try
+            {
+                var selectedRow = adminDeliveriesDataGrid.SelectedItem;
+                var shipmentId = (selectedRow as PregledNabavkiView)?.IdNabavke;
+
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+
+                    try
+                    {
+                        //Get IdIsporuke
+                        string isporukaIdQeury = "SELECT ID_isporuke FROM isporuke_lista WHERE ID_nabavke=@ID_nabavke";
+                        MySqlCommand getIsporukaId = new MySqlCommand(isporukaIdQeury, connection);
+                        getIsporukaId.Parameters.AddWithValue("@ID_nabavke", shipmentId);
+
+                        MySqlDataReader reader = getIsporukaId.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var isporukaId = reader["ID_isporuke"];
+
+                            if (isporukaId != DBNull.Value)
+                            {
+                                deleteIsporuke((int)isporukaId);
+                            }
+                        }
+                        reader.Close();
+
+                        try
+                        {
+                            //Brisanje iz tabele "nabavka_produkta" 
+                            string nabProdQuery = "DELETE FROM nabavka_produkta WHERE NABAVKA_idPotvrde=@IdNabavke";
+                            using (MySqlCommand deleteFromNabProd = new MySqlCommand(nabProdQuery, connection))
+                            {
+                                deleteFromNabProd.Parameters.AddWithValue("@IdNabavke", shipmentId);
+                                deleteFromNabProd.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error" + ex.Message);
+                        }
+
+                        try
+                        {
+                            //Brisanje iz tabele "nabavka"
+                            string nabavkaQuery = "DELETE FROM nabavka WHERE idPotvrde=@idPotvrde";
+                            using (MySqlCommand deleteNabavka = new MySqlCommand(nabavkaQuery, connection))
+                            {
+                                deleteNabavka.Parameters.AddWithValue("@idPotvrde", shipmentId);
+                                deleteNabavka.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error" + ex.Message);
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error" + ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error connecting to the database: " + ex.Message);
+            }
+
+            this.loadAdminDeliveriesDataGridData();
+        }
+
+        public void addNewIsporuka(ShipmentViewWindow shipmentView)
+        {
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;";
+            try
+            {
+                using (MySqlConnection con = new MySqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    try
+                    {
+                        //Get nabavkaID
+                        var selectedRow1 = adminDeliveriesDataGrid.SelectedItem;
+                        var shipmentId = (selectedRow1 as PregledNabavkiView)?.IdNabavke;
+
+                        //Get trenutni datum
+                        string datum = DateTime.Today.ToString("yyyy-MM-dd");
+
+                        //Get menadzer jmb, treba se doraditi za razlicite menadzere
+                        string menadzerJmb = "111111111111"; //Promijeniti kada napravim login!!!!!!!!!!!!
+
+
+                        //Get DostavljacID
+                        var selectedRow2 = adminDeliveriesDataGrid.SelectedItem;
+                        var transporterName = (selectedRow2 as PregledNabavkiView)?.Naziv;
+
+                        shipmentView.addSingleIsporuka((int)shipmentId, datum, menadzerJmb, transporterName);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Greska" + ex.Message);
+                    }
+
+                    adminDeliveriesLoadSelectedDeliveryRefresh();
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error connecting to the database: " + ex.Message);
+            }
+        }
+
+        //Dugme za brisanje izabrane isporuke iz tabele
+        private void adminDeleteDeliveriesShipmentButton(object sender, RoutedEventArgs e)
+        {
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "deleteSelectedIsporuku");
+            confirmWindow.ShowDialog();
+        }
+
+        //
+        public void adminDeliveriesLoadSelectedDeliveryRefresh()
+        {
+            string connectionString = "Server=localhost,3306;Database=projektni;Uid=root;Pwd=root;";
+            try
+            {
+                var selectedRow = adminDeliveriesDataGrid.SelectedItem;
+                var transporterName = (selectedRow as PregledNabavkiView)?.IdNabavke;
+
+                using (MySqlConnection con = new MySqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    observablePregledIsporukaNabavki.Clear();
+
+                    // Query to retrieve data from the database
+                    string query = "SELECT * FROM projektni.pregled_isporuka_nabake WHERE IDNabavke = @idnabavke";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    {
+                        observablePregledIsporukaNabavki.Clear();
+                        cmd.Parameters.AddWithValue("@idnabavke", transporterName);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+
+                                DateOnly? datumDostave = reader.IsDBNull(6) ? (DateOnly?)null : DateOnly.FromDateTime(reader.GetDateTime(6));
+
+
+                                // Add the data to the ObservableCollection
+                                observablePregledIsporukaNabavki.Add(new PregledIsporukaNabavke(
+                                    reader.GetInt32(0),   // idProdukta
+                                    reader.GetString(1),  // nazivProdukta
+                                    reader.GetString(2),  // vrstaProdukta
+                                    reader.GetInt32(3),   // kolicinaProdukta
+                                    reader.GetString(4),  // proizvodjac
+                                    reader.GetDecimal(5), // ukupnaCenaProdukta
+                                    datumDostave,   // datumDostave
+                                    reader.GetInt32(7), // IdNabavke
+                                    reader.GetInt32(8)  // IdIsporuke
+                                ));
+                            }
+                        }
+                    }
+                }
+
+                listDeliveriesDataGrid.ItemsSource = null;
+                // Bind the ObservableCollection to the DataGrid
+                listDeliveriesDataGrid.ItemsSource = observablePregledIsporukaNabavki;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+
+        //Funkcija za brisanje izabrane isporuke
+        public void deleteSelectedIsporuka()
+        {
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;";
+            try
+            {
+                using(MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    try
+                    {
+                        var selectedRow = listDeliveriesDataGrid.SelectedItem;
+                        var isporukaId =(selectedRow as PregledIsporukaNabavke)?.Isporuka;
+                        deleteIsporuke((int)isporukaId);
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show("Greska prilikom brisanja pojedinacne isporuke " + ex.Message);
+                    }
+
+                    adminDeliveriesLoadSelectedDeliveryRefresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Not connected to a database: " + ex.Message);
+            }
+
+        }
+
+
+
+        //Treba poslagati ove funkicje nakon zavrsetka;
     }
 }

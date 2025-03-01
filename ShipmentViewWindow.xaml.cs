@@ -21,12 +21,30 @@ namespace WpfApp1
     /// </summary>
     public partial class ShipmentViewWindow : Window
     {
+        private string _action;
+        private MainWindow _mainWindow;
+
         public ShipmentViewWindow()
         {
             InitializeComponent();
             loadShipmentViewCompanyNameComboBox();
             loadShipmentViewProductComboBox();
-
+        }
+        public ShipmentViewWindow(MainWindow mainWindow, string action)
+        {
+            InitializeComponent();
+            _mainWindow = mainWindow;
+            _action = action;
+            loadShipmentViewCompanyNameComboBox();
+            loadShipmentViewProductComboBox();
+        }
+        public ShipmentViewWindow(string action)
+        {
+            _action = action;
+            _mainWindow = null;
+            InitializeComponent();
+            loadShipmentViewCompanyNameComboBox();
+            loadShipmentViewProductComboBox();
         }
 
         //Otkazivanje narudzbe
@@ -41,8 +59,33 @@ namespace WpfApp1
         //Potvrda za dodavanje narudzbe
         private void shipmentViewConfirmButtonConfirm(object sender, RoutedEventArgs e)
         {
-            ConfirmWindow confirmWindow = new ConfirmWindow(this, "confirmNovuNabavku");
-            confirmWindow.ShowDialog();
+            ConfirmWindow confirmWindow;
+            if (_action == "addNewIsporuka")
+            {
+                confirmWindow = new ConfirmWindow(this, "addNewIsporuka");
+                confirmWindow.Owner = this;
+                confirmWindow.ShowDialog();
+            }
+            else if (_action == "addNewNabavka")
+            {
+                confirmWindow = new ConfirmWindow(this, "addNewNabavka");
+                confirmWindow.ShowDialog();
+                if (this.Owner is MainWindow mainWindow)
+                {
+                    mainWindow.loadAdminDeliveriesDataGridData();
+                    _mainWindow = mainWindow;
+                }
+            }
+            else if (_action == "deleteSelectedNabavku")
+            {
+                confirmWindow = new ConfirmWindow(this, "deleteSelectedNabavku");
+                confirmWindow.Owner = this;
+                confirmWindow.ShowDialog();
+                if (this.Owner is MainWindow mainWindow)
+                {
+                    mainWindow.loadAdminDeliveriesDataGridData();
+                }
+            }
         }
         public void dodajNovuNabavku()
         {
@@ -74,9 +117,7 @@ namespace WpfApp1
                         MySqlCommand getDostavljacId = new MySqlCommand(dostavljacIdQuery, con);
                         getDostavljacId.Parameters.AddWithValue("@dostavljacIme", dostavljacIme);
                         var dostavljacId = getDostavljacId.ExecuteScalar();
-                        //Test
-                        MessageBox.Show($"Nabavka ID: {nabavkaId}\nDatum: {datum}\nDostavljac ID: {dostavljacId}");
-
+                        
 
                         //Ubacivanje u `NABAVKA` MySQL tabelu
                         string insertNabavka = "INSERT INTO nabavka (idPotvrde, Datum, MENADZER_ZAPOSLENI_JMB, DOBAVLJAC_idDostavljaca, SKLADISTE_idSkladista) " +
@@ -132,9 +173,6 @@ namespace WpfApp1
 
                             //Get proizvodjac produkta
                             string proizvodjac = tmp[2];
-
-                            //Test
-                            MessageBox.Show($"Proizvod ID: {proizvodId}\nKolicina: {kolicina}\nProizvodjac: {proizvodjac}");
 
                             ++currentIsporukaId;
 
@@ -293,7 +331,6 @@ namespace WpfApp1
 
             string kombinovano = $"{produkt} - {kolicina} - {proizvodjac}";
 
-            MessageBox.Show(shipmentViewDeliveriesListBox.Items.Count.ToString());
             shipmentViewDeliveriesListBox.Items.Add(kombinovano);
 
             shipmentViewCompanyNameComboBox.IsEnabled = shipmentViewDeliveriesListBox.Items.Count == 0;
@@ -312,5 +349,112 @@ namespace WpfApp1
             }
             shipmentViewCompanyNameComboBox.IsEnabled = shipmentViewDeliveriesListBox.Items.Count == 0;
         }
+
+
+        //Dodavanje Isporuke u selektovanu Nabavku
+        public void addSingleIsporuka(int nabavkaId, string datum, string menadzerJmb, string transporterName)
+        {
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;";
+
+            try
+            {
+                using (MySqlConnection con = new MySqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    try
+                    {
+                        shipmentViewCompanyNameComboBox.SelectedItem = transporterName;
+                        string dostavljacIdQuery = "SELECT idDostavljaca FROM dobavljac where Naziv=@dostavljacIme";
+                        MySqlCommand getDostavljacId = new MySqlCommand(dostavljacIdQuery, con);
+                        getDostavljacId.Parameters.AddWithValue("@dostavljacIme", transporterName);
+                        var dostavljacId = getDostavljacId.ExecuteScalar();
+                        shipmentViewCompanyNameComboBox.IsEnabled = false;
+                        //Get isporukaID za vise njih iz ListBoxa
+                        string isporukaIdQuery = "SELECT MAX(idIsporuke) FROM isporuka";
+                        MySqlCommand getIsporukaId = new MySqlCommand(isporukaIdQuery, con);
+                        var isporukaId = getIsporukaId.ExecuteScalar();
+                        int listBoxItemsCount = shipmentViewDeliveriesListBox.Items.Count;
+
+                        int currentIsporukaId = (int)isporukaId;
+
+                        //Citamo sve Produkte, kolicinu i proizvodjaca iz ListBoxa
+                        //Dajemo im svima unikatne isporukaId prije no ih pohranimo u database
+                        foreach (var item in shipmentViewDeliveriesListBox.Items)
+                        {
+                            string listBoxContent = item.ToString();
+                            string[] tmp = listBoxContent.Split(new string[] { " - " }, StringSplitOptions.TrimEntries);
+
+                            //Get ProduktID
+                            string produkt = tmp[0];
+                            string[] tmp2 = produkt.Split(new string[] { " " }, StringSplitOptions.None);
+
+                            string naziv = tmp2[0];
+                            string vrsta = tmp2[1];
+
+                            string proizvodIdQuery = "SELECT idProdukta FROM produkt WHERE Naziv=@naziv AND Vrsta=@vrsta";
+                            MySqlCommand getProizvodId = new MySqlCommand(proizvodIdQuery, con);
+                            getProizvodId.Parameters.AddWithValue("@naziv", naziv);
+                            getProizvodId.Parameters.AddWithValue("@vrsta", vrsta);
+
+                            //Proizvod ID
+                            var proizvodId = getProizvodId.ExecuteScalar();
+
+
+                            //Get Kolicina produkta
+                            string kolicina = tmp[1];
+
+                            //Get proizvodjac produkta
+                            string proizvodjac = tmp[2];
+
+                            ++currentIsporukaId;
+
+                            //Ubacivanje u `ISPORUKA` MySQL tabelu
+                            string insertIsporuka = "INSERT INTO isporuka (idIsporuke, NABAVKA_idPotvrde, Datum, DOBAVLJAC_idDostavljaca) " +
+                            "VALUES (@idIsporuke, @NABAVKA_idPotvrde, @Datum, @DOBAVLJAC_idDostavljaca)";
+
+                            using (MySqlCommand cmd = new MySqlCommand(insertIsporuka, con))
+                            {
+                                cmd.Parameters.AddWithValue("@idIsporuke", currentIsporukaId);
+                                cmd.Parameters.AddWithValue("@NABAVKA_idPotvrde", nabavkaId);
+                                cmd.Parameters.AddWithValue("@Datum", datum);
+                                cmd.Parameters.AddWithValue("@DOBAVLJAC_idDostavljaca", dostavljacId);
+
+                                // Execute the insert query
+                                cmd.ExecuteNonQuery();
+                            }
+
+
+                            //Ubacivanje u `ISPORUKA_PRODUKTA` MySQL tabelu
+                            string insertIsporukaProdukta = "INSERT INTO isporuka_produkta (DOSTAVA_idIsporuke, PRODUKT_idProdukta, Kolicina) " +
+                            "VALUES (@DOSTAVA_idIsporuke, @PRODUKT_idProdukta, @Kolicina)";
+
+                            using (MySqlCommand cmd = new MySqlCommand(insertIsporukaProdukta, con))
+                            {
+                                cmd.Parameters.AddWithValue("@DOSTAVA_idIsporuke", currentIsporukaId);
+                                cmd.Parameters.AddWithValue("@PRODUKT_idProdukta", proizvodId);
+                                cmd.Parameters.AddWithValue("@Kolicina", kolicina);
+
+                                // Execute the insert query
+                                cmd.ExecuteNonQuery();
+                            }
+
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Greska" + ex.Message);
+                    }
+                }
+
+                shipmentViewCompanyNameComboBox.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error connecting to the database: " + ex.Message);
+            }
+        }
+
     }
 }

@@ -120,7 +120,7 @@
                 <Border BorderBrush="Gray" BorderThickness="2,2,2,2" PreviewMouseDown="deselectTableColumn"/>
             </Grid>
         </Grid>
-        <Grid x:Name="adminDeliveriesViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.RowSpan="4" Visibility="Collapsed">
+        <Grid x:Name="adminDeliveriesViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.RowSpan="4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*" MaxHeight="200"/>
@@ -138,9 +138,9 @@
                 <Label Content="Nabavka" Margin="410,10,0,110" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="36" FontFamily="Agency FB" BorderBrush="Gray" BorderThickness="0,0,0,2" HorizontalAlignment="Left" MinWidth="130" Width="300"/>
                 <Label Content="Isporuke" Margin="0,10,100,0" Height="50" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="36" FontFamily="Agency FB" BorderBrush="Gray" BorderThickness="0,0,0,2" HorizontalAlignment="Right" MinWidth="130" Width="300"/>
                 <Button x:Name="adminDeliveriesOrderAdd" Content="Dodaj" HorizontalAlignment="Left" Margin="510,0,0,60" Width="100" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="addDeliveryOrderButton" Height="40" VerticalAlignment="Bottom"/>
-                <Button x:Name="adminDeliveriesOrderCancel" Content="Izbriši" HorizontalAlignment="Left" Margin="510,0,0,10" Width="100" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Height="40" VerticalAlignment="Bottom"/>
+                <Button x:Name="adminDeliveriesOrderCancel" Content="Izbriši" HorizontalAlignment="Left" Margin="510,0,0,10" Width="100" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Height="40" VerticalAlignment="Bottom" Click="deleteDeliveryOrderButton"/>
                 <Button x:Name="adminDeliveriesShipmentAdd" Content="Dodaj" Margin="0,0,200,60" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="100" FontSize="24" FontFamily="Agency FB" Click="adminDeliveriesShipmentButton"/>
-                <Button x:Name="adminDeliveriesShipmentCancel" Content="Izbriši" Margin="0,0,200,10" VerticalAlignment="Bottom" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="40" FontSize="24" FontFamily="Agency FB" HorizontalAlignment="Right" Width="100"/>
+                <Button x:Name="adminDeliveriesShipmentCancel" Content="Izbriši" Margin="0,0,200,10" VerticalAlignment="Bottom" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="40" FontSize="24" FontFamily="Agency FB" HorizontalAlignment="Right" Width="100" Click="adminDeleteDeliveriesShipmentButton"/>
                 <Border BorderThickness="2,2,2,2" Padding="2,2,2,2">
                     <Border.BorderBrush>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -159,6 +159,7 @@
                     <materialDesign:DataGridTextColumn x:Name="listDeliveriesDataMakerName" Binding="{Binding Proizvodjac}" FontFamily="Segoe UI" FontSize="14" Header="Proizvođač" Width="*" CanUserResize="False"/>
                     <materialDesign:DataGridTextColumn x:Name="listDeliveriesDataPrice" Binding="{Binding Cena}" CanUserResize="False" FontFamily="Segoe UI" FontSize="14" Header="Cijena" Width="*"/>
                     <materialDesign:DataGridTextColumn x:Name="listDeliveriesDataDate" Binding="{Binding Datum}" FontFamily="Segoe UI" FontSize="14" Header="Datum narudžbe" Width="Auto" CanUserResize="False"/>
+                    <materialDesign:DataGridTextColumn x:Name="listDeliveriesDataIsporukaId" Binding="{Binding Isporuka}" FontFamily="Segoe UI" FontSize="14" Header="ID Isporuke" Width="Auto" CanUserResize="False" Visibility="Hidden"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

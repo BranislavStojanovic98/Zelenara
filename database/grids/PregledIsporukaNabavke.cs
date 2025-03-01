@@ -17,9 +17,10 @@ namespace WpfApp1.database.grids
         private decimal _cena;
         private DateOnly? _datum;
         private int _deliveryId;
+        private int _shipmentId;
 
         // Constructor
-        public PregledIsporukaNabavke(int id, string name, string type,int amount, string maker, decimal cena, DateOnly? datum, int deliveryId)
+        public PregledIsporukaNabavke(int id, string name, string type,int amount, string maker, decimal cena, DateOnly? datum, int deliveryId, int shipmentId)
         {
             _idProdukta = id;
             _name = name;
@@ -29,6 +30,7 @@ namespace WpfApp1.database.grids
             _cena = cena;
             _datum = datum;
             _deliveryId = deliveryId;
+            _shipmentId = shipmentId;
         }
 
         // Properties with INotifyPropertyChanged support
@@ -132,6 +134,19 @@ namespace WpfApp1.database.grids
                 {
                     _deliveryId = value;
                     OnPropertyChanged(nameof(Dostava));
+                }
+            }
+        }
+
+        public int Isporuka
+        {
+            get => _shipmentId;
+            set
+            {
+                if (_shipmentId != value)
+                {
+                    _shipmentId = value;
+                    OnPropertyChanged(nameof(Isporuka));
                 }
             }
         }
