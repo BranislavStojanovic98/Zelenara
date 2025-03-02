@@ -23,6 +23,7 @@ namespace WpfApp1
         private ObservableCollection<PregledNabavkiView> observablePregledNabavki;
         private ObservableCollection<PregledIsporukaNabavke> observablePregledIsporukaNabavki;
 
+        
 
         public MainWindow()
         {
@@ -719,6 +720,7 @@ namespace WpfApp1
         public void deleteIsporuke(int isporukaId)
         {
             string connectionString = "Server = localhost,3306; Database = projektni; Uid = root; Pwd = root;";
+            
 
             try
             {
@@ -726,6 +728,22 @@ namespace WpfApp1
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
+
+
+                    //brisanje iz nabavka_produkta tabele
+                    try
+                    {
+                        string deleteIquery = "DELETE FROM nabavka_produkta WHERE isporuka_produkta_DOSTAVA_idIsporuke=@ID_isporuke";
+                        using (MySqlCommand deleteFromIsporuka = new MySqlCommand(deleteIquery, connection))
+                        {
+                            deleteFromIsporuka.Parameters.AddWithValue("@ID_isporuke", isporukaId);
+                            deleteFromIsporuka.ExecuteNonQuery();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Greska kod birsanja u isporuka u nabavci produkta: " + ex.Message);
+                    }
 
                     try
                     {
@@ -741,6 +759,7 @@ namespace WpfApp1
                     {
                         MessageBox.Show("Greska kod birsanja u isporuka_produkta: " + ex.Message);
                     }
+
                     try
                     {
                         //Brisanje iz "isporuka" tabele
@@ -851,6 +870,9 @@ namespace WpfApp1
         public void addNewIsporuka(ShipmentViewWindow shipmentView)
         {
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;";
+            var selectedItem = adminDeliveriesDataGrid.SelectedItem;
+            int? selectedItemId = (selectedItem as PregledNabavkiView)?.IdNabavke;
+
             try
             {
                 using (MySqlConnection con = new MySqlConnection(connectionString))
@@ -882,7 +904,17 @@ namespace WpfApp1
                         MessageBox.Show("Greska" + ex.Message);
                     }
 
-                    adminDeliveriesLoadSelectedDeliveryRefresh();
+                    
+                    if (selectedItemId != 0)
+                    {
+                        loadAdminDeliveriesDataGridData();
+                        adminDeliveriesDataGrid.ItemsSource = observablePregledNabavki;
+                        var tmp = observablePregledNabavki.FirstOrDefault(item => item.IdNabavke == selectedItemId);
+                        if (tmp != null)
+                        {
+                            adminDeliveriesDataGrid.SelectedItem = tmp;
+                        }
+                    }
                 }
 
 
@@ -963,6 +995,9 @@ namespace WpfApp1
         public void deleteSelectedIsporuka()
         {
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;";
+            var selectedItem = adminDeliveriesDataGrid.SelectedItem;
+            int? selectedItemId = (selectedItem as PregledNabavkiView)?.IdNabavke;
+
             try
             {
                 using(MySqlConnection connection = new MySqlConnection(connectionString))
@@ -980,7 +1015,19 @@ namespace WpfApp1
                         MessageBox.Show("Greska prilikom brisanja pojedinacne isporuke " + ex.Message);
                     }
 
-                    adminDeliveriesLoadSelectedDeliveryRefresh();
+                    
+                    //Baca null kad se brise nabavka
+
+                    if (selectedItemId != 0)
+                    {
+                        loadAdminDeliveriesDataGridData();
+                        adminDeliveriesDataGrid.ItemsSource = observablePregledNabavki;
+                        var tmp = observablePregledNabavki.FirstOrDefault(item => item.IdNabavke == selectedItemId);
+                        if (tmp != null)
+                        {
+                            adminDeliveriesDataGrid.SelectedItem = tmp;
+                        }
+                    }
                 }
             }
             catch (Exception ex)

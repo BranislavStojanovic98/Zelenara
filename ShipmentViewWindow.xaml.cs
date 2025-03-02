@@ -87,6 +87,11 @@ namespace WpfApp1
                 }
             }
         }
+
+
+        //NAPRAVI KAKO DA REFRESHUJE TABELU SA NABAVKAMA KAD SE UNESE/IZBRISE ISPORUKA ALI DA 
+        //ONO STO JE IZABRANO U TABELI OSTANE IZABRANO I DA SE NE GUBI PRIKAZ U DRUGOJ TABELI
+
         public void dodajNovuNabavku()
         {
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;";
@@ -103,7 +108,10 @@ namespace WpfApp1
                         string nabavkaIdQuery = "SELECT MAX(idPotvrde)+1 FROM nabavka";
                         MySqlCommand getNabavkaId = new MySqlCommand(nabavkaIdQuery, con);
                         var nabavkaId = getNabavkaId.ExecuteScalar();
-
+                        if(nabavkaId is DBNull)
+                        {
+                            nabavkaId = 1;
+                        }
                         //Get trenutni datum
                         string datum = DateTime.Today.ToString("yyyy-MM-dd");
 
@@ -141,6 +149,10 @@ namespace WpfApp1
                         string isporukaIdQuery = "SELECT MAX(idIsporuke) FROM isporuka";
                         MySqlCommand getIsporukaId = new MySqlCommand(isporukaIdQuery, con);
                         var isporukaId = getIsporukaId.ExecuteScalar();
+                        if(isporukaId is DBNull)
+                        {
+                            isporukaId = 0;
+                        }
                         int listBoxItemsCount = shipmentViewDeliveriesListBox.Items.Count;
 
                         int currentIsporukaId = (int)isporukaId;
