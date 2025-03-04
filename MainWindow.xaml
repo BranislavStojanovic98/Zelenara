@@ -98,11 +98,11 @@
                 <Label x:Name="employeeInfoNameLabel" Content="Ime:" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
                 <Label x:Name="employeeInfoLastnameLabel" Content="Prezime:" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.805,0.541" FontSize="24" FontFamily="Agency FB"/>
                 <Label x:Name="employeeInfoJMBLabel" Content="JMB:" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" FontFamily="Agency FB" FontSize="24"/>
-                <Label x:Name="emplyeeInfoPlaceLabel" Content="Mjesto:" HorizontalAlignment="Left" Margin="10,420,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
-                <TextBox x:Name="employeeInfoBoxName" Margin="90,125,20,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="24" FontFamily="Agency FB"/>
-                <TextBox x:Name="employeeInfoBoxLastname" Margin="90,225,20,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
-                <TextBox x:Name="employeeInfoBoxJMB" Margin="90,325,20,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
-                <TextBox x:Name="employeeInfoBoxCity" Margin="90,425,20,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
+                <Label x:Name="emplyeeInfoPlaceLabel" Content="Poštanski Broj:" HorizontalAlignment="Left" Margin="10,420,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
+                <TextBox x:Name="employeeInfoBoxName" Margin="138,125,20,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="24" FontFamily="Agency FB"/>
+                <TextBox x:Name="employeeInfoBoxLastname" Margin="138,225,20,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
+                <TextBox x:Name="employeeInfoBoxJMB" Margin="138,325,20,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
+                <TextBox x:Name="employeeInfoBoxCity" Margin="138,425,20,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
                 <Button x:Name="employeeInfoBoxDeleteButton" Content="Izbrisi" Margin="0,0,50,50" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" HorizontalAlignment="Right" Width="100" Height="50" VerticalAlignment="Bottom" FontSize="24" FontFamily="Agency FB" Click="adminEmployeeInfoDelete" MinHeight="50"/>
                 <Button x:Name="employeeInfoBoxAddButton" Content="Dodaj" Margin="50,0,0,50" FontSize="24" FontFamily="Agency FB" HorizontalAlignment="Left" Width="100" Click="adminEmployeeInfoAdd" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="50" VerticalAlignment="Bottom" MinHeight="50"/>
                 <Button x:Name="employeeInfoBoxUpdateButton" Content="Izmjeni" Margin="50,0,0,50" FontSize="24" FontFamily="Agency FB" HorizontalAlignment="Left" Width="100" Height="50" VerticalAlignment="Bottom" Click="adminEmployeeInfoUpdate" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Visibility="Collapsed"/>
@@ -115,12 +115,14 @@
                     </Border.BorderBrush>
                 </Border>
             </Grid>
-            <Grid Margin="10,30,20,30" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" PreviewMouseDown="deselectTableColumn" Grid.ColumnSpan="2" Grid.Row="1">
+            <Grid Margin="10,30,20,30" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.ColumnSpan="2" Grid.Row="1">
                 <Button x:Name="adminEmployeeBackButton" Content="Nazad" HorizontalAlignment="Left" Margin="20,10,0,10" Click="mainViewShow" FontSize="17" FontFamily="Agency FB" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="50" Width="100"/>
                 <Border BorderBrush="Gray" BorderThickness="2,2,2,2" PreviewMouseDown="deselectTableColumn"/>
+                <Label Content="Lista Mjesta sa Postanskim Brojem:" Margin="0,0,180,0" FontFamily="Agency FB" FontSize="24" Height="40" VerticalAlignment="Center" HorizontalAlignment="Right" Width="276"/>
+                <Button x:Name="openListaMjestaButton" Margin="0,0,20,0" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="openListaMjestaClick" Height="40" VerticalAlignment="Center" HorizontalAlignment="Right" Width="158"/>
             </Grid>
         </Grid>
-        <Grid x:Name="adminDeliveriesViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.RowSpan="4">
+        <Grid x:Name="adminDeliveriesViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.RowSpan="4" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*" MaxHeight="200"/>
@@ -218,7 +220,7 @@
                 </Label.BorderBrush>
             </Label>
             <Button x:Name="adminDeliveriesViewBackButton_Copy1" Content="Nazad" HorizontalAlignment="Left" Margin="50,0,0,50" Height="60" VerticalAlignment="Bottom" Width="120" FontSize="24" FontFamily="Agency FB" Click="mainViewShow" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
-            <DataGrid x:Name="storageAvailableProductsDataGrid" Height="434" Margin="50,140,0,0" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Width="380">
+            <DataGrid x:Name="storageAvailableProductsDataGrid" Height="434" Margin="50,140,0,0" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Width="410">
                 <DataGrid.Columns>
                     <materialDesign:DataGridTextColumn CanUserResize="False" FontSize="14" Header="ID Produkta" Width="*"/>
                     <materialDesign:DataGridTextColumn CanUserResize="False" FontSize="14" Header="Naziv" Width="*"/>

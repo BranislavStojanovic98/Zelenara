@@ -170,6 +170,8 @@ namespace WpfApp1
                 return;
             }
 
+            
+
             // Create a connection to the MySQL database
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;"; // Adjust as needed
 
@@ -392,6 +394,46 @@ namespace WpfApp1
             confirmWindow.ShowDialog();
         }
 
+        //Funkcija za trazenje Postanskog broja na osnovu imena grada
+        private string getPostanskiBrojFromImeMjesta()
+        {
+            string connectionString = "Server=localhost,3306;Database=projektni;Uid=root;Pwd=root;";
+            try
+            {
+                var selectedEmployee = adminEmployeeTable.SelectedItem as Zaposleni;
+
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    MySqlCommand cmd1 = new MySqlCommand("SELECT infoMjesta FROM projektni.mjesto_sa_postanskimbr", connection);
+                    MySqlDataReader reader1 = cmd1.ExecuteReader();
+                    mestoOptions.Clear();
+                    while (reader1.Read())
+                    {
+                        mestoOptions.Add(reader1["infoMjesta"].ToString());
+                    }
+                   
+
+                    foreach(var item in mestoOptions)
+                    {
+                        string listMjesta = item.ToString();
+                        string[] tmp = listMjesta.Split(new string[] { "-" }, StringSplitOptions.None);
+                        if (tmp[1] == selectedEmployee.Mjesto)
+                        {
+                            return tmp[0];
+                        }
+                    }
+                    reader1.Close();
+                }
+                
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error connectiong to database: " + ex.Message);
+            }
+            return null;
+        }
 
 
         //Zaposleni DataGrid tj Tabela
@@ -399,19 +441,19 @@ namespace WpfApp1
         {
             var selectedItem = adminEmployeeTable.SelectedItem as Zaposleni;
 
-            // Toggle the button visibility based on the selection
+            
             if (selectedItem != null)
             {
-                employeeInfoBoxUpdateButton.Visibility = Visibility.Visible; // Show the button when an item is selected
+                employeeInfoBoxUpdateButton.Visibility = Visibility.Visible;
 
                 employeeInfoBoxName.Text = selectedItem.Ime;
                 employeeInfoBoxLastname.Text = selectedItem.Prezime;
                 employeeInfoBoxJMB.Text = selectedItem.JMB;
-                employeeInfoBoxCity.Text = selectedItem.Mjesto;
+                employeeInfoBoxCity.Text = getPostanskiBrojFromImeMjesta();
             }
             else
             {
-                employeeInfoBoxUpdateButton.Visibility = Visibility.Collapsed; // Hide the button when no item is selected
+                employeeInfoBoxUpdateButton.Visibility = Visibility.Collapsed;
 
                 employeeInfoBoxName.Clear();
                 employeeInfoBoxLastname.Clear();
@@ -1037,7 +1079,11 @@ namespace WpfApp1
 
         }
 
-
+        private void openListaMjestaClick(object sender, RoutedEventArgs e)
+        {
+            ListaMjestaPopUp listaMijestaWindow = new ListaMjestaPopUp();
+            listaMijestaWindow.Show();
+        }
 
         //Treba poslagati ove funkicje nakon zavrsetka;
     }
