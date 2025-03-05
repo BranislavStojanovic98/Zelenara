@@ -22,7 +22,7 @@ namespace WpfApp1
         private ObservableCollection<PregledIsporukaView> observablePregledIsporuka;
         private ObservableCollection<PregledNabavkiView> observablePregledNabavki;
         private ObservableCollection<PregledIsporukaNabavke> observablePregledIsporukaNabavki;
-
+        private ObservableCollection<PregledSkladistaView> observablePregledSkladista;
         
 
         public MainWindow()
@@ -34,6 +34,7 @@ namespace WpfApp1
             observablePregledIsporuka = new ObservableCollection<PregledIsporukaView>();
             observablePregledNabavki = new ObservableCollection<PregledNabavkiView>();
             observablePregledIsporukaNabavki = new ObservableCollection<PregledIsporukaNabavke>();
+            observablePregledSkladista = new ObservableCollection<PregledSkladistaView>();
             this.DataContext = this;
 
         }
@@ -361,6 +362,7 @@ namespace WpfApp1
         //Otvara prozor sa listom svih dostupnih produkta koji se nalaze u prodavnici i njihovom kolicinom
         private void storageViewOpen(object sender, RoutedEventArgs e)
         {
+            loadStorageView();
             storageViewGrid.Visibility = Visibility.Visible;
         }
 
@@ -486,9 +488,16 @@ namespace WpfApp1
         //Otvara prozor za dodavanje ISPORUKA
         private void adminDeliveriesShipmentButton(object sender, RoutedEventArgs e)
         {
-            ShipmentViewWindow shipmentViewWindow = new ShipmentViewWindow(this, "addNewIsporuka");
-            shipmentViewWindow.Owner = this;
-            shipmentViewWindow.ShowDialog();
+            if (adminDeliveriesDataGrid.SelectedItem is null)
+            {
+                MessageBox.Show("Odaberite nabavku za koju želite dodati isporuku!");
+            }
+            else
+            {
+                ShipmentViewWindow shipmentViewWindow = new ShipmentViewWindow(this, "addNewIsporuka");
+                shipmentViewWindow.Owner = this;
+                shipmentViewWindow.ShowDialog();
+            }
         }
 
 
@@ -623,11 +632,8 @@ namespace WpfApp1
                 {
                     con.Open();
 
-                    // Create the ObservableCollection that will hold the data
                     observablePregledNabavki.Clear();
 
-
-                    // Query to retrieve data from the database
                     string query = "SELECT * FROM projektni.isporuke_nabavke";
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
@@ -636,22 +642,17 @@ namespace WpfApp1
                             while (reader.Read())
                             {
 
-                                DateOnly? datumDostave = reader.IsDBNull(3) ? (DateOnly?)null : DateOnly.FromDateTime(reader.GetDateTime(3));
-
-
-                                // Add the data to the ObservableCollection
                                 observablePregledNabavki.Add(new PregledNabavkiView(
                                     reader.GetInt32(0),   // idNabavke
                                     reader.GetString(1),  // nazivDostavljaca
                                     reader.GetDecimal(2),  // adresaDostavljaca
-                                    datumDostave   // datumDostave
+                                    reader.GetString(3)  // datumDostave
                                 ));
                             }
                         }
                     }
                 }
 
-                // Bind the ObservableCollection to the DataGrid
                 adminDeliveriesDataGrid.ItemsSource = null;
                 adminDeliveriesDataGrid.ItemsSource = observablePregledNabavki;
 
@@ -689,9 +690,6 @@ namespace WpfApp1
                             while (reader.Read())
                             {
 
-                                DateOnly? datumDostave = reader.IsDBNull(6) ? (DateOnly?)null : DateOnly.FromDateTime(reader.GetDateTime(6));
-
-
                                 // Add the data to the ObservableCollection
                                 observablePregledIsporukaNabavki.Add(new PregledIsporukaNabavke(
                                     reader.GetInt32(0),   // idProdukta
@@ -700,7 +698,7 @@ namespace WpfApp1
                                     reader.GetInt32(3),   // kolicinaProdukta
                                     reader.GetString(4),  // proizvodjac
                                     reader.GetDecimal(5), // ukupnaCenaProdukta
-                                    datumDostave,   // datumDostave
+                                    reader.GetString(6),   // datumDostave
                                     reader.GetInt32(7), // IdNabavke
                                     reader.GetInt32(8)  // IdIsporuke
                                 ));
@@ -827,8 +825,15 @@ namespace WpfApp1
         //Dugme za brisanje izabrane nabavke u DataGridu u adminDeliveriesViewGrid-u
         private void deleteDeliveryOrderButton(object sender, RoutedEventArgs e)
         {
-            ConfirmWindow confirmWindow = new ConfirmWindow(this, "deleteSelectedNabavku");
-            confirmWindow.ShowDialog();
+            if (adminDeliveriesDataGrid.SelectedItem is null)
+            {
+                MessageBox.Show("Odaberite nabavku koju želite izbrisati!");
+            }
+            else
+            {
+                ConfirmWindow confirmWindow = new ConfirmWindow(this, "deleteSelectedNabavku");
+                confirmWindow.ShowDialog();
+            }
         }
 
         //Brise se izabrana nabavka iz tabele i baze
@@ -970,8 +975,22 @@ namespace WpfApp1
         //Dugme za brisanje izabrane isporuke iz tabele
         private void adminDeleteDeliveriesShipmentButton(object sender, RoutedEventArgs e)
         {
-            ConfirmWindow confirmWindow = new ConfirmWindow(this, "deleteSelectedIsporuku");
-            confirmWindow.ShowDialog();
+            if (adminDeliveriesDataGrid.SelectedItem is null)
+            {
+                MessageBox.Show("Odaberite nabavku za koju želite izbrisati isporuku!");
+            }
+            else
+            {
+                if (listDeliveriesDataGrid.SelectedItem is null)
+                {
+                    MessageBox.Show("Odaberite isporuku koju želite izbrisati!");
+                }
+                else {
+
+                    ConfirmWindow confirmWindow = new ConfirmWindow(this, "deleteSelectedIsporuku");
+                    confirmWindow.ShowDialog();
+                } 
+            }
         }
 
         //
@@ -1001,10 +1020,6 @@ namespace WpfApp1
                             while (reader.Read())
                             {
 
-                                DateOnly? datumDostave = reader.IsDBNull(6) ? (DateOnly?)null : DateOnly.FromDateTime(reader.GetDateTime(6));
-
-
-                                // Add the data to the ObservableCollection
                                 observablePregledIsporukaNabavki.Add(new PregledIsporukaNabavke(
                                     reader.GetInt32(0),   // idProdukta
                                     reader.GetString(1),  // nazivProdukta
@@ -1012,7 +1027,7 @@ namespace WpfApp1
                                     reader.GetInt32(3),   // kolicinaProdukta
                                     reader.GetString(4),  // proizvodjac
                                     reader.GetDecimal(5), // ukupnaCenaProdukta
-                                    datumDostave,   // datumDostave
+                                    reader.GetString(6),   // datumDostave
                                     reader.GetInt32(7), // IdNabavke
                                     reader.GetInt32(8)  // IdIsporuke
                                 ));
@@ -1022,7 +1037,6 @@ namespace WpfApp1
                 }
 
                 listDeliveriesDataGrid.ItemsSource = null;
-                // Bind the ObservableCollection to the DataGrid
                 listDeliveriesDataGrid.ItemsSource = observablePregledIsporukaNabavki;
 
             }
@@ -1083,6 +1097,43 @@ namespace WpfApp1
         {
             ListaMjestaPopUp listaMijestaWindow = new ListaMjestaPopUp();
             listaMijestaWindow.Show();
+        }
+
+        private void loadStorageView()
+        {
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
+            try
+            {
+                using(MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM projektni.pregled_skladista";
+                    using(MySqlCommand cmd = new MySqlCommand(query,connection))
+                    {
+                        observablePregledSkladista.Clear();
+                        using(MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while(reader.Read())
+                            {
+                                observablePregledSkladista.Add(new PregledSkladistaView(
+                                    reader.GetInt32(0),
+                                    reader.GetString(1),        //Naziv produkta
+                                    reader.GetString(2),        //Vrsta produkta
+                                    reader.GetInt32(3),         //Ukupna kolicina produkta
+                                    reader.GetDecimal(4)));     //Ukupna cijena produkta
+                            }
+                        }
+                    }
+                }
+
+                storageAvailableProductsDataGrid.ItemsSource = null;
+                storageAvailableProductsDataGrid.ItemsSource = observablePregledSkladista;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Unable to connect do database: " + ex.Message);
+            }
         }
 
         //Treba poslagati ove funkicje nakon zavrsetka;

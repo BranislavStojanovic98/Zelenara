@@ -15,12 +15,12 @@ namespace WpfApp1.database.grids
         private int _amount;
         private string _maker;
         private decimal _cena;
-        private DateOnly? _datum;
+        private string _datum;
         private int _deliveryId;
         private int _shipmentId;
 
         // Constructor
-        public PregledIsporukaNabavke(int id, string name, string type,int amount, string maker, decimal cena, DateOnly? datum, int deliveryId, int shipmentId)
+        public PregledIsporukaNabavke(int id, string name, string type,int amount, string maker, decimal cena, string datum, int deliveryId, int shipmentId)
         {
             _idProdukta = id;
             _name = name;
@@ -112,7 +112,7 @@ namespace WpfApp1.database.grids
             }
         }
 
-        public DateOnly? Datum
+        public string Datum
         {
             get => _datum;
             set

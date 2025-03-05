@@ -206,11 +206,7 @@
                 </Label.BorderBrush>
             </Label>
         </Grid>
-        <Grid x:Name="storageViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.RowSpan="4" MinWidth="1100" Visibility="Collapsed">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*" MaxWidth="400"/>
-            </Grid.ColumnDefinitions>
+        <Grid x:Name="storageViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.RowSpan="4" MinWidth="1100">
             <Label Content="Dostupni produkti" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" FontSize="48" FontFamily="Agency FB" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,2" Width="458" Height="69">
                 <Label.BorderBrush>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -220,23 +216,21 @@
                 </Label.BorderBrush>
             </Label>
             <Button x:Name="adminDeliveriesViewBackButton_Copy1" Content="Nazad" HorizontalAlignment="Left" Margin="50,0,0,50" Height="60" VerticalAlignment="Bottom" Width="120" FontSize="24" FontFamily="Agency FB" Click="mainViewShow" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
-            <DataGrid x:Name="storageAvailableProductsDataGrid" Height="434" Margin="50,140,0,0" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Width="410">
+            <DataGrid x:Name="storageAvailableProductsDataGrid" Height="434" Margin="50,140,0,0" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Width="410" AutoGenerateColumns="False" CanUserResizeColumns="False" ColumnHeaderHeight="30" RowHeaderWidth="0">
                 <DataGrid.Columns>
-                    <materialDesign:DataGridTextColumn CanUserResize="False" FontSize="14" Header="ID Produkta" Width="*"/>
-                    <materialDesign:DataGridTextColumn CanUserResize="False" FontSize="14" Header="Naziv" Width="*"/>
-                    <materialDesign:DataGridTextColumn CanUserResize="False" FontSize="14" Header="Vrsta" Width="*"/>
-                    <materialDesign:DataGridTextColumn CanUserResize="False" FontSize="14" Header="Preostala količina" Width="*"/>
+                    <materialDesign:DataGridTextColumn CanUserResize="False" FontSize="14" Width="*" Binding="{Binding ProduktId}" Header="ID Produkta" CanUserSort="True" CanUserReorder="False" IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding Naziv}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Naziv" IsReadOnly="True" Width="*"/>
+                    <materialDesign:DataGridTextColumn CanUserResize="False" FontSize="14" Width="*" Binding="{Binding Vrsta}" Header="Vrsta" CanUserSort="True" CanUserReorder="False" IsReadOnly="True"/>
+                    <materialDesign:DataGridTextColumn CanUserResize="False" FontSize="14" Width="*" Binding="{Binding Kolicina}" Header="Kolicina" CanUserSort="True" CanUserReorder="False" IsReadOnly="True"/>
+                    <materialDesign:DataGridTextColumn CanUserResize="False" FontSize="14" Width="*" Binding="{Binding Cena}" Header="Cena" CanUserReorder="False" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Grid x:Name="storageViewProductInfoGrid" Margin="10,50,0,0" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left">
-                <Image Margin="30,90,0,20" Source="/greni-smit.jpg" HorizontalAlignment="Left" Width="258"/>
-                <Label Content="Informacije o produktu" Height="48" Margin="10,10,10,0" VerticalAlignment="Top" BorderBrush="Gray" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,2"/>
-            </Grid>
-            <Grid Margin="0,140,20,0" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="354" VerticalAlignment="Top" Width="200" HorizontalAlignment="Right">
+            <Grid Margin="500,140,0,0" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="354" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left">
                 <Label Content="Pretraga" Margin="50,10,50,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20" BorderBrush="Gray" BorderThickness="0,0,0,2"/>
                 <TextBox Margin="50,100,50,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Height="30" VerticalContentAlignment="Center"/>
                 <Button Content="Pretraži" Height="40" Margin="50,180,50,0" VerticalAlignment="Top" FontSize="16"/>
             </Grid>
+            <DataGrid Height="437" Margin="0,140,110,0" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" Width="773" HorizontalAlignment="Right"/>
         </Grid>
     </Grid>
 </Window>
