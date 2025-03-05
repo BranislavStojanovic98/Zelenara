@@ -69,7 +69,7 @@ CREATE TABLE `isporuka` (
 
 LOCK TABLES `isporuka` WRITE;
 /*!40000 ALTER TABLE `isporuka` DISABLE KEYS */;
-INSERT INTO `isporuka` VALUES (1,1,'2025-03-02',1),(2,1,'2025-03-02',1),(4,2,'2025-03-02',2),(5,2,'2025-03-02',2),(6,3,'2025-03-02',1),(7,3,'2025-03-02',1),(10,2,'2025-03-02',2),(11,3,'2025-03-05',1),(12,3,'2025-03-05',1),(13,3,'2025-03-05',1),(14,3,'2025-03-05',1),(15,3,'2025-03-05',1),(16,3,'2025-03-05',1),(17,3,'2025-03-05',1),(18,3,'2025-03-05',1),(19,3,'2025-03-05',1),(20,3,'2025-03-05',1),(21,3,'2025-03-05',1),(22,3,'2025-03-05',1);
+INSERT INTO `isporuka` VALUES (1,1,'2025-03-02',1),(2,1,'2025-03-02',1),(4,2,'2025-03-02',2),(5,2,'2025-03-02',2),(10,2,'2025-03-02',2),(11,3,'2025-03-05',1),(12,3,'2025-03-05',1),(13,3,'2025-03-05',1),(14,3,'2025-03-05',1),(15,3,'2025-03-05',1),(16,3,'2025-03-05',1),(17,3,'2025-03-05',1),(22,3,'2025-03-05',1),(23,3,'2025-03-05',1),(24,3,'2025-03-05',1),(25,3,'2025-03-05',1),(26,3,'2025-03-05',1),(27,3,'2025-03-05',1),(28,3,'2025-03-05',1),(29,3,'2025-03-05',1),(30,3,'2025-03-05',1),(31,3,'2025-03-05',1),(32,3,'2025-03-05',1),(33,3,'2025-03-05',1),(34,3,'2025-03-05',1),(35,3,'2025-03-05',1),(36,3,'2025-03-05',1),(37,3,'2025-03-05',1),(38,3,'2025-03-05',1);
 /*!40000 ALTER TABLE `isporuka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `isporuka_produkta` (
 
 LOCK TABLES `isporuka_produkta` WRITE;
 /*!40000 ALTER TABLE `isporuka_produkta` DISABLE KEYS */;
-INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,23),(4,3,11),(5,1,1),(6,1,10),(7,2,10),(10,1,1),(18,1,3),(19,1,2),(20,1,1),(21,1,1),(22,1,1);
+INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,23),(4,3,11),(5,1,1),(10,1,1),(22,1,10),(23,2,10),(24,2,1),(25,1,2),(26,3,11),(30,1,3),(35,2,1),(36,1,2),(37,1,1),(38,2,21);
 /*!40000 ALTER TABLE `isporuka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,7 +334,7 @@ CREATE TABLE `nabavka_produkta` (
 
 LOCK TABLES `nabavka_produkta` WRITE;
 /*!40000 ALTER TABLE `nabavka_produkta` DISABLE KEYS */;
-INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(23,28.75,1,2,2),(11,12.54,2,4,3),(1,4.26,2,5,1),(1,4.26,2,10,1),(10,42.60,3,6,1),(10,12.50,3,7,2),(3,12.78,3,18,1),(2,8.52,3,19,1),(1,4.26,3,20,1),(1,4.26,3,21,1),(1,4.26,3,22,1);
+INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(23,28.75,1,2,2),(11,12.54,2,4,3),(1,4.26,2,5,1),(1,4.26,2,10,1),(10,42.60,3,22,1),(10,12.50,3,23,2),(1,1.25,3,24,2),(2,8.52,3,25,1),(11,12.54,3,26,3),(3,12.78,3,30,1),(1,1.25,3,35,2),(2,8.52,3,36,1),(1,4.26,3,37,1),(21,26.25,3,38,2);
 /*!40000 ALTER TABLE `nabavka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -581,8 +581,10 @@ CREATE TABLE `sadrzaj_skladista` (
   `Vrsta` varchar(45) NOT NULL,
   `Kolicina` int NOT NULL,
   `Cena` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`skladiste_idSkladista`),
-  UNIQUE KEY `idProdukta_UNIQUE` (`idProdukta`),
+  PRIMARY KEY (`idProdukta`),
+  KEY `fk_sadrzaj_skladista_produkt1_idx` (`idProdukta`),
+  KEY `fk_sadrzaj_skladista_skladiste1` (`skladiste_idSkladista`),
+  CONSTRAINT `fk_sadrzaj_skladista_produkt1` FOREIGN KEY (`idProdukta`) REFERENCES `produkt` (`idProdukta`),
   CONSTRAINT `fk_sadrzaj_skladista_skladiste1` FOREIGN KEY (`skladiste_idSkladista`) REFERENCES `skladiste` (`idSkladista`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -593,6 +595,7 @@ CREATE TABLE `sadrzaj_skladista` (
 
 LOCK TABLES `sadrzaj_skladista` WRITE;
 /*!40000 ALTER TABLE `sadrzaj_skladista` DISABLE KEYS */;
+INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',1,4.26),(1,2,'Jabuke','Crvene',22,27.50);
 /*!40000 ALTER TABLE `sadrzaj_skladista` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -880,4 +883,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-05 14:37:17
+-- Dump completed on 2025-03-05 16:29:00
