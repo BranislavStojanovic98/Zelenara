@@ -9,19 +9,34 @@ namespace WpfApp1.database.grids
 {
     class PregledSkladistaView
     {
+        private int _skladisteId;
         private int _produktId;
         private string _naziv;
         private string _vrsta;
         private int _kolicina;
         private decimal _cena;
 
-        public PregledSkladistaView(int produktId, string naziv, string vrsta, int kolicina, decimal cena)
+        public PregledSkladistaView(int skladisteId, int produktId, string naziv, string vrsta, int kolicina, decimal cena)
         {
+            _skladisteId = skladisteId;
             _produktId = produktId;
             _naziv = naziv;
             _vrsta = vrsta;
             _kolicina = kolicina;
             _cena = cena;
+        }
+
+        public int SkladisteId
+        {
+            get => _skladisteId;
+            set
+            {
+                if (_skladisteId != value)
+                {
+                    _skladisteId = value;
+                    OnPropertyChanged(nameof(SkladisteId));
+                }
+            }
         }
 
         public int ProduktId

@@ -1108,7 +1108,7 @@ namespace WpfApp1
                 {
                     connection.Open();
 
-                    string query = "SELECT * FROM projektni.pregled_skladista";
+                    string query = "SELECT * FROM projektni.sadrzaj_skladista";
                     using(MySqlCommand cmd = new MySqlCommand(query,connection))
                     {
                         observablePregledSkladista.Clear();
@@ -1118,10 +1118,11 @@ namespace WpfApp1
                             {
                                 observablePregledSkladista.Add(new PregledSkladistaView(
                                     reader.GetInt32(0),
-                                    reader.GetString(1),        //Naziv produkta
-                                    reader.GetString(2),        //Vrsta produkta
-                                    reader.GetInt32(3),         //Ukupna kolicina produkta
-                                    reader.GetDecimal(4)));     //Ukupna cijena produkta
+                                    reader.GetInt32(1),         //ID Produkta
+                                    reader.GetString(2),        //Naziv produkta
+                                    reader.GetString(3),        //Vrsta produkta
+                                    reader.GetInt32(4),         //Ukupna kolicina produkta
+                                    reader.GetDecimal(5)));     //Ukupna cijena produkta
                             }
                         }
                     }
