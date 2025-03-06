@@ -69,7 +69,7 @@ CREATE TABLE `isporuka` (
 
 LOCK TABLES `isporuka` WRITE;
 /*!40000 ALTER TABLE `isporuka` DISABLE KEYS */;
-INSERT INTO `isporuka` VALUES (1,1,'2025-03-02',1),(2,1,'2025-03-02',1),(4,2,'2025-03-02',2),(5,2,'2025-03-02',2),(10,2,'2025-03-02',2),(11,3,'2025-03-05',1),(12,3,'2025-03-05',1),(13,3,'2025-03-05',1),(14,3,'2025-03-05',1),(15,3,'2025-03-05',1),(16,3,'2025-03-05',1),(17,3,'2025-03-05',1),(22,3,'2025-03-05',1),(23,3,'2025-03-05',1),(24,3,'2025-03-05',1),(25,3,'2025-03-05',1),(26,3,'2025-03-05',1),(27,3,'2025-03-05',1),(28,3,'2025-03-05',1),(29,3,'2025-03-05',1),(30,3,'2025-03-05',1),(31,3,'2025-03-05',1),(32,3,'2025-03-05',1),(33,3,'2025-03-05',1),(34,3,'2025-03-05',1),(35,3,'2025-03-05',1),(36,3,'2025-03-05',1),(37,3,'2025-03-05',1),(38,3,'2025-03-05',1);
+INSERT INTO `isporuka` VALUES (1,1,'2025-03-02',1),(2,1,'2025-03-02',1),(4,2,'2025-03-02',2),(5,2,'2025-03-02',2),(10,2,'2025-03-02',2),(11,3,'2025-03-05',1),(12,3,'2025-03-05',1),(13,3,'2025-03-05',1);
 /*!40000 ALTER TABLE `isporuka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `isporuka_produkta` (
 
 LOCK TABLES `isporuka_produkta` WRITE;
 /*!40000 ALTER TABLE `isporuka_produkta` DISABLE KEYS */;
-INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,23),(4,3,11),(5,1,1),(10,1,1),(22,1,10),(23,2,10),(24,2,1),(25,1,2),(26,3,11),(30,1,3),(35,2,1),(36,1,2),(37,1,1),(38,2,21);
+INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,23),(4,3,11),(5,1,1),(10,1,1),(11,1,23),(12,2,11),(13,3,6);
 /*!40000 ALTER TABLE `isporuka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,7 +303,7 @@ CREATE TABLE `nabavka` (
 
 LOCK TABLES `nabavka` WRITE;
 /*!40000 ALTER TABLE `nabavka` DISABLE KEYS */;
-INSERT INTO `nabavka` VALUES (1,1,'2025-03-02','111111111111',1),(2,1,'2025-03-02','111111111111',2),(3,1,'2025-03-02','111111111111',1);
+INSERT INTO `nabavka` VALUES (1,1,'2025-03-02','111111111111',1),(2,1,'2025-03-02','111111111111',2),(3,1,'2025-03-05','111111111111',1);
 /*!40000 ALTER TABLE `nabavka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,7 +334,7 @@ CREATE TABLE `nabavka_produkta` (
 
 LOCK TABLES `nabavka_produkta` WRITE;
 /*!40000 ALTER TABLE `nabavka_produkta` DISABLE KEYS */;
-INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(23,28.75,1,2,2),(11,12.54,2,4,3),(1,4.26,2,5,1),(1,4.26,2,10,1),(10,42.60,3,22,1),(10,12.50,3,23,2),(1,1.25,3,24,2),(2,8.52,3,25,1),(11,12.54,3,26,3),(3,12.78,3,30,1),(1,1.25,3,35,2),(2,8.52,3,36,1),(1,4.26,3,37,1),(21,26.25,3,38,2);
+INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(23,28.75,1,2,2),(11,12.54,2,4,3),(1,4.26,2,5,1),(1,4.26,2,10,1),(23,97.98,3,11,1),(11,13.75,3,12,2),(6,6.84,3,13,3);
 /*!40000 ALTER TABLE `nabavka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -390,6 +390,24 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `Datum_isporuke`,
  1 AS `IDNabavke`,
  1 AS `IDIsporuke`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `pregled_isporuka_pojedinacnog_produkta`
+--
+
+DROP TABLE IF EXISTS `pregled_isporuka_pojedinacnog_produkta`;
+/*!50001 DROP VIEW IF EXISTS `pregled_isporuka_pojedinacnog_produkta`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `pregled_isporuka_pojedinacnog_produkta` AS SELECT 
+ 1 AS `ID_Nabavke`,
+ 1 AS `ID_Isporuke`,
+ 1 AS `Kolicina_Produkta`,
+ 1 AS `Cena_Isporuke`,
+ 1 AS `Dostavljac`,
+ 1 AS `Datum_Isporuke`,
+ 1 AS `ID_Produkta`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -595,7 +613,7 @@ CREATE TABLE `sadrzaj_skladista` (
 
 LOCK TABLES `sadrzaj_skladista` WRITE;
 /*!40000 ALTER TABLE `sadrzaj_skladista` DISABLE KEYS */;
-INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',1,4.26),(1,2,'Jabuke','Crvene',22,27.50);
+INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',23,97.98),(1,2,'Jabuke','Crvene',11,13.75),(1,3,'Jabuke','Zelene',6,6.84);
 /*!40000 ALTER TABLE `sadrzaj_skladista` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -821,6 +839,24 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `pregled_isporuka_pojedinacnog_produkta`
+--
+
+/*!50001 DROP VIEW IF EXISTS `pregled_isporuka_pojedinacnog_produkta`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `pregled_isporuka_pojedinacnog_produkta` AS select `np`.`NABAVKA_idPotvrde` AS `ID_Nabavke`,`np`.`isporuka_produkta_DOSTAVA_idIsporuke` AS `ID_Isporuke`,`np`.`Kolicina` AS `Kolicina_Produkta`,`np`.`Cena` AS `Cena_Isporuke`,`d`.`Naziv` AS `Dostavljac`,date_format(`i`.`Datum`,'%d.%m.%Y') AS `Datum_Isporuke`,`np`.`isporuka_produkta_PRODUKT_idProdukta` AS `ID_Produkta` from ((`nabavka_produkta` `np` left join `isporuka` `i` on((`i`.`idIsporuke` = `np`.`isporuka_produkta_DOSTAVA_idIsporuke`))) left join `dobavljac` `d` on((`d`.`idDostavljaca` = `i`.`DOBAVLJAC_idDostavljaca`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `pregled_produkta`
 --
 
@@ -883,4 +919,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-05 16:29:00
+-- Dump completed on 2025-03-06 16:25:44

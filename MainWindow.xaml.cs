@@ -23,7 +23,7 @@ namespace WpfApp1
         private ObservableCollection<PregledNabavkiView> observablePregledNabavki;
         private ObservableCollection<PregledIsporukaNabavke> observablePregledIsporukaNabavki;
         private ObservableCollection<PregledSkladistaView> observablePregledSkladista;
-        
+        private ObservableCollection<PregledIsporukaPoProduktu> observablePregledSpecificnihProdukta;
 
         public MainWindow()
         {
@@ -35,6 +35,7 @@ namespace WpfApp1
             observablePregledNabavki = new ObservableCollection<PregledNabavkiView>();
             observablePregledIsporukaNabavki = new ObservableCollection<PregledIsporukaNabavke>();
             observablePregledSkladista = new ObservableCollection<PregledSkladistaView>();
+            observablePregledSpecificnihProdukta = new ObservableCollection<PregledIsporukaPoProduktu>();
             this.DataContext = this;
 
         }
@@ -1134,6 +1135,129 @@ namespace WpfApp1
             catch(Exception ex)
             {
                 MessageBox.Show("Unable to connect do database: " + ex.Message);
+            }
+        }
+
+        //Storage View Prikazuje sve isporuke za specificni produkt koji je izabran klikom
+        private void loadstorageSpecificProductDataGrid(object sender, SelectionChangedEventArgs e)
+        {
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
+            var selectedItem = storageAvailableProductsDataGrid.SelectedItem;
+            int? selectedItemId = (selectedItem as PregledSkladistaView)?.ProduktId;
+            try
+            {
+                using(MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    observablePregledSpecificnihProdukta.Clear();
+
+
+                    string query = "SELECT * from projektni.pregled_isporuka_pojedinacnog_produkta WHERE ID_Produkta=@ID_Produkta";
+                    try
+                    {
+                        using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@ID_Produkta", selectedItemId);
+                            using(MySqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    observablePregledSpecificnihProdukta.Add(new PregledIsporukaPoProduktu(
+                                        reader.GetInt32(0),
+                                        reader.GetInt32(1),
+                                        reader.GetInt32(2),
+                                        reader.GetDecimal(3),
+                                        reader.GetString(4),
+                                        reader.GetString(5),
+                                        reader.GetInt32(6)
+                                        ));
+                                }
+                            }
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show("Greska " + ex.Message);
+                    }
+                }
+
+                storageSpecificProductDataGrid.ItemsSource = null;
+                storageSpecificProductDataGrid.ItemsSource = observablePregledSpecificnihProdukta;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in connectiong to database " + ex.Message);
+            }
+        }
+
+        private void loadStorageSpecificProductDataGridSearch(int produktId)
+        {
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    observablePregledSpecificnihProdukta.Clear();
+
+
+                    string query = "SELECT * from projektni.pregled_isporuka_pojedinacnog_produkta WHERE ID_Produkta=@ID_Produkta";
+                    try
+                    {
+                        using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@ID_Produkta", produktId);
+                            using (MySqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    observablePregledSpecificnihProdukta.Add(new PregledIsporukaPoProduktu(
+                                        reader.GetInt32(0),
+                                        reader.GetInt32(1),
+                                        reader.GetInt32(2),
+                                        reader.GetDecimal(3),
+                                        reader.GetString(4),
+                                        reader.GetString(5),
+                                        reader.GetInt32(6)
+                                        ));
+                                }
+                                if(observablePregledSpecificnihProdukta.Count == 0)
+                                {
+                                    MessageBox.Show("Nepostojeci Produkt ID");
+                                }
+                            }
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Greska " + ex.Message);
+                    }
+                }
+
+                storageSpecificProductDataGrid.ItemsSource = null;
+                storageSpecificProductDataGrid.ItemsSource = observablePregledSpecificnihProdukta;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in connectiong to database " + ex.Message);
+            }
+        }
+
+        //Dugme kada pritisnemo prerazi u storage View, za trazenje produkta po produkt ID-ju
+        private void storageViewSearchByProductId(object sender, RoutedEventArgs e)
+        {
+            string idStr = storageViewSearchBox.Text;
+            if (idStr != "")
+            {
+                int id = int.Parse(idStr);
+                loadStorageSpecificProductDataGridSearch(id);
+            }
+            else
+            {
+                MessageBox.Show("Unesite postojeći Produkt ID!");
             }
         }
 
