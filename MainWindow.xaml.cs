@@ -25,7 +25,8 @@ namespace WpfApp1
         private ObservableCollection<PregledSkladistaView> observablePregledSkladista;
         private ObservableCollection<PregledIsporukaPoProduktu> observablePregledSpecificnihProdukta;
 
-        public MainWindow()
+        private string _adminJmb;
+        public MainWindow(string adminJmb)
         {
             InitializeComponent();
             observableZaposleni = new ObservableCollection<Zaposleni>();
@@ -36,9 +37,12 @@ namespace WpfApp1
             observablePregledIsporukaNabavki = new ObservableCollection<PregledIsporukaNabavke>();
             observablePregledSkladista = new ObservableCollection<PregledSkladistaView>();
             observablePregledSpecificnihProdukta = new ObservableCollection<PregledIsporukaPoProduktu>();
+            _adminJmb = adminJmb;
             this.DataContext = this;
 
         }
+
+
 
         //!!!!!!   Funkcije za tabele i ostalo !!!!!! TREBAJU SE RASPOREDITI PO GRIDOVAIMA POSEBNO
 
@@ -937,7 +941,7 @@ namespace WpfApp1
                         string datum = DateTime.Today.ToString("yyyy-MM-dd");
 
                         //Get menadzer jmb, treba se doraditi za razlicite menadzere
-                        string menadzerJmb = "111111111111"; //Promijeniti kada napravim login!!!!!!!!!!!!
+                        string menadzerJmb = _adminJmb; //Promijeniti kada napravim login!!!!!!!!!!!!
 
 
                         //Get DostavljacID

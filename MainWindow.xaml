@@ -206,7 +206,7 @@
                 </Label.BorderBrush>
             </Label>
         </Grid>
-        <Grid x:Name="storageViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.RowSpan="4" MinWidth="1100">
+        <Grid x:Name="storageViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.RowSpan="4" MinWidth="1100" Visibility="Collapsed">
             <Label Content="Dostupni produkti" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" FontSize="48" FontFamily="Agency FB" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,2" Width="458" Height="69">
                 <Label.BorderBrush>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -239,6 +239,14 @@
                     <DataGridTextColumn Binding="{Binding Datum}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Datum Isporuke" IsReadOnly="True" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <Label Content="Lista isporuka selektovanog produkta" Margin="768,10,20,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Agency FB" FontSize="48" BorderThickness="0,0,0,2">
+                <Label.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black"/>
+                        <GradientStop Color="Gray" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.BorderBrush>
+            </Label>
         </Grid>
     </Grid>
 </Window>

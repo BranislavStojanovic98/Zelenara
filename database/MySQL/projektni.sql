@@ -69,7 +69,7 @@ CREATE TABLE `isporuka` (
 
 LOCK TABLES `isporuka` WRITE;
 /*!40000 ALTER TABLE `isporuka` DISABLE KEYS */;
-INSERT INTO `isporuka` VALUES (1,1,'2025-03-02',1),(2,1,'2025-03-02',1),(4,2,'2025-03-02',2),(5,2,'2025-03-02',2),(10,2,'2025-03-02',2),(11,3,'2025-03-05',1),(12,3,'2025-03-05',1),(13,3,'2025-03-05',1);
+INSERT INTO `isporuka` VALUES (1,1,'2025-03-02',1),(2,1,'2025-03-02',1),(4,2,'2025-03-02',2),(5,2,'2025-03-02',2),(10,2,'2025-03-02',2),(11,3,'2025-03-05',1),(12,3,'2025-03-05',1),(14,3,'2025-03-07',1),(15,3,'2025-03-07',1),(17,3,'2025-03-07',1);
 /*!40000 ALTER TABLE `isporuka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `isporuka_produkta` (
 
 LOCK TABLES `isporuka_produkta` WRITE;
 /*!40000 ALTER TABLE `isporuka_produkta` DISABLE KEYS */;
-INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,23),(4,3,11),(5,1,1),(10,1,1),(11,1,23),(12,2,11),(13,3,6);
+INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,23),(4,3,11),(5,1,1),(10,1,1),(11,1,23),(12,2,11),(14,2,2),(15,2,2),(17,3,2);
 /*!40000 ALTER TABLE `isporuka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,7 +334,7 @@ CREATE TABLE `nabavka_produkta` (
 
 LOCK TABLES `nabavka_produkta` WRITE;
 /*!40000 ALTER TABLE `nabavka_produkta` DISABLE KEYS */;
-INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(23,28.75,1,2,2),(11,12.54,2,4,3),(1,4.26,2,5,1),(1,4.26,2,10,1),(23,97.98,3,11,1),(11,13.75,3,12,2),(6,6.84,3,13,3);
+INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(23,28.75,1,2,2),(11,12.54,2,4,3),(1,4.26,2,5,1),(1,4.26,2,10,1),(23,97.98,3,11,1),(11,13.75,3,12,2),(2,2.50,3,14,2),(2,2.50,3,15,2),(2,2.28,3,17,3);
 /*!40000 ALTER TABLE `nabavka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -613,7 +613,7 @@ CREATE TABLE `sadrzaj_skladista` (
 
 LOCK TABLES `sadrzaj_skladista` WRITE;
 /*!40000 ALTER TABLE `sadrzaj_skladista` DISABLE KEYS */;
-INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',23,97.98),(1,2,'Jabuke','Crvene',11,13.75),(1,3,'Jabuke','Zelene',6,6.84);
+INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',23,97.98),(1,2,'Jabuke','Crvene',15,18.75),(1,3,'Jabuke','Zelene',2,2.28);
 /*!40000 ALTER TABLE `sadrzaj_skladista` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -692,6 +692,34 @@ LOCK TABLES `zaposleni` WRITE;
 /*!40000 ALTER TABLE `zaposleni` DISABLE KEYS */;
 INSERT INTO `zaposleni` VALUES ('012940194444','Mljeko','Nesto',4),('111111111111','Stipe','Stipic',1),('113454543342','Stiko','Stikic',5),('123456789101','Niko','Nikic',1),('123456789112','Ratko','Ratkic',6),('243135623521','Niko','Nikodinovic',1);
 /*!40000 ALTER TABLE `zaposleni` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `zaposleni_nalog`
+--
+
+DROP TABLE IF EXISTS `zaposleni_nalog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `zaposleni_nalog` (
+  `zaposleni_JMB` char(12) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `sifra` varchar(20) NOT NULL,
+  `is_menadzer` tinyint(1) NOT NULL,
+  PRIMARY KEY (`zaposleni_JMB`),
+  UNIQUE KEY `username_UNIQUE` (`username`),
+  CONSTRAINT `fk_zaposleni_nalog_zaposleni1` FOREIGN KEY (`zaposleni_JMB`) REFERENCES `zaposleni` (`JMB`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `zaposleni_nalog`
+--
+
+LOCK TABLES `zaposleni_nalog` WRITE;
+/*!40000 ALTER TABLE `zaposleni_nalog` DISABLE KEYS */;
+INSERT INTO `zaposleni_nalog` VALUES ('111111111111','stipe.stipic','12345',1),('123456789101','niko.nikic','1234',0);
+/*!40000 ALTER TABLE `zaposleni_nalog` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -919,4 +947,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-06 16:25:44
+-- Dump completed on 2025-03-07 15:57:48
