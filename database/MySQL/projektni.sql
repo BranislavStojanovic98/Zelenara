@@ -690,7 +690,7 @@ CREATE TABLE `zaposleni` (
 
 LOCK TABLES `zaposleni` WRITE;
 /*!40000 ALTER TABLE `zaposleni` DISABLE KEYS */;
-INSERT INTO `zaposleni` VALUES ('012940194444','Mljeko','Nesto',4),('111111111111','Stipe','Stipic',1),('113454543342','Stiko','Stikic',5),('123456789101','Niko','Nikic',1),('123456789112','Ratko','Ratkic',6),('243135623521','Niko','Nikodinovic',1);
+INSERT INTO `zaposleni` VALUES ('012940194444','Neko','Nesto',4),('111111111111','Stipe','Stipic',1),('113454543342','Stiko','Stikic',5),('123456789101','Niko','Nikic',1),('123456789112','Ratko','Ratkic',6),('171837812214','Miko','Mikic',1),('243135623521','Niko','Nikodinovic',1);
 /*!40000 ALTER TABLE `zaposleni` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -718,7 +718,7 @@ CREATE TABLE `zaposleni_nalog` (
 
 LOCK TABLES `zaposleni_nalog` WRITE;
 /*!40000 ALTER TABLE `zaposleni_nalog` DISABLE KEYS */;
-INSERT INTO `zaposleni_nalog` VALUES ('111111111111','stipe.stipic','12345',1),('123456789101','niko.nikic','1234',0);
+INSERT INTO `zaposleni_nalog` VALUES ('012940194444','neko.nesto','123',0),('111111111111','stipe.stipic','12345',1),('113454543342','stiko.stikicc','123',0),('123456789101','niko.nikic','1234',0),('123456789112','ratko.ratkic','1234',0);
 /*!40000 ALTER TABLE `zaposleni_nalog` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -947,4 +947,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-07 15:57:48
+-- Dump completed on 2025-03-08 14:50:33

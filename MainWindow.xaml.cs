@@ -7,6 +7,8 @@ using WpfApp1.database.grids;
 using WpfApp1.database.items;
 using System.Data;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using K4os.Compression.LZ4.Streams.Adapters;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace WpfApp1
 {
@@ -38,6 +40,22 @@ namespace WpfApp1
             observablePregledSkladista = new ObservableCollection<PregledSkladistaView>();
             observablePregledSpecificnihProdukta = new ObservableCollection<PregledIsporukaPoProduktu>();
             _adminJmb = adminJmb;
+            this.DataContext = this;
+
+        }
+
+        //Test TO BE DELETED
+        public MainWindow()
+        {
+            InitializeComponent();
+            observableZaposleni = new ObservableCollection<Zaposleni>();
+            mestoOptions = new ObservableCollection<string>();
+            pregledDostavljacaViews = new ObservableCollection<PregledDostavljacaView>();
+            observablePregledIsporuka = new ObservableCollection<PregledIsporukaView>();
+            observablePregledNabavki = new ObservableCollection<PregledNabavkiView>();
+            observablePregledIsporukaNabavki = new ObservableCollection<PregledIsporukaNabavke>();
+            observablePregledSkladista = new ObservableCollection<PregledSkladistaView>();
+            observablePregledSpecificnihProdukta = new ObservableCollection<PregledIsporukaPoProduktu>();
             this.DataContext = this;
 
         }
@@ -176,7 +194,7 @@ namespace WpfApp1
                 return;
             }
 
-            
+
 
             // Create a connection to the MySQL database
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;"; // Adjust as needed
@@ -420,9 +438,9 @@ namespace WpfApp1
                     {
                         mestoOptions.Add(reader1["infoMjesta"].ToString());
                     }
-                   
 
-                    foreach(var item in mestoOptions)
+
+                    foreach (var item in mestoOptions)
                     {
                         string listMjesta = item.ToString();
                         string[] tmp = listMjesta.Split(new string[] { "-" }, StringSplitOptions.None);
@@ -433,9 +451,9 @@ namespace WpfApp1
                     }
                     reader1.Close();
                 }
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Error connectiong to database: " + ex.Message);
             }
@@ -448,24 +466,37 @@ namespace WpfApp1
         {
             var selectedItem = adminEmployeeTable.SelectedItem as Zaposleni;
 
-            
+
             if (selectedItem != null)
             {
                 employeeInfoBoxUpdateButton.Visibility = Visibility.Visible;
+                adminEmployeeLoginAccountGrid.Visibility = Visibility.Visible;
 
                 employeeInfoBoxName.Text = selectedItem.Ime;
                 employeeInfoBoxLastname.Text = selectedItem.Prezime;
                 employeeInfoBoxJMB.Text = selectedItem.JMB;
                 employeeInfoBoxCity.Text = getPostanskiBrojFromImeMjesta();
+                loadExistingEmployeeAccountInfo(selectedItem.JMB);
+
+                if(!string.IsNullOrWhiteSpace(employeeAccountNameBox.Text))
+                {
+                    employeeAccountConfirmChangesButton.Visibility = Visibility.Visible;
+                }
             }
             else
             {
                 employeeInfoBoxUpdateButton.Visibility = Visibility.Collapsed;
+                adminEmployeeLoginAccountGrid.Visibility = Visibility.Collapsed;
 
                 employeeInfoBoxName.Clear();
                 employeeInfoBoxLastname.Clear();
                 employeeInfoBoxJMB.Clear();
                 employeeInfoBoxCity.Clear();
+
+                employeeAccountNameBox.Clear();
+                employeeAccountPasswordBox.Clear();
+                employeeAccountPasswordConfirmBox.Clear();
+                employeeAccountConfirmChangesButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -765,7 +796,7 @@ namespace WpfApp1
         public void deleteIsporuke(int isporukaId)
         {
             string connectionString = "Server = localhost,3306; Database = projektni; Uid = root; Pwd = root;";
-            
+
 
             try
             {
@@ -956,7 +987,7 @@ namespace WpfApp1
                         MessageBox.Show("Greska" + ex.Message);
                     }
 
-                    
+
                     if (selectedItemId != 0)
                     {
                         loadAdminDeliveriesDataGridData();
@@ -990,11 +1021,12 @@ namespace WpfApp1
                 {
                     MessageBox.Show("Odaberite isporuku koju želite izbrisati!");
                 }
-                else {
+                else
+                {
 
                     ConfirmWindow confirmWindow = new ConfirmWindow(this, "deleteSelectedIsporuku");
                     confirmWindow.ShowDialog();
-                } 
+                }
             }
         }
 
@@ -1061,22 +1093,22 @@ namespace WpfApp1
 
             try
             {
-                using(MySqlConnection connection = new MySqlConnection(connectionString))
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
 
                     try
                     {
                         var selectedRow = listDeliveriesDataGrid.SelectedItem;
-                        var isporukaId =(selectedRow as PregledIsporukaNabavke)?.Isporuka;
+                        var isporukaId = (selectedRow as PregledIsporukaNabavke)?.Isporuka;
                         deleteIsporuke((int)isporukaId);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show("Greska prilikom brisanja pojedinacne isporuke " + ex.Message);
                     }
 
-                    
+
                     //Baca null kad se brise nabavka
 
                     if (selectedItemId != 0)
@@ -1109,17 +1141,17 @@ namespace WpfApp1
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
             try
             {
-                using(MySqlConnection connection = new MySqlConnection(connectionString))
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
 
                     string query = "SELECT * FROM projektni.sadrzaj_skladista";
-                    using(MySqlCommand cmd = new MySqlCommand(query,connection))
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
                         observablePregledSkladista.Clear();
-                        using(MySqlDataReader reader = cmd.ExecuteReader())
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            while(reader.Read())
+                            while (reader.Read())
                             {
                                 observablePregledSkladista.Add(new PregledSkladistaView(
                                     reader.GetInt32(0),
@@ -1136,7 +1168,7 @@ namespace WpfApp1
                 storageAvailableProductsDataGrid.ItemsSource = null;
                 storageAvailableProductsDataGrid.ItemsSource = observablePregledSkladista;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Unable to connect do database: " + ex.Message);
             }
@@ -1150,7 +1182,7 @@ namespace WpfApp1
             int? selectedItemId = (selectedItem as PregledSkladistaView)?.ProduktId;
             try
             {
-                using(MySqlConnection connection = new MySqlConnection(connectionString))
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
                     observablePregledSpecificnihProdukta.Clear();
@@ -1162,7 +1194,7 @@ namespace WpfApp1
                         using (MySqlCommand cmd = new MySqlCommand(query, connection))
                         {
                             cmd.Parameters.AddWithValue("@ID_Produkta", selectedItemId);
-                            using(MySqlDataReader reader = cmd.ExecuteReader())
+                            using (MySqlDataReader reader = cmd.ExecuteReader())
                             {
                                 while (reader.Read())
                                 {
@@ -1179,7 +1211,7 @@ namespace WpfApp1
                             }
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show("Greska " + ex.Message);
                     }
@@ -1226,7 +1258,7 @@ namespace WpfApp1
                                         reader.GetInt32(6)
                                         ));
                                 }
-                                if(observablePregledSpecificnihProdukta.Count == 0)
+                                if (observablePregledSpecificnihProdukta.Count == 0)
                                 {
                                     MessageBox.Show("Nepostojeci Produkt ID");
                                 }
@@ -1264,6 +1296,224 @@ namespace WpfApp1
                 MessageBox.Show("Unesite postojeći Produkt ID!");
             }
         }
+
+
+        //Funkcija za dodavanje naloga zaposlenog
+        public void addEmployeeAccount()
+        {
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
+
+            string username = employeeAccountNameBox.Text;
+            string password = "";
+            if (employeeAccountPasswordBox.Password == employeeAccountPasswordConfirmBox.Password)
+            {
+                password = employeeAccountPasswordBox.Password;
+            }
+            else
+            {
+                MessageBox.Show("Unijete sifre se ne poklapaju");
+                return;
+            }
+
+            var selectedItem = adminEmployeeTable.SelectedItem as Zaposleni;
+            if (selectedItem == null)
+            {
+                MessageBox.Show("Izaberite zaposlenog za koga kreirate nalog!");
+                return;
+            }
+            string jmb = selectedItem.JMB;
+            
+
+            if (password == "")
+            {
+                MessageBox.Show("Sifra nije unesena!");
+                return;
+            }
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+
+                    string check = "SELECT * FROM projektni.zaposleni_nalog WHERE zaposleni_JMB=@jmb";
+                    try
+                    {
+                        MySqlCommand cmnd1 = new MySqlCommand(check, connection);
+                        cmnd1.Parameters.AddWithValue("@jmb", jmb);
+                        MySqlDataReader reader = cmnd1.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            
+                            if (jmb == reader.GetString(0))
+                            {
+                                MessageBox.Show("Izabrani korisnik već posjeduje nalog!");
+                                return;
+                            }
+                        }
+                        reader.Close();
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show("Greska prilikom provjere JMB! " + ex.Message);
+                    }
+                    string query = "INSERT INTO zaposleni_nalog (zaposleni_JMB, username, sifra, is_menadzer) VALUES (@jmb, @username, @password, @isMenager)";
+                    try
+                    {
+                        using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@jmb", jmb);
+                            cmd.Parameters.AddWithValue("@username", username);
+                            cmd.Parameters.AddWithValue("@password", password);
+                            cmd.Parameters.AddWithValue("@isMenager", 0);
+                            int rowsAffected = cmd.ExecuteNonQuery();
+
+                            if (rowsAffected > 0)
+                            {
+                                MessageBox.Show("Nalog zaposlenog uspješno dodat!");
+                                employeeAccountNameBox.Clear();
+                                employeeAccountPasswordBox.Clear();
+                                employeeAccountPasswordConfirmBox.Clear();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Greška prilikom dodavanja naloga zaposlenog");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Greska : " + ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error connectiong to database: " + ex.Message);
+            }
+        }
+
+        
+
+
+        //Dugme za dodavanje korisnickog naloga
+        private void confirmEmployeeAccountClick(object sender, RoutedEventArgs e)
+        {
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "addEmployeeAccount");
+            confirmWindow.ShowDialog();
+        }
+
+
+        //funkcija za ucitavanje postojeceg korisnickog naloga i sifre
+        private void loadExistingEmployeeAccountInfo(string jmb)
+        {
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
+            try
+            {
+                using(MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM projektni.zaposleni_nalog WHERE zaposleni_JMB=@jmb";
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@jmb", jmb);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while(reader.Read())
+                    {
+                        if(jmb == reader.GetString(0))
+                        {
+                            employeeAccountNameBox.Text = reader.GetString(1);
+                            employeeAccountPasswordBox.Password = reader.GetString(2);
+                            employeeAccountPasswordConfirmBox.Password = reader.GetString(2);
+                        }
+                    }
+                    reader.Close();
+
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error connectiong to database!" + ex.Message);
+            }
+        }
+
+
+        //Izmijena postojeceg korisnickog naloga
+        public void changeEmployeeAccount(string username, string password)
+        {
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
+
+            if (employeeAccountPasswordBox.Password == employeeAccountPasswordConfirmBox.Password)
+            {
+                password = employeeAccountPasswordBox.Password;
+            }
+            else
+            {
+                MessageBox.Show("Unijete sifre se ne poklapaju");
+                return;
+            }
+
+            var selectedItem = adminEmployeeTable.SelectedItem as Zaposleni;
+            if (selectedItem == null)
+            {
+                MessageBox.Show("Izaberite zaposlenog za koga mijenjate nalog!");
+                return;
+            }
+            string jmb = selectedItem.JMB;
+
+
+            if (password == "")
+            {
+                MessageBox.Show("Sifra nije unesena!");
+                return;
+            }
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+
+                    string query = $"UPDATE projektni.zaposleni_nalog SET username = @username, sifra=@password WHERE zaposleni_JMB = @jmb";
+                    try
+                    {
+                        using (MySqlCommand cmnd1 = new MySqlCommand(query, connection))
+                        {
+                            cmnd1.Parameters.AddWithValue("@jmb", jmb);
+                            cmnd1.Parameters.AddWithValue("@username", username);
+                            cmnd1.Parameters.AddWithValue("@password", password);
+                            cmnd1.ExecuteNonQuery();
+                        }
+                        MessageBox.Show("Izmijene uspješno unesene!");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Greska prilikom izmijene korisničkog naloga! " + ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error connectiong to database: " + ex.Message);
+            }
+        }
+
+        //poziv changeEmployeeAccount() funkcije da bi proslijedili u ConfirmWindow
+        public void changeEmployeeAccountCall()
+        {
+            string name = employeeAccountNameBox.Text;
+            string pass = employeeAccountPasswordBox.Password;
+            changeEmployeeAccount(name, pass);
+        }
+
+        private void confirmEmployeeAccountChangeClick(object sender, RoutedEventArgs e)
+        {
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "changeEmployeeAccount");
+            confirmWindow.ShowDialog();
+        }
+        
 
         //Treba poslagati ove funkicje nakon zavrsetka;
     }

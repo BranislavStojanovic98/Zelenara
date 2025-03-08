@@ -88,6 +88,14 @@ namespace WpfApp1
             {
                 _mainWindow.deleteSelectedIsporuka();
             }
+            else if(_action == "addEmployeeAccount")
+            {
+                _mainWindow.addEmployeeAccount();
+            }
+            else if (_action == "changeEmployeeAccount")
+            {
+                _mainWindow.changeEmployeeAccountCall();
+            }
 
             if (this.Owner is ShipmentViewWindow shipmentViewWindow1)
             {
