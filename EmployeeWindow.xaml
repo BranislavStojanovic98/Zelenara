@@ -1,0 +1,32 @@
+﻿<Window x:Class="WpfApp1.EmployeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="EmployeeWindow" Height="840" Width="1550" WindowStartupLocation="CenterScreen" WindowState="Maximized" MinWidth="900" MinHeight="710">
+    <Grid x:Name="employeeMainGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" MaxHeight="120"/>
+            <RowDefinition Height="*" MaxHeight="590"/>
+            <RowDefinition Height="*" MaxHeight="120"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="20,10,0,10" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" HorizontalAlignment="Left" Width="220" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" MinHeight="320"/>
+                <RowDefinition Height="*" MinHeight="103"/>
+            </Grid.RowDefinitions>
+            <Button x:Name="cashierViewOpenButton" Content="Kasa" Margin="40,150,40,0" FontSize="24" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="60" VerticalAlignment="Top" Click="openCashierWindowClick"/>
+            <Button Content="Magacin" Margin="40,250,40,0" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" Height="60" VerticalAlignment="Top"/>
+            <Button x:Name="logoutButton" Content="Odjavi se" Margin="40,0,40,20" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" Height="60" VerticalAlignment="Bottom" Grid.Row="1" Click="logoutActionClick"/>
+            <Label Content="Meni" Margin="10,20,10,0" FontSize="36" FontWeight="Bold" HorizontalContentAlignment="Center" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" BorderThickness="0,0,0,2" Height="60" VerticalAlignment="Top"/>
+            <Label Margin="10,0,10,100" Height="5" VerticalAlignment="Bottom" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" FontSize="26" Padding="0,0,0,0" Grid.Row="1"/>
+        </Grid>
+        <Grid Margin="20,10,20,10" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+            <Label Content="Dobrodošli" Margin="600,0,600,0" FontSize="72" FontFamily="Agency FB" HorizontalContentAlignment="Center"/>
+        </Grid>
+        <Grid Margin="20,10,20,10" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.Row="2"/>
+        <Image Margin="260,10,20,10" Grid.Row="1"/>
+    </Grid>
+</Window>

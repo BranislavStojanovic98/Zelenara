@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="LoginWindow" Width="800" Height="500">
+        Title="LoginWindow" Width="800" Height="500" WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Content="Login" Margin="307,10,307,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontSize="48" FontFamily="Agency FB" BorderThickness="0,0,0,3">
             <Label.BorderBrush>

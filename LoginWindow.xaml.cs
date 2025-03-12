@@ -33,6 +33,14 @@ namespace WpfApp1
             this.Close();
         }
 
+        private void CreateEmployeeWindow(string zaposleniJMB)
+        {
+            // Here you can create a specific window for the manager
+            EmployeeWindow employeeWindow = new EmployeeWindow(zaposleniJMB);  // Pass the JMB to the window's constructor
+            employeeWindow.Show();
+            this.Close();
+        }
+
         private void checkAccount(string username, string password)
         {
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
@@ -69,9 +77,10 @@ namespace WpfApp1
                                             CreateManagerWindow(zaposleniJMB);
 
                                         }
-                                        else
+                                        else if(isManager == 0)
                                         {
                                             MessageBox.Show("Dobrodosli!");
+                                            CreateEmployeeWindow(zaposleniJMB);
                                         }
                                     }
                                     else

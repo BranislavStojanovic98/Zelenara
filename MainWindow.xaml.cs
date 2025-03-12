@@ -44,24 +44,6 @@ namespace WpfApp1
 
         }
 
-        //Test TO BE DELETED
-        public MainWindow()
-        {
-            InitializeComponent();
-            observableZaposleni = new ObservableCollection<Zaposleni>();
-            mestoOptions = new ObservableCollection<string>();
-            pregledDostavljacaViews = new ObservableCollection<PregledDostavljacaView>();
-            observablePregledIsporuka = new ObservableCollection<PregledIsporukaView>();
-            observablePregledNabavki = new ObservableCollection<PregledNabavkiView>();
-            observablePregledIsporukaNabavki = new ObservableCollection<PregledIsporukaNabavke>();
-            observablePregledSkladista = new ObservableCollection<PregledSkladistaView>();
-            observablePregledSpecificnihProdukta = new ObservableCollection<PregledIsporukaPoProduktu>();
-            this.DataContext = this;
-
-        }
-
-
-
         //!!!!!!   Funkcije za tabele i ostalo !!!!!! TREBAJU SE RASPOREDITI PO GRIDOVAIMA POSEBNO
 
 
@@ -966,7 +948,7 @@ namespace WpfApp1
                     {
                         //Get nabavkaID
                         var selectedRow1 = adminDeliveriesDataGrid.SelectedItem;
-                        var shipmentId = (selectedRow1 as PregledNabavkiView)?.IdNabavke;
+                        var shipmentId = (selectedRow1 as PregledNabavkiView).IdNabavke;
 
                         //Get trenutni datum
                         string datum = DateTime.Today.ToString("yyyy-MM-dd");
@@ -977,7 +959,7 @@ namespace WpfApp1
 
                         //Get DostavljacID
                         var selectedRow2 = adminDeliveriesDataGrid.SelectedItem;
-                        var transporterName = (selectedRow2 as PregledNabavkiView)?.Naziv;
+                        var transporterName = (selectedRow2 as PregledNabavkiView).Naziv;
 
                         shipmentView.addSingleIsporuka((int)shipmentId, datum, menadzerJmb, transporterName);
 
