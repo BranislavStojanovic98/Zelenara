@@ -69,7 +69,7 @@ CREATE TABLE `isporuka` (
 
 LOCK TABLES `isporuka` WRITE;
 /*!40000 ALTER TABLE `isporuka` DISABLE KEYS */;
-INSERT INTO `isporuka` VALUES (1,1,'2025-03-02',1),(2,1,'2025-03-02',1),(4,2,'2025-03-02',2),(5,2,'2025-03-02',2),(10,2,'2025-03-02',2),(11,3,'2025-03-05',1),(12,3,'2025-03-05',1),(14,3,'2025-03-07',1),(15,3,'2025-03-07',1),(17,3,'2025-03-07',1);
+INSERT INTO `isporuka` VALUES (1,1,'2025-03-02',1),(2,1,'2025-03-02',1),(4,2,'2025-03-02',2),(5,2,'2025-03-02',2),(10,2,'2025-03-02',2),(18,4,'2025-03-12',1),(19,4,'2025-03-12',1),(20,4,'2025-03-12',1),(23,4,'2025-03-14',1),(24,4,'2025-03-14',1),(25,4,'2025-03-14',1),(26,4,'2025-03-14',1),(27,4,'2025-03-14',1),(28,4,'2025-03-14',1);
 /*!40000 ALTER TABLE `isporuka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `isporuka_produkta` (
 
 LOCK TABLES `isporuka_produkta` WRITE;
 /*!40000 ALTER TABLE `isporuka_produkta` DISABLE KEYS */;
-INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,23),(4,3,11),(5,1,1),(10,1,1),(11,1,23),(12,2,11),(14,2,2),(15,2,2),(17,3,2);
+INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,23),(4,3,11),(5,1,1),(10,1,1),(18,1,23),(19,1,1),(20,1,1),(23,2,23),(24,1,1),(25,2,2),(26,3,23),(27,3,23),(28,3,23);
 /*!40000 ALTER TABLE `isporuka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,9 +171,7 @@ DROP TABLE IF EXISTS `kupac`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `kupac` (
-  `RAČUN_idRacuna` int NOT NULL,
-  KEY `fk_KUPAC_RAČUN1_idx` (`RAČUN_idRacuna`),
-  CONSTRAINT `fk_KUPAC_RAČUN1` FOREIGN KEY (`RAČUN_idRacuna`) REFERENCES `račun` (`idRacuna`)
+  `RAČUN_idRacuna` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -196,12 +194,14 @@ DROP TABLE IF EXISTS `kupovina_produkta`;
 CREATE TABLE `kupovina_produkta` (
   `RAČUN_idRacuna` int NOT NULL,
   `Kolicina` int NOT NULL,
-  `PRODUKT_idProdukta` int NOT NULL,
-  PRIMARY KEY (`RAČUN_idRacuna`),
+  `Cena` decimal(10,2) NOT NULL,
+  `sadrzaj_skladista_idProdukta` int NOT NULL,
+  `prodanaStavka` int NOT NULL,
+  PRIMARY KEY (`prodanaStavka`),
   KEY `fk_INSTANCA_PRODUKTA_has_RAČUN_RAČUN1_idx` (`RAČUN_idRacuna`),
-  KEY `fk_KUPOVINA_PRODUKTA_PRODUKT1_idx` (`PRODUKT_idProdukta`),
+  KEY `fk_kupovina_produkta_sadrzaj_skladista1_idx` (`sadrzaj_skladista_idProdukta`),
   CONSTRAINT `fk_INSTANCA_PRODUKTA_has_RAČUN_RAČUN1` FOREIGN KEY (`RAČUN_idRacuna`) REFERENCES `račun` (`idRacuna`),
-  CONSTRAINT `fk_KUPOVINA_PRODUKTA_PRODUKT1` FOREIGN KEY (`PRODUKT_idProdukta`) REFERENCES `produkt` (`idProdukta`)
+  CONSTRAINT `fk_kupovina_produkta_sadrzaj_skladista1` FOREIGN KEY (`sadrzaj_skladista_idProdukta`) REFERENCES `sadrzaj_skladista` (`idProdukta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -211,6 +211,7 @@ CREATE TABLE `kupovina_produkta` (
 
 LOCK TABLES `kupovina_produkta` WRITE;
 /*!40000 ALTER TABLE `kupovina_produkta` DISABLE KEYS */;
+INSERT INTO `kupovina_produkta` VALUES (1,23,97.98,1,1),(1,23,97.98,1,2),(1,23,97.98,1,3),(1,23,97.98,1,4),(2,1,4.26,1,5),(2,1,1.25,2,6),(2,1,1.25,2,7),(3,1,1.25,2,8),(4,1,4.26,1,9),(4,2,8.52,1,10),(4,2,8.52,1,11),(5,2,8.52,1,12),(5,2,8.52,1,13),(5,2,8.52,1,14),(5,2,8.52,1,15),(5,2,8.52,1,16),(5,2,8.52,1,17),(5,2,8.52,1,18),(5,2,8.52,1,19),(6,23,28.75,2,20),(6,23,28.75,2,21);
 /*!40000 ALTER TABLE `kupovina_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,7 +304,7 @@ CREATE TABLE `nabavka` (
 
 LOCK TABLES `nabavka` WRITE;
 /*!40000 ALTER TABLE `nabavka` DISABLE KEYS */;
-INSERT INTO `nabavka` VALUES (1,1,'2025-03-02','111111111111',1),(2,1,'2025-03-02','111111111111',2),(3,1,'2025-03-05','111111111111',1);
+INSERT INTO `nabavka` VALUES (1,1,'2025-03-02','111111111111',1),(2,1,'2025-03-02','111111111111',2),(4,1,'2025-03-12','111111111111',1);
 /*!40000 ALTER TABLE `nabavka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,7 +335,7 @@ CREATE TABLE `nabavka_produkta` (
 
 LOCK TABLES `nabavka_produkta` WRITE;
 /*!40000 ALTER TABLE `nabavka_produkta` DISABLE KEYS */;
-INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(23,28.75,1,2,2),(11,12.54,2,4,3),(1,4.26,2,5,1),(1,4.26,2,10,1),(23,97.98,3,11,1),(11,13.75,3,12,2),(2,2.50,3,14,2),(2,2.50,3,15,2),(2,2.28,3,17,3);
+INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(23,28.75,1,2,2),(11,12.54,2,4,3),(1,4.26,2,5,1),(1,4.26,2,10,1),(23,97.98,4,18,1),(1,4.26,4,19,1),(1,4.26,4,20,1),(23,28.75,4,23,2),(1,4.26,4,24,1),(2,2.50,4,25,2),(23,26.22,4,26,3),(23,26.22,4,27,3),(23,26.22,4,28,3);
 /*!40000 ALTER TABLE `nabavka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -554,6 +555,7 @@ CREATE TABLE `radnik` (
 
 LOCK TABLES `radnik` WRITE;
 /*!40000 ALTER TABLE `radnik` DISABLE KEYS */;
+INSERT INTO `radnik` VALUES ('012940194444'),('113454543342'),('123456789101'),('123456789112'),('182756280981'),('182756502921');
 /*!40000 ALTER TABLE `radnik` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -565,10 +567,8 @@ DROP TABLE IF EXISTS `račun`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `račun` (
-  `idRacuna` int NOT NULL AUTO_INCREMENT,
-  `VremeIzdavanja` datetime NOT NULL,
-  `Kupljeni_Produkti` varchar(455) NOT NULL,
-  `Cena` decimal(10,2) NOT NULL,
+  `idRacuna` int NOT NULL,
+  `VremeIzdavanja` varchar(45) NOT NULL,
   `RADNIK_ZAPOSLENI_JMB` char(12) NOT NULL,
   PRIMARY KEY (`idRacuna`),
   KEY `fk_RAČUN_RADNIK1_idx` (`RADNIK_ZAPOSLENI_JMB`),
@@ -582,6 +582,7 @@ CREATE TABLE `račun` (
 
 LOCK TABLES `račun` WRITE;
 /*!40000 ALTER TABLE `račun` DISABLE KEYS */;
+INSERT INTO `račun` VALUES (1,'2025-03-12','012940194444'),(2,'2025-03-12','012940194444'),(3,'2025-03-12','012940194444'),(4,'2025-03-12','012940194444'),(5,'2025-03-12','012940194444'),(6,'2025-03-14','182756280981');
 /*!40000 ALTER TABLE `račun` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -613,7 +614,7 @@ CREATE TABLE `sadrzaj_skladista` (
 
 LOCK TABLES `sadrzaj_skladista` WRITE;
 /*!40000 ALTER TABLE `sadrzaj_skladista` DISABLE KEYS */;
-INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',23,97.98),(1,2,'Jabuke','Crvene',15,18.75),(1,3,'Jabuke','Zelene',2,2.28);
+INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',26,110.76),(1,2,'Jabuke','Crvene',25,31.25),(1,3,'Jabuke','Zelene',69,78.66);
 /*!40000 ALTER TABLE `sadrzaj_skladista` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -690,7 +691,7 @@ CREATE TABLE `zaposleni` (
 
 LOCK TABLES `zaposleni` WRITE;
 /*!40000 ALTER TABLE `zaposleni` DISABLE KEYS */;
-INSERT INTO `zaposleni` VALUES ('012940194444','Neko','Nesto',4),('111111111111','Stipe','Stipic',1),('113454543342','Stiko','Stikic',5),('123456789101','Niko','Nikic',1),('123456789112','Ratko','Ratkic',6),('171837812214','Miko','Mikic',1),('243135623521','Niko','Nikodinovic',1);
+INSERT INTO `zaposleni` VALUES ('012940194444','Neko','Nesto',4),('111111111111','Stipe','Stipic',1),('113454543342','Stiko','Stikic',5),('123456789101','Niko','Nikic',1),('123456789112','Ratko','Ratkic',6),('171837812214','Miko','Mikic',1),('182756280981','Iko','Ikic',1),('182756502921','Heho','Hehic',3),('243135623521','Niko','Nikodinovic',1),('989847582919','Piki','Pikic',1);
 /*!40000 ALTER TABLE `zaposleni` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -718,7 +719,7 @@ CREATE TABLE `zaposleni_nalog` (
 
 LOCK TABLES `zaposleni_nalog` WRITE;
 /*!40000 ALTER TABLE `zaposleni_nalog` DISABLE KEYS */;
-INSERT INTO `zaposleni_nalog` VALUES ('012940194444','neko.nesto','123',0),('111111111111','stipe.stipic','12345',1),('113454543342','stiko.stikicc','123',0),('123456789101','niko.nikic','1234',0),('123456789112','ratko.ratkic','1234',0);
+INSERT INTO `zaposleni_nalog` VALUES ('012940194444','neko.nesto','123',0),('111111111111','s','1',1),('113454543342','stiko.stikicc','123',0),('123456789101','niko.nikic','1234',0),('123456789112','ratko.ratkic','1234',0),('182756280981','iko','1',0),('182756502921','hehe','1',0),('989847582919','piki','1',0);
 /*!40000 ALTER TABLE `zaposleni_nalog` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -947,4 +948,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-08 14:50:33
+-- Dump completed on 2025-03-14 12:05:03

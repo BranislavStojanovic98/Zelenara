@@ -23,6 +23,12 @@ namespace WpfApp1
     {
         private string _action;
         private MainWindow _mainWindow;
+        private string _jmb;
+
+        public string Jmb
+        {
+            get { return _jmb; }
+        }
 
         public ShipmentViewWindow()
         {
@@ -38,10 +44,11 @@ namespace WpfApp1
             loadShipmentViewCompanyNameComboBox();
             loadShipmentViewProductComboBox();
         }
-        public ShipmentViewWindow(string action)
+        public ShipmentViewWindow(string action, string jmb)
         {
             _action = action;
             _mainWindow = null;
+            _jmb = jmb;
             InitializeComponent();
             loadShipmentViewCompanyNameComboBox();
             loadShipmentViewProductComboBox();
@@ -92,7 +99,7 @@ namespace WpfApp1
         //NAPRAVI KAKO DA REFRESHUJE TABELU SA NABAVKAMA KAD SE UNESE/IZBRISE ISPORUKA ALI DA 
         //ONO STO JE IZABRANO U TABELI OSTANE IZABRANO I DA SE NE GUBI PRIKAZ U DRUGOJ TABELI
 
-        public void dodajNovuNabavku()
+        public void dodajNovuNabavku(string menadzerJmb)
         {
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;";
 
@@ -108,28 +115,51 @@ namespace WpfApp1
                         string nabavkaIdQuery = "SELECT MAX(idPotvrde)+1 FROM nabavka";
                         MySqlCommand getNabavkaId = new MySqlCommand(nabavkaIdQuery, con);
                         var nabavkaId = getNabavkaId.ExecuteScalar();
-                        if(nabavkaId is DBNull)
+                        if (nabavkaId is DBNull)
                         {
                             nabavkaId = 1;
                         }
                         //Get trenutni datum
                         string datum = DateTime.Today.ToString("yyyy-MM-dd");
 
-                        //Get menadzer jmb, treba se doraditi za razlicite menadzere
-                        string menadzerJmb = "111111111111"; //Promijeniti kada napravim login!!!!!!!!!!!!
-
-
                         //Get DostavljacID
+                        if (shipmentViewCompanyNameComboBox.SelectedItem is null)
+                        {
+                            MessageBox.Show("Izaberite dostavljača");
+                            return;
+                        }
                         string dostavljacIme = shipmentViewCompanyNameComboBox.SelectedItem.ToString();
                         string dostavljacIdQuery = "SELECT idDostavljaca FROM dobavljac where Naziv=@dostavljacIme";
                         MySqlCommand getDostavljacId = new MySqlCommand(dostavljacIdQuery, con);
                         getDostavljacId.Parameters.AddWithValue("@dostavljacIme", dostavljacIme);
                         var dostavljacId = getDostavljacId.ExecuteScalar();
-                        
 
+                        //Provjera da li svi unosi imaju adekvatne parametre
+                        foreach (var item in shipmentViewDeliveriesListBox.Items)
+                        {
+                            string listBoxContent = item.ToString();
+                            string[] tmp = listBoxContent.Split(new string[] { " - " }, StringSplitOptions.TrimEntries);
+
+
+                            //Get Kolicina produkta
+                            string kolicina = tmp[1];
+                            if (kolicina == "")
+                            {
+                                MessageBox.Show("Unesite količinu produkta!");
+                                return;
+                            }
+
+                            //Get proizvodjac produkta
+                            string proizvodjac = tmp[2];
+                            if (proizvodjac == "")
+                            {
+                                MessageBox.Show("Odaberite proizvođača produkta!");
+                                return;
+                            }
+                        }
                         //Ubacivanje u `NABAVKA` MySQL tabelu
                         string insertNabavka = "INSERT INTO nabavka (idPotvrde, Datum, MENADZER_ZAPOSLENI_JMB, DOBAVLJAC_idDostavljaca, SKLADISTE_idSkladista) " +
-                        "VALUES (@idPotvrde, @Datum, @MENADZER_ZAPOSLENI_JMB, @DOBAVLJAC_idDostavljaca, @SKLADISTE_idSkladista)";
+                    "VALUES (@idPotvrde, @Datum, @MENADZER_ZAPOSLENI_JMB, @DOBAVLJAC_idDostavljaca, @SKLADISTE_idSkladista)";
 
                         using (MySqlCommand cmd = new MySqlCommand(insertNabavka, con))
                         {
@@ -149,7 +179,7 @@ namespace WpfApp1
                         string isporukaIdQuery = "SELECT MAX(idIsporuke) FROM isporuka";
                         MySqlCommand getIsporukaId = new MySqlCommand(isporukaIdQuery, con);
                         var isporukaId = getIsporukaId.ExecuteScalar();
-                        if(isporukaId is DBNull)
+                        if (isporukaId is DBNull)
                         {
                             isporukaId = 0;
                         }
@@ -336,10 +366,37 @@ namespace WpfApp1
 
         private void addProductToTableClick(object sender, RoutedEventArgs e)
         {
+            string produkt, kolicina, proizvodjac;
 
-            string produkt = shipmentViewProductComboBox.SelectedItem.ToString();
-            string kolicina = shipmentViewQuantityTextBox.Text;
-            string proizvodjac = shipmentViewMakerComboBox.SelectedItem.ToString();
+            if (shipmentViewProductComboBox.SelectedItem != null)
+            {
+                produkt = shipmentViewProductComboBox.SelectedItem.ToString();
+            }
+            else
+            {
+                MessageBox.Show("Izaberite produkt!");
+                return;
+            }
+
+            if (shipmentViewQuantityTextBox.Text != "")
+            {
+                kolicina = shipmentViewQuantityTextBox.Text;
+            }
+            else
+            {
+                MessageBox.Show("Unesite količinu produkt!");
+                return;
+            }
+
+            if (shipmentViewMakerComboBox.SelectedItem != null)
+            {
+                proizvodjac = shipmentViewMakerComboBox.SelectedItem.ToString();
+            }
+            else
+            {
+                MessageBox.Show("Izaberite proizvođača produkta!");
+                return;
+            }
 
             string kombinovano = $"{produkt} - {kolicina} - {proizvodjac}";
 

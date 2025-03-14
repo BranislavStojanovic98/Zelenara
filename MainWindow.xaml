@@ -76,7 +76,7 @@
                 </LinearGradientBrush>
             </Image.OpacityMask>
         </Image>
-        <Grid x:Name="adminEmployeeViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.RowSpan="4" Width="1536" Height="800" Visibility="Collapsed">
+        <Grid x:Name="adminEmployeeViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.RowSpan="4" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" MinHeight="630"/>
                 <RowDefinition Height="*" MaxHeight="160" MinHeight="120"/>

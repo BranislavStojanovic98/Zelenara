@@ -382,14 +382,14 @@ namespace WpfApp1
         //Admin aplikacija, Izmjena inforamcija zaposlenih
         private void adminEmployeeInfoUpdate(object sender, RoutedEventArgs e)
         {
-            ConfirmWindow confirmWindow = new ConfirmWindow(this, "edit");
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "edit", _adminJmb);
             confirmWindow.ShowDialog();
         }
 
         //Admin aplikacija, Brisanje iz tabele zaposlenih
         private void adminEmployeeInfoDelete(object sender, RoutedEventArgs e)
         {
-            ConfirmWindow confirmWindow = new ConfirmWindow(this, "delete");
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "delete", _adminJmb);
             confirmWindow.ShowDialog();
         }
 
@@ -397,7 +397,7 @@ namespace WpfApp1
         private void adminEmployeeInfoAdd(object sender, RoutedEventArgs e)
         {
 
-            ConfirmWindow confirmWindow = new ConfirmWindow(this, "add");
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "add", _adminJmb);
             confirmWindow.ShowDialog();
         }
 
@@ -498,7 +498,7 @@ namespace WpfApp1
         //Otvara prozor za dodavanje NARUDZBI
         private void addDeliveryOrderButton(object sender, RoutedEventArgs e)
         {
-            ShipmentViewWindow shipmentViewWindow = new ShipmentViewWindow("addNewNabavka");
+            ShipmentViewWindow shipmentViewWindow = new ShipmentViewWindow("addNewNabavka", _adminJmb);
             shipmentViewWindow.Owner = this;
             shipmentViewWindow.ShowDialog();
         }
@@ -849,7 +849,7 @@ namespace WpfApp1
             }
             else
             {
-                ConfirmWindow confirmWindow = new ConfirmWindow(this, "deleteSelectedNabavku");
+                ConfirmWindow confirmWindow = new ConfirmWindow(this, "deleteSelectedNabavku", _adminJmb);
                 confirmWindow.ShowDialog();
             }
         }
@@ -1006,7 +1006,7 @@ namespace WpfApp1
                 else
                 {
 
-                    ConfirmWindow confirmWindow = new ConfirmWindow(this, "deleteSelectedIsporuku");
+                    ConfirmWindow confirmWindow = new ConfirmWindow(this, "deleteSelectedIsporuku", _adminJmb);
                     confirmWindow.ShowDialog();
                 }
             }
@@ -1382,7 +1382,7 @@ namespace WpfApp1
         //Dugme za dodavanje korisnickog naloga
         private void confirmEmployeeAccountClick(object sender, RoutedEventArgs e)
         {
-            ConfirmWindow confirmWindow = new ConfirmWindow(this, "addEmployeeAccount");
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "addEmployeeAccount", _adminJmb);
             confirmWindow.ShowDialog();
         }
 
@@ -1492,7 +1492,7 @@ namespace WpfApp1
 
         private void confirmEmployeeAccountChangeClick(object sender, RoutedEventArgs e)
         {
-            ConfirmWindow confirmWindow = new ConfirmWindow(this, "changeEmployeeAccount");
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "changeEmployeeAccount", _adminJmb);
             confirmWindow.ShowDialog();
         }
         

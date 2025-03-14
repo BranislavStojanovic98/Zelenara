@@ -25,16 +25,18 @@ namespace WpfApp1
         private MainWindow _mainWindow;
         private ShipmentViewWindow _shipmentWindow;
         private string _action;
+        private string _jmb;
 
         public ConfirmWindow()
         {
             InitializeComponent();
         }
 
-        public ConfirmWindow(MainWindow mainWindow, string action)
+        public ConfirmWindow(MainWindow mainWindow, string action, string jmb)
         {
             _mainWindow = mainWindow;
             _action = action;
+            _jmb = jmb;
             InitializeComponent();
         }
 
@@ -69,7 +71,7 @@ namespace WpfApp1
             //TODO Napravi da se DataGrid refreshuje kad se doda nova nabavka!!!
             else if (_action == "addNewNabavka")
             {
-                _shipmentWindow.dodajNovuNabavku();
+                _shipmentWindow.dodajNovuNabavku(_shipmentWindow.Jmb);
                 _shipmentWindow.Close();
             }
             else if (_action == "deleteSelectedNabavku")
