@@ -44,32 +44,33 @@ namespace WpfApp1
         private void checkAccount(string username, string password)
         {
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword("1");
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
 
-                    string query = "SELECT COUNT(*), is_menadzer, zaposleni_JMB " +
+                    string query = "SELECT sifra, is_menadzer, zaposleni_JMB " +
                            "FROM projektni.zaposleni_nalog " +
-                           "WHERE username = @username AND sifra = @sifra " +
-                           "GROUP BY is_menadzer, zaposleni_JMB";
+                           "WHERE username = @username";
 
                     try
                     {
                         using (MySqlCommand cmd = new MySqlCommand(query, connection))
                         {
                             cmd.Parameters.AddWithValue("@username", username);
-                            cmd.Parameters.AddWithValue("@sifra", password);
 
                             using (MySqlDataReader reader = cmd.ExecuteReader())
                             {
                                 if (reader.Read())
                                 {
-                                    int count = reader.GetInt32(0);
+
+                                    string storedHashedPassword = reader.GetString(0);
                                     int isManager = reader.GetInt32(1);
                                     string zaposleniJMB = reader.GetString(2);
-                                    if (count > 0)
+
+                                    if (BCrypt.Net.BCrypt.Verify(password, storedHashedPassword))
                                     {
                                         if (isManager == 1)
                                         {

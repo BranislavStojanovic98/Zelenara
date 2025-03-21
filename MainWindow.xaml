@@ -128,7 +128,7 @@
                 <Label Content="Korisničko ime:" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top" FontSize="25" FontFamily="Agency FB"/>
                 <Label Content="Lozinka:" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="25" FontFamily="Agency FB" Height="38"/>
                 <TextBox x:Name="employeeAccountNameBox" Margin="0,182,5,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Right" Width="123" FontSize="20" FontFamily="Agency FB" Height="33"/>
-                <PasswordBox x:Name="employeeAccountPasswordBox" Height="33" Margin="143,274,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="127" FontSize="20" FontFamily="Agency FB"/>
+                <PasswordBox x:Name="employeeAccountPasswordBox" Height="33" Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="127" FontSize="20" FontFamily="Agency FB"/>
                 <PasswordBox x:Name="employeeAccountPasswordConfirmBox" Height="33" Margin="0,360,5,0" VerticalAlignment="Top" FontSize="20" FontFamily="Agency FB" HorizontalAlignment="Right" Width="127"/>
                 <Label Content="Potvrda lozinke:" HorizontalAlignment="Left" Margin="10,355,0,0" VerticalAlignment="Top" FontSize="25" FontFamily="Agency FB" Height="38" Width="128"/>
                 <Button x:Name="employeeAccountConfirmButton" Margin="82,489,82,40" Content="Potvrdi" BorderBrush="Gray" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="confirmEmployeeAccountClick"/>
@@ -137,11 +137,15 @@
             </Grid>
         </Grid>
         <Grid x:Name="adminDeliveriesViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.RowSpan="4" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="55*"/>
+                <ColumnDefinition Width="137*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*" MaxHeight="200"/>
             </Grid.RowDefinitions>
-            <DataGrid x:Name="adminDeliveriesDataGrid" Height="500" VerticalAlignment="Top" HorizontalAlignment="Left" Width="402" Margin="30,0,0,0" ColumnHeaderHeight="27" RowHeaderWidth="0" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" AutoGenerateColumns="False" SelectionChanged="adminDeliveriesLoadSelectedDelivery" PreviewMouseDown="deselectadminDeliveriesDataGrid">
+            <DataGrid x:Name="adminDeliveriesDataGrid" Height="500" VerticalAlignment="Top" Margin="30,0,118,0" ColumnHeaderHeight="27" RowHeaderWidth="0" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" AutoGenerateColumns="False" SelectionChanged="adminDeliveriesLoadSelectedDelivery" PreviewMouseDown="deselectadminDeliveriesDataGrid">
                 <DataGrid.Columns>
                     <materialDesign:DataGridTextColumn x:Name="adminDeliveriesGridShipmentID" Binding="{Binding IdNabavke}" FontFamily="Segoe UI" FontSize="14" Header="ID Nabavke" Width="*"  CanUserResize="False"/>
                     <materialDesign:DataGridTextColumn x:Name="adminDeliveriesGridTransporterName" Binding="{Binding Naziv}" FontFamily="Segoe UI" FontSize="14" Header="Dostavljač" Width="*" CanUserResize="False"/>
@@ -149,7 +153,8 @@
                     <materialDesign:DataGridTextColumn x:Name="adminDeliveriesGridCost" Binding="{Binding Cena}" FontFamily="Segoe UI" FontSize="14" Header="Cijena" Width="*" CanUserResize="False"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Grid x:Name="adminDeliveriesListDeliveriesGrid" Margin="30,10,20,20" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" RenderTransformOrigin="0.5,0.5" Grid.Row="1">
+
+            <Grid x:Name="adminDeliveriesListDeliveriesGrid" Margin="30,10,20,20" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.ColumnSpan="2">
                 <Button x:Name="adminDeliveriesViewBackButton" Content="Nazad" HorizontalAlignment="Left" Margin="20,0,0,20" Height="60" VerticalAlignment="Bottom" Width="120" FontSize="24" FontFamily="Agency FB" Click="mainViewShow" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
                 <Label Content="Nabavka" Margin="410,10,0,110" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="36" FontFamily="Agency FB" BorderBrush="Gray" BorderThickness="0,0,0,2" HorizontalAlignment="Left" MinWidth="130" Width="300"/>
                 <Label Content="Isporuke" Margin="0,10,100,0" Height="50" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="36" FontFamily="Agency FB" BorderBrush="Gray" BorderThickness="0,0,0,2" HorizontalAlignment="Right" MinWidth="130" Width="300"/>
@@ -166,7 +171,7 @@
                     </Border.BorderBrush>
                 </Border>
             </Grid>
-            <DataGrid x:Name="listDeliveriesDataGrid" Height="500" VerticalAlignment="Top" ColumnHeaderHeight="30" RowHeaderWidth="0" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" Margin="560,0,20,0" AutoGenerateColumns="False">
+            <DataGrid x:Name="listDeliveriesDataGrid" Height="500" VerticalAlignment="Top" ColumnHeaderHeight="30" RowHeaderWidth="0" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" Margin="10,0,20,0" AutoGenerateColumns="False" Grid.Column="1">
                 <DataGrid.Columns>
                     <materialDesign:DataGridTextColumn x:Name="listDeliveriesDataProductID" Binding="{Binding IdProdukta}" CanUserResize="False" FontFamily="Segoe UI" FontSize="14" Header="ID Produkta" Width="*"/>
                     <materialDesign:DataGridTextColumn x:Name="listDeliveriesDataProductName" Binding="{Binding Naziv}" CanUserResize="False" FontFamily="Segoe UI" FontSize="14" Header="Produkt" Width="*"/>
@@ -178,6 +183,8 @@
                     <materialDesign:DataGridTextColumn x:Name="listDeliveriesDataIsporukaId" Binding="{Binding Isporuka}" FontFamily="Segoe UI" FontSize="14" Header="ID Isporuke" Width="Auto" CanUserResize="False" Visibility="Hidden"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <TextBlock x:Name="noDataMessage" Text="No data available" VerticalAlignment="Top" Margin="11,31,21,0" FontSize="20" IsEnabled="False" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" TextAlignment="Center" Height="30" Foreground="Black" FontFamily="Arial Rounded MT Bold" Grid.Column="1" />
+            <TextBlock x:Name="noDataMessage1" Text="No data available" VerticalAlignment="Top" Margin="32,27,119,0" FontSize="20" IsEnabled="False" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" TextAlignment="Center" Height="30" Foreground="Black" FontFamily="Arial Rounded MT Bold" Visibility="Collapsed" />
         </Grid>
         <Grid x:Name="transportersViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.RowSpan="4" Visibility="Collapsed">
             <Grid.ColumnDefinitions>

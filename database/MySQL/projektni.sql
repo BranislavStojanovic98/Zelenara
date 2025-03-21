@@ -69,7 +69,7 @@ CREATE TABLE `isporuka` (
 
 LOCK TABLES `isporuka` WRITE;
 /*!40000 ALTER TABLE `isporuka` DISABLE KEYS */;
-INSERT INTO `isporuka` VALUES (1,1,'2025-03-02',1),(2,1,'2025-03-02',1),(4,2,'2025-03-02',2),(5,2,'2025-03-02',2),(10,2,'2025-03-02',2),(18,4,'2025-03-12',1),(19,4,'2025-03-12',1),(20,4,'2025-03-12',1),(23,4,'2025-03-14',1),(24,4,'2025-03-14',1),(25,4,'2025-03-14',1),(26,4,'2025-03-14',1),(27,4,'2025-03-14',1),(28,4,'2025-03-14',1);
+INSERT INTO `isporuka` VALUES (1,1,'2025-03-21',1),(2,1,'2025-03-21',1),(3,1,'2025-03-21',1),(4,1,'2025-03-21',1);
 /*!40000 ALTER TABLE `isporuka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `isporuka_produkta` (
 
 LOCK TABLES `isporuka_produkta` WRITE;
 /*!40000 ALTER TABLE `isporuka_produkta` DISABLE KEYS */;
-INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,23),(4,3,11),(5,1,1),(10,1,1),(18,1,23),(19,1,1),(20,1,1),(23,2,23),(24,1,1),(25,2,2),(26,3,23),(27,3,23),(28,3,23);
+INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,2),(3,3,3),(4,1,4);
 /*!40000 ALTER TABLE `isporuka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,7 +211,6 @@ CREATE TABLE `kupovina_produkta` (
 
 LOCK TABLES `kupovina_produkta` WRITE;
 /*!40000 ALTER TABLE `kupovina_produkta` DISABLE KEYS */;
-INSERT INTO `kupovina_produkta` VALUES (1,23,97.98,1,1),(1,23,97.98,1,2),(1,23,97.98,1,3),(1,23,97.98,1,4),(2,1,4.26,1,5),(2,1,1.25,2,6),(2,1,1.25,2,7),(3,1,1.25,2,8),(4,1,4.26,1,9),(4,2,8.52,1,10),(4,2,8.52,1,11),(5,2,8.52,1,12),(5,2,8.52,1,13),(5,2,8.52,1,14),(5,2,8.52,1,15),(5,2,8.52,1,16),(5,2,8.52,1,17),(5,2,8.52,1,18),(5,2,8.52,1,19),(6,23,28.75,2,20),(6,23,28.75,2,21);
 /*!40000 ALTER TABLE `kupovina_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,7 +303,7 @@ CREATE TABLE `nabavka` (
 
 LOCK TABLES `nabavka` WRITE;
 /*!40000 ALTER TABLE `nabavka` DISABLE KEYS */;
-INSERT INTO `nabavka` VALUES (1,1,'2025-03-02','111111111111',1),(2,1,'2025-03-02','111111111111',2),(4,1,'2025-03-12','111111111111',1);
+INSERT INTO `nabavka` VALUES (1,1,'2025-03-21','111111111111',1);
 /*!40000 ALTER TABLE `nabavka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -335,7 +334,7 @@ CREATE TABLE `nabavka_produkta` (
 
 LOCK TABLES `nabavka_produkta` WRITE;
 /*!40000 ALTER TABLE `nabavka_produkta` DISABLE KEYS */;
-INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(23,28.75,1,2,2),(11,12.54,2,4,3),(1,4.26,2,5,1),(1,4.26,2,10,1),(23,97.98,4,18,1),(1,4.26,4,19,1),(1,4.26,4,20,1),(23,28.75,4,23,2),(1,4.26,4,24,1),(2,2.50,4,25,2),(23,26.22,4,26,3),(23,26.22,4,27,3),(23,26.22,4,28,3);
+INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(2,2.50,1,2,2),(3,3.42,1,3,3),(4,17.04,1,4,1);
 /*!40000 ALTER TABLE `nabavka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -582,7 +581,6 @@ CREATE TABLE `račun` (
 
 LOCK TABLES `račun` WRITE;
 /*!40000 ALTER TABLE `račun` DISABLE KEYS */;
-INSERT INTO `račun` VALUES (1,'2025-03-12','012940194444'),(2,'2025-03-12','012940194444'),(3,'2025-03-12','012940194444'),(4,'2025-03-12','012940194444'),(5,'2025-03-12','012940194444'),(6,'2025-03-14','182756280981');
 /*!40000 ALTER TABLE `račun` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -614,7 +612,7 @@ CREATE TABLE `sadrzaj_skladista` (
 
 LOCK TABLES `sadrzaj_skladista` WRITE;
 /*!40000 ALTER TABLE `sadrzaj_skladista` DISABLE KEYS */;
-INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',26,110.76),(1,2,'Jabuke','Crvene',25,31.25),(1,3,'Jabuke','Zelene',69,78.66);
+INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',5,21.30),(1,2,'Jabuke','Crvene',2,2.50),(1,3,'Jabuke','Zelene',3,3.42);
 /*!40000 ALTER TABLE `sadrzaj_skladista` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -691,7 +689,7 @@ CREATE TABLE `zaposleni` (
 
 LOCK TABLES `zaposleni` WRITE;
 /*!40000 ALTER TABLE `zaposleni` DISABLE KEYS */;
-INSERT INTO `zaposleni` VALUES ('012940194444','Neko','Nesto',4),('111111111111','Stipe','Stipic',1),('113454543342','Stiko','Stikic',5),('123456789101','Niko','Nikic',1),('123456789112','Ratko','Ratkic',6),('171837812214','Miko','Mikic',1),('182756280981','Iko','Ikic',1),('182756502921','Heho','Hehic',3),('243135623521','Niko','Nikodinovic',1),('989847582919','Piki','Pikic',1);
+INSERT INTO `zaposleni` VALUES ('012940194444','Neko','Nesto',2),('111111111111','Stipe','Stipic',1),('113454543342','Stiko','Stikic',5),('123456789101','Niko','Nikic',1),('123456789112','Ratko','Ratkic',6),('171837812214','Miko','Mikic',1),('182756280981','Iko','Ikic',1),('182756502921','Heho','Hehic',3),('243135623521','Niko','Nikodinovic',1),('989847582919','Piki','Pikic',1);
 /*!40000 ALTER TABLE `zaposleni` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -705,7 +703,7 @@ DROP TABLE IF EXISTS `zaposleni_nalog`;
 CREATE TABLE `zaposleni_nalog` (
   `zaposleni_JMB` char(12) NOT NULL,
   `username` varchar(20) NOT NULL,
-  `sifra` varchar(20) NOT NULL,
+  `sifra` varchar(60) NOT NULL,
   `is_menadzer` tinyint(1) NOT NULL,
   PRIMARY KEY (`zaposleni_JMB`),
   UNIQUE KEY `username_UNIQUE` (`username`),
@@ -719,7 +717,7 @@ CREATE TABLE `zaposleni_nalog` (
 
 LOCK TABLES `zaposleni_nalog` WRITE;
 /*!40000 ALTER TABLE `zaposleni_nalog` DISABLE KEYS */;
-INSERT INTO `zaposleni_nalog` VALUES ('012940194444','neko.nesto','123',0),('111111111111','s','1',1),('113454543342','stiko.stikicc','123',0),('123456789101','niko.nikic','1234',0),('123456789112','ratko.ratkic','1234',0),('182756280981','iko','1',0),('182756502921','hehe','1',0),('989847582919','piki','1',0);
+INSERT INTO `zaposleni_nalog` VALUES ('012940194444','neko.nesto','$2a$11$eg88VasXeuGK5G4uiu/tAOOrjJZ/3WhKHKCeg32f/.xnw5gx86TvK',0),('111111111111','s','$2a$11$pLStTLwePZ0UbArBx1CX0u.DkonpgiQ/oh7d6deiQzmUuAIDWf89W',1),('113454543342','stiko.stikicc','$2a$11$uOyrlH1.PmMSE7sVnpIZbuPdtyriF6tZv6Z.FAjEUY6WBfy49L0Xa',0),('123456789101','niko.nikic','$2a$11$7pA5ehyBC86zFe/XePRetOBSJEQAL2WWIn7znRp2V8pMnj0jtAGwa',0),('123456789112','ratko.ratkic','$2a$11$GKe.YOFb7G2wDAtsBsTmKO13kutn44HCb7.XA9OWfJAwXzOKKQtRO',0),('182756280981','iko','$2a$11$7vInbhdyTCxmH9aRhVwOE.vUuVV4MFuUyQnv5AdRqHbzsckYqVgRq',0),('182756502921','hehe','$2a$11$33/lOOw.t2dYSuQGk4/3Q.TRnDm.3hXHAlRXTLdFOl8s5VqoDKx5S',0),('989847582919','piki','$2a$11$tpz3BLEJ8.S2TRobkIbAMertalGP4HbwJ.5zJSPTKfOXpFuWGIOd6',0);
 /*!40000 ALTER TABLE `zaposleni_nalog` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -948,4 +946,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-14 12:05:03
+-- Dump completed on 2025-03-21 17:37:59

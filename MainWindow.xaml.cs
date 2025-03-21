@@ -9,6 +9,7 @@ using System.Data;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using K4os.Compression.LZ4.Streams.Adapters;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using BCrypt.Net;
 
 namespace WpfApp1
 {
@@ -402,7 +403,7 @@ namespace WpfApp1
         }
 
         //Funkcija za trazenje Postanskog broja na osnovu imena grada
-        private string getPostanskiBrojFromImeMjesta()
+        private string? getPostanskiBrojFromImeMjesta()
         {
             string connectionString = "Server=localhost,3306;Database=projektni;Uid=root;Pwd=root;";
             try
@@ -426,7 +427,7 @@ namespace WpfApp1
                     {
                         string listMjesta = item.ToString();
                         string[] tmp = listMjesta.Split(new string[] { "-" }, StringSplitOptions.None);
-                        if (tmp[1] == selectedEmployee.Mjesto)
+                        if (tmp[1] == selectedEmployee?.Mjesto)
                         {
                             return tmp[0];
                         }
@@ -460,7 +461,7 @@ namespace WpfApp1
                 employeeInfoBoxCity.Text = getPostanskiBrojFromImeMjesta();
                 loadExistingEmployeeAccountInfo(selectedItem.JMB);
 
-                if(!string.IsNullOrWhiteSpace(employeeAccountNameBox.Text))
+                if (!string.IsNullOrWhiteSpace(employeeAccountNameBox.Text))
                 {
                     employeeAccountConfirmChangesButton.Visibility = Visibility.Visible;
                 }
@@ -671,8 +672,16 @@ namespace WpfApp1
                     }
                 }
 
-                adminDeliveriesDataGrid.ItemsSource = null;
-                adminDeliveriesDataGrid.ItemsSource = observablePregledNabavki;
+                if (observablePregledNabavki == null || observablePregledNabavki.Count == 0)
+                {
+                    noDataMessage1.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    noDataMessage1.Visibility = Visibility.Collapsed;
+                    adminDeliveriesDataGrid.ItemsSource = null;
+                    adminDeliveriesDataGrid.ItemsSource = observablePregledNabavki;
+                }
 
             }
             catch (Exception e)
@@ -725,9 +734,17 @@ namespace WpfApp1
                     }
                 }
 
-                listDeliveriesDataGrid.ItemsSource = null;
-                // Bind the ObservableCollection to the DataGrid
-                listDeliveriesDataGrid.ItemsSource = observablePregledIsporukaNabavki;
+                if (observablePregledIsporukaNabavki == null || observablePregledIsporukaNabavki.Count == 0)
+                {
+                    noDataMessage.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    noDataMessage.Visibility = Visibility.Collapsed;
+                    listDeliveriesDataGrid.ItemsSource = null;
+                    // Bind the ObservableCollection to the DataGrid
+                    listDeliveriesDataGrid.ItemsSource = observablePregledIsporukaNabavki;
+                }
 
             }
             catch (Exception ex)
@@ -759,6 +776,7 @@ namespace WpfApp1
             if (hitTest == null || hitTest is not DataGridRow)
             {
                 adminDeliveriesDataGrid.SelectedItem = null;
+                noDataMessage.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -948,7 +966,7 @@ namespace WpfApp1
                     {
                         //Get nabavkaID
                         var selectedRow1 = adminDeliveriesDataGrid.SelectedItem;
-                        var shipmentId = (selectedRow1 as PregledNabavkiView).IdNabavke;
+                        var shipmentId = (selectedRow1 as PregledNabavkiView)?.IdNabavke;
 
                         //Get trenutni datum
                         string datum = DateTime.Today.ToString("yyyy-MM-dd");
@@ -959,10 +977,12 @@ namespace WpfApp1
 
                         //Get DostavljacID
                         var selectedRow2 = adminDeliveriesDataGrid.SelectedItem;
-                        var transporterName = (selectedRow2 as PregledNabavkiView).Naziv;
+                        var transporterName = (selectedRow2 as PregledNabavkiView)?.Naziv;
 
-                        shipmentView.addSingleIsporuka((int)shipmentId, datum, menadzerJmb, transporterName);
-
+                        if (shipmentId != null && transporterName != null)
+                        {
+                            shipmentView.addSingleIsporuka((int)shipmentId, datum, menadzerJmb, transporterName);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -1083,7 +1103,14 @@ namespace WpfApp1
                     {
                         var selectedRow = listDeliveriesDataGrid.SelectedItem;
                         var isporukaId = (selectedRow as PregledIsporukaNabavke)?.Isporuka;
-                        deleteIsporuke((int)isporukaId);
+                        if (isporukaId != null)
+                        {
+                            deleteIsporuke((int)isporukaId);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Nepostojeci ID isporuke prilikom brisanja isporuke!");
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -1304,13 +1331,15 @@ namespace WpfApp1
                 return;
             }
             string jmb = selectedItem.JMB;
-            
+
 
             if (password == "")
             {
                 MessageBox.Show("Sifra nije unesena!");
                 return;
             }
+
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
             try
             {
@@ -1327,7 +1356,7 @@ namespace WpfApp1
                         MySqlDataReader reader = cmnd1.ExecuteReader();
                         while (reader.Read())
                         {
-                            
+
                             if (jmb == reader.GetString(0))
                             {
                                 MessageBox.Show("Izabrani korisnik već posjeduje nalog!");
@@ -1336,7 +1365,7 @@ namespace WpfApp1
                         }
                         reader.Close();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show("Greska prilikom provjere JMB! " + ex.Message);
                     }
@@ -1347,7 +1376,7 @@ namespace WpfApp1
                         {
                             cmd.Parameters.AddWithValue("@jmb", jmb);
                             cmd.Parameters.AddWithValue("@username", username);
-                            cmd.Parameters.AddWithValue("@password", password);
+                            cmd.Parameters.AddWithValue("@password", hashedPassword);
                             cmd.Parameters.AddWithValue("@isMenager", 0);
                             int rowsAffected = cmd.ExecuteNonQuery();
 
@@ -1376,7 +1405,7 @@ namespace WpfApp1
             }
         }
 
-        
+
 
 
         //Dugme za dodavanje korisnickog naloga
@@ -1393,7 +1422,7 @@ namespace WpfApp1
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
             try
             {
-                using(MySqlConnection connection = new MySqlConnection(connectionString))
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
 
@@ -1401,9 +1430,9 @@ namespace WpfApp1
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     cmd.Parameters.AddWithValue("@jmb", jmb);
                     MySqlDataReader reader = cmd.ExecuteReader();
-                    while(reader.Read())
+                    while (reader.Read())
                     {
-                        if(jmb == reader.GetString(0))
+                        if (jmb == reader.GetString(0))
                         {
                             employeeAccountNameBox.Text = reader.GetString(1);
                             employeeAccountPasswordBox.Password = reader.GetString(2);
@@ -1414,7 +1443,7 @@ namespace WpfApp1
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Error connectiong to database!" + ex.Message);
             }
@@ -1451,6 +1480,8 @@ namespace WpfApp1
                 return;
             }
 
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -1465,7 +1496,7 @@ namespace WpfApp1
                         {
                             cmnd1.Parameters.AddWithValue("@jmb", jmb);
                             cmnd1.Parameters.AddWithValue("@username", username);
-                            cmnd1.Parameters.AddWithValue("@password", password);
+                            cmnd1.Parameters.AddWithValue("@password", hashedPassword);
                             cmnd1.ExecuteNonQuery();
                         }
                         MessageBox.Show("Izmijene uspješno unesene!");
@@ -1495,7 +1526,7 @@ namespace WpfApp1
             ConfirmWindow confirmWindow = new ConfirmWindow(this, "changeEmployeeAccount", _adminJmb);
             confirmWindow.ShowDialog();
         }
-        
+
 
         //Treba poslagati ove funkicje nakon zavrsetka;
     }
