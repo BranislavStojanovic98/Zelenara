@@ -69,7 +69,7 @@ CREATE TABLE `isporuka` (
 
 LOCK TABLES `isporuka` WRITE;
 /*!40000 ALTER TABLE `isporuka` DISABLE KEYS */;
-INSERT INTO `isporuka` VALUES (1,1,'2025-03-21',1),(2,1,'2025-03-21',1),(3,1,'2025-03-21',1),(4,1,'2025-03-21',1);
+INSERT INTO `isporuka` VALUES (1,1,'2025-03-25',1),(2,1,'2025-03-25',1),(3,1,'2025-03-25',1),(4,1,'2025-03-25',1),(5,1,'2025-03-25',1),(6,1,'2025-03-25',1),(7,1,'2025-03-25',1),(8,1,'2025-03-25',1);
 /*!40000 ALTER TABLE `isporuka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,9 +113,40 @@ CREATE TABLE `isporuka_produkta` (
 
 LOCK TABLES `isporuka_produkta` WRITE;
 /*!40000 ALTER TABLE `isporuka_produkta` DISABLE KEYS */;
-INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,2),(3,3,3),(4,1,4);
+INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,2),(3,2,1),(4,2,3),(5,3,3),(6,3,3),(7,3,2),(8,3,2);
 /*!40000 ALTER TABLE `isporuka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `isporuka_produkta_AFTER_INSERT` AFTER INSERT ON `isporuka_produkta` FOR EACH ROW BEGIN
+	insert into nabavka_produkta(Kolicina,
+    Cena, 
+    NABAVKA_idPotvrde, 
+    isporuka_produkta_DOSTAVA_idIsporuke,
+    isporuka_produkta_PRODUKT_idProdukta)
+    
+    select 
+    new.Kolicina,
+    p.Cena * new.Kolicina,
+    i.NABAVKA_idPotvrde,
+    new.DOSTAVA_idIsporuke,
+    new.PRODUKT_idProdukta
+    
+    from isporuka i join produkt p on p.idProdukta = new.PRODUKT_idProdukta
+    where i.idIsporuke = new.DOSTAVA_idIsporuke;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Temporary view structure for view `isporuke_dostavljaca`
@@ -222,7 +253,7 @@ DROP TABLE IF EXISTS `menadzer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `menadzer` (
-  `ZAPOSLENI_JMB` char(12) NOT NULL,
+  `ZAPOSLENI_JMB` char(13) NOT NULL,
   PRIMARY KEY (`ZAPOSLENI_JMB`),
   CONSTRAINT `fk_MENADZER_ZAPOSLENI1` FOREIGN KEY (`ZAPOSLENI_JMB`) REFERENCES `zaposleni` (`JMB`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -234,7 +265,7 @@ CREATE TABLE `menadzer` (
 
 LOCK TABLES `menadzer` WRITE;
 /*!40000 ALTER TABLE `menadzer` DISABLE KEYS */;
-INSERT INTO `menadzer` VALUES ('111111111111');
+INSERT INTO `menadzer` VALUES ('1111111111111');
 /*!40000 ALTER TABLE `menadzer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -285,7 +316,7 @@ CREATE TABLE `nabavka` (
   `idPotvrde` int NOT NULL,
   `SKLADISTE_idSkladista` int NOT NULL,
   `Datum` date NOT NULL,
-  `MENADZER_ZAPOSLENI_JMB` char(12) NOT NULL,
+  `MENADZER_ZAPOSLENI_JMB` char(13) NOT NULL,
   `DOBAVLJAC_idDostavljaca` int NOT NULL,
   PRIMARY KEY (`idPotvrde`),
   KEY `fk_NABAVKA_MENADZER1_idx` (`MENADZER_ZAPOSLENI_JMB`),
@@ -303,7 +334,7 @@ CREATE TABLE `nabavka` (
 
 LOCK TABLES `nabavka` WRITE;
 /*!40000 ALTER TABLE `nabavka` DISABLE KEYS */;
-INSERT INTO `nabavka` VALUES (1,1,'2025-03-21','111111111111',1);
+INSERT INTO `nabavka` VALUES (1,1,'2025-03-25','1111111111111',1);
 /*!40000 ALTER TABLE `nabavka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,9 +365,114 @@ CREATE TABLE `nabavka_produkta` (
 
 LOCK TABLES `nabavka_produkta` WRITE;
 /*!40000 ALTER TABLE `nabavka_produkta` DISABLE KEYS */;
-INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(2,2.50,1,2,2),(3,3.42,1,3,3),(4,17.04,1,4,1);
+INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(2,2.50,1,2,2),(1,1.25,1,3,2),(3,3.75,1,4,2),(3,3.42,1,5,3),(3,3.42,1,6,3),(2,2.28,1,7,3),(2,2.28,1,8,3);
 /*!40000 ALTER TABLE `nabavka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `nabavka_produkta_AFTER_INSERT` AFTER INSERT ON `nabavka_produkta` FOR EACH ROW BEGIN
+	DECLARE total_kolicina INT;
+    DECLARE total_cena DECIMAL(10,2);
+    DECLARE produkt_naziv VARCHAR(45);
+    DECLARE produkt_vrsta VARCHAR(45);
+    DECLARE skladiste_id INT;
+
+    -- Get the skladiste_id from the nabavka table
+    SELECT SKLADISTE_idSkladista INTO skladiste_id
+    FROM nabavka
+    WHERE idPotvrde = NEW.NABAVKA_idPotvrde;
+
+    -- Get the Produkt details (Naziv, Vrsta)
+    SELECT Naziv, Vrsta INTO produkt_naziv, produkt_vrsta
+    FROM produkt
+    WHERE idProdukta = NEW.isporuka_produkta_PRODUKT_idProdukta;
+
+    -- Sum the Kolicina and Cena for the inserted product
+    SELECT SUM(Kolicina), SUM(Cena)
+    INTO total_kolicina, total_cena
+    FROM nabavka_produkta
+    WHERE NABAVKA_idPotvrde = NEW.NABAVKA_idPotvrde
+    AND isporuka_produkta_PRODUKT_idProdukta = NEW.isporuka_produkta_PRODUKT_idProdukta
+    AND isporuka_produkta_DOSTAVA_idIsporuke = NEW.isporuka_produkta_DOSTAVA_idIsporuke;
+
+    -- Insert into sadrzaj_skladista or update existing record
+    INSERT INTO sadrzaj_skladista (
+        skladiste_idSkladista, 
+        idProdukta, 
+        Naziv, 
+        Vrsta, 
+        Kolicina, 
+        Cena
+    )
+    VALUES (
+        skladiste_id,
+        NEW.isporuka_produkta_PRODUKT_idProdukta,
+        produkt_naziv,
+        produkt_vrsta,
+        total_kolicina,
+        total_cena
+    )
+    ON DUPLICATE KEY UPDATE
+        Kolicina = Kolicina + total_kolicina,
+        Cena = Cena + total_cena;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `nabavka_produkta_AFTER_DELETE` AFTER DELETE ON `nabavka_produkta` FOR EACH ROW BEGIN
+DECLARE current_kolicina INT;
+    DECLARE current_cena DECIMAL(10,2);
+
+    -- Get the current Kolicina and Cena for the product in sadrzaj_skladista
+    SELECT Kolicina, Cena
+    INTO current_kolicina, current_cena
+    FROM sadrzaj_skladista
+    WHERE skladiste_idSkladista = (SELECT SKLADISTE_idSkladista FROM nabavka WHERE idPotvrde = OLD.NABAVKA_idPotvrde)
+    AND idProdukta = OLD.isporuka_produkta_PRODUKT_idProdukta;
+
+    -- If Kolicina or Cena is found, subtract the deleted values
+    IF current_kolicina IS NOT NULL AND current_cena IS NOT NULL THEN
+        -- Calculate new Kolicina and Cena
+        SET current_kolicina = current_kolicina - OLD.Kolicina;
+        SET current_cena = current_cena - OLD.Cena;
+
+        -- If Kolicina or Cena becomes zero or negative, delete the record from sadrzaj_skladista
+        IF current_kolicina <= 0 OR current_cena <= 0 THEN
+            DELETE FROM sadrzaj_skladista
+            WHERE skladiste_idSkladista = (SELECT SKLADISTE_idSkladista FROM nabavka WHERE idPotvrde = OLD.NABAVKA_idPotvrde)
+            AND idProdukta = OLD.isporuka_produkta_PRODUKT_idProdukta;
+        ELSE
+            -- If there are remaining quantities, update the Kolicina and Cena in sadrzaj_skladista
+            UPDATE sadrzaj_skladista
+            SET Kolicina = current_kolicina, Cena = current_cena
+            WHERE skladiste_idSkladista = (SELECT SKLADISTE_idSkladista FROM nabavka WHERE idPotvrde = OLD.NABAVKA_idPotvrde)
+            AND idProdukta = OLD.isporuka_produkta_PRODUKT_idProdukta;
+        END IF;
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Temporary view structure for view `pregled_dostavljaca`
@@ -542,7 +678,7 @@ DROP TABLE IF EXISTS `radnik`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `radnik` (
-  `ZAPOSLENI_JMB` char(12) NOT NULL,
+  `ZAPOSLENI_JMB` char(13) NOT NULL,
   PRIMARY KEY (`ZAPOSLENI_JMB`),
   CONSTRAINT `fk_RADNIK_ZAPOSLENI1` FOREIGN KEY (`ZAPOSLENI_JMB`) REFERENCES `zaposleni` (`JMB`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -554,7 +690,7 @@ CREATE TABLE `radnik` (
 
 LOCK TABLES `radnik` WRITE;
 /*!40000 ALTER TABLE `radnik` DISABLE KEYS */;
-INSERT INTO `radnik` VALUES ('012940194444'),('113454543342'),('123456789101'),('123456789112'),('182756280981'),('182756502921');
+INSERT INTO `radnik` VALUES ('0129401944441'),('1134545433421'),('1234567891011'),('1234567891121'),('1827562809811'),('1827565029211');
 /*!40000 ALTER TABLE `radnik` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -568,7 +704,7 @@ DROP TABLE IF EXISTS `račun`;
 CREATE TABLE `račun` (
   `idRacuna` int NOT NULL,
   `VremeIzdavanja` varchar(45) NOT NULL,
-  `RADNIK_ZAPOSLENI_JMB` char(12) NOT NULL,
+  `RADNIK_ZAPOSLENI_JMB` char(13) NOT NULL,
   PRIMARY KEY (`idRacuna`),
   KEY `fk_RAČUN_RADNIK1_idx` (`RADNIK_ZAPOSLENI_JMB`),
   CONSTRAINT `fk_RAČUN_RADNIK1` FOREIGN KEY (`RADNIK_ZAPOSLENI_JMB`) REFERENCES `radnik` (`ZAPOSLENI_JMB`)
@@ -612,9 +748,30 @@ CREATE TABLE `sadrzaj_skladista` (
 
 LOCK TABLES `sadrzaj_skladista` WRITE;
 /*!40000 ALTER TABLE `sadrzaj_skladista` DISABLE KEYS */;
-INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',5,21.30),(1,2,'Jabuke','Crvene',2,2.50),(1,3,'Jabuke','Zelene',3,3.42);
+INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',1,4.26),(1,2,'Jabuke','Crvene',6,7.50),(1,3,'Jabuke','Zelene',10,11.40);
 /*!40000 ALTER TABLE `sadrzaj_skladista` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `sadrzaj_skladista_BEFORE_UPDATE` BEFORE UPDATE ON `sadrzaj_skladista` FOR EACH ROW BEGIN
+	IF OLD.Kolicina <> NEW.Kolicina THEN
+	SET NEW.Cena = (SELECT Cena 
+	FROM produkt 
+	WHERE idProdukta = NEW.idProdukta) * NEW.Kolicina;
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `skladiste`
@@ -673,7 +830,7 @@ DROP TABLE IF EXISTS `zaposleni`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `zaposleni` (
-  `JMB` char(12) NOT NULL,
+  `JMB` char(13) NOT NULL,
   `Ime` varchar(20) NOT NULL,
   `Prezime` varchar(20) NOT NULL,
   `MJESTO_PostanskiBroj` int NOT NULL,
@@ -689,7 +846,7 @@ CREATE TABLE `zaposleni` (
 
 LOCK TABLES `zaposleni` WRITE;
 /*!40000 ALTER TABLE `zaposleni` DISABLE KEYS */;
-INSERT INTO `zaposleni` VALUES ('012940194444','Neko','Nesto',2),('111111111111','Stipe','Stipic',1),('113454543342','Stiko','Stikic',5),('123456789101','Niko','Nikic',1),('123456789112','Ratko','Ratkic',6),('171837812214','Miko','Mikic',1),('182756280981','Iko','Ikic',1),('182756502921','Heho','Hehic',3),('243135623521','Niko','Nikodinovic',1),('989847582919','Piki','Pikic',1);
+INSERT INTO `zaposleni` VALUES ('0129401944441','Neko','Nesto',2),('1111111111111','Stipe','Stipic',1),('1134545433421','Stiko','Stikic',5),('1234567891011','Niko','Nikic',1),('1234567891121','Ratko','Ratkic',6),('1718378122141','Miko','Mikic',1),('1726466028472','Kimo','Kimic',3),('1726546267890','Nino','Ninic',1),('1827562809811','Iko','Ikic',2),('1827565029211','Heho','Hehic',3),('2431356235211','Niko','Nikodinovic',1),('9898475829191','Piki','Pikic',3);
 /*!40000 ALTER TABLE `zaposleni` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -701,7 +858,7 @@ DROP TABLE IF EXISTS `zaposleni_nalog`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `zaposleni_nalog` (
-  `zaposleni_JMB` char(12) NOT NULL,
+  `zaposleni_JMB` char(13) NOT NULL,
   `username` varchar(20) NOT NULL,
   `sifra` varchar(60) NOT NULL,
   `is_menadzer` tinyint(1) NOT NULL,
@@ -717,9 +874,17 @@ CREATE TABLE `zaposleni_nalog` (
 
 LOCK TABLES `zaposleni_nalog` WRITE;
 /*!40000 ALTER TABLE `zaposleni_nalog` DISABLE KEYS */;
-INSERT INTO `zaposleni_nalog` VALUES ('012940194444','neko.nesto','$2a$11$eg88VasXeuGK5G4uiu/tAOOrjJZ/3WhKHKCeg32f/.xnw5gx86TvK',0),('111111111111','s','$2a$11$pLStTLwePZ0UbArBx1CX0u.DkonpgiQ/oh7d6deiQzmUuAIDWf89W',1),('113454543342','stiko.stikicc','$2a$11$uOyrlH1.PmMSE7sVnpIZbuPdtyriF6tZv6Z.FAjEUY6WBfy49L0Xa',0),('123456789101','niko.nikic','$2a$11$7pA5ehyBC86zFe/XePRetOBSJEQAL2WWIn7znRp2V8pMnj0jtAGwa',0),('123456789112','ratko.ratkic','$2a$11$GKe.YOFb7G2wDAtsBsTmKO13kutn44HCb7.XA9OWfJAwXzOKKQtRO',0),('182756280981','iko','$2a$11$7vInbhdyTCxmH9aRhVwOE.vUuVV4MFuUyQnv5AdRqHbzsckYqVgRq',0),('182756502921','hehe','$2a$11$33/lOOw.t2dYSuQGk4/3Q.TRnDm.3hXHAlRXTLdFOl8s5VqoDKx5S',0),('989847582919','piki','$2a$11$tpz3BLEJ8.S2TRobkIbAMertalGP4HbwJ.5zJSPTKfOXpFuWGIOd6',0);
+INSERT INTO `zaposleni_nalog` VALUES ('0129401944441','neko.nesto','$2a$11$eg88VasXeuGK5G4uiu/tAOOrjJZ/3WhKHKCeg32f/.xnw5gx86TvK',0),('1111111111111','s','$2a$11$pLStTLwePZ0UbArBx1CX0u.DkonpgiQ/oh7d6deiQzmUuAIDWf89W',1),('1134545433421','stiko.stikicc','$2a$11$uOyrlH1.PmMSE7sVnpIZbuPdtyriF6tZv6Z.FAjEUY6WBfy49L0Xa',0),('1234567891011','niko.nikic','$2a$11$7pA5ehyBC86zFe/XePRetOBSJEQAL2WWIn7znRp2V8pMnj0jtAGwa',0),('1234567891121','ratko.ratkic','$2a$11$GKe.YOFb7G2wDAtsBsTmKO13kutn44HCb7.XA9OWfJAwXzOKKQtRO',0),('1827562809811','iko','$2a$11$7vInbhdyTCxmH9aRhVwOE.vUuVV4MFuUyQnv5AdRqHbzsckYqVgRq',0),('1827565029211','hehe','$2a$11$33/lOOw.t2dYSuQGk4/3Q.TRnDm.3hXHAlRXTLdFOl8s5VqoDKx5S',0),('9898475829191','piki','$2a$11$tpz3BLEJ8.S2TRobkIbAMertalGP4HbwJ.5zJSPTKfOXpFuWGIOd6',0);
 /*!40000 ALTER TABLE `zaposleni_nalog` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'projektni'
+--
+
+--
+-- Dumping routines for database 'projektni'
+--
 
 --
 -- Final view structure for view `isporuka_dobavljaca`
@@ -788,7 +953,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `isporuke_nabavke` AS select `n`.`idPotvrde` AS `ID_nabavke`,`d`.`Naziv` AS `Dostavljac`,(case when (sum(`np`.`Cena`) is null) then 0.0 else cast(sum(`np`.`Cena`) as decimal(10,2)) end) AS `Ukupna_cena`,(case when (max(date_format(`i`.`Datum`,'%d.%m.%Y')) is null) then '-' else cast(max(date_format(`i`.`Datum`,'%d.%m.%Y')) as char(12) charset utf8mb4) end) AS `datum_posl_isp` from ((((`nabavka` `n` left join `isporuka` `i` on((`i`.`NABAVKA_idPotvrde` = `n`.`idPotvrde`))) left join `dobavljac` `d` on((`n`.`DOBAVLJAC_idDostavljaca` = `d`.`idDostavljaca`))) left join `nabavka_produkta` `np` on(((`np`.`NABAVKA_idPotvrde` = `n`.`idPotvrde`) and (`np`.`isporuka_produkta_DOSTAVA_idIsporuke` = `i`.`idIsporuke`)))) left join `isporuka_produkta` `ip` on((`ip`.`DOSTAVA_idIsporuke` = `i`.`idIsporuke`))) group by `n`.`idPotvrde` order by `n`.`idPotvrde` */;
+/*!50001 VIEW `isporuke_nabavke` AS select `n`.`idPotvrde` AS `ID_nabavke`,`d`.`Naziv` AS `Dostavljac`,(case when (sum(`np`.`Cena`) is null) then 0.0 else cast(sum(`np`.`Cena`) as decimal(10,2)) end) AS `Ukupna_cena`,(case when (max(date_format(`i`.`Datum`,'%d.%m.%Y')) is null) then '-' else cast(max(date_format(`i`.`Datum`,'%d.%m.%Y')) as char(13) charset utf8mb4) end) AS `datum_posl_isp` from ((((`nabavka` `n` left join `isporuka` `i` on((`i`.`NABAVKA_idPotvrde` = `n`.`idPotvrde`))) left join `dobavljac` `d` on((`n`.`DOBAVLJAC_idDostavljaca` = `d`.`idDostavljaca`))) left join `nabavka_produkta` `np` on(((`np`.`NABAVKA_idPotvrde` = `n`.`idPotvrde`) and (`np`.`isporuka_produkta_DOSTAVA_idIsporuke` = `i`.`idIsporuke`)))) left join `isporuka_produkta` `ip` on((`ip`.`DOSTAVA_idIsporuke` = `i`.`idIsporuke`))) group by `n`.`idPotvrde` order by `n`.`idPotvrde` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -946,4 +1111,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-21 17:37:59
+-- Dump completed on 2025-03-25 16:12:04

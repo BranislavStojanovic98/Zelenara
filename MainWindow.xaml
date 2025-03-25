@@ -84,9 +84,15 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="101*"/>
                 <ColumnDefinition Width="43*"/>
-                <ColumnDefinition MaxWidth="600" MinWidth="480" Width="48*"/>
             </Grid.ColumnDefinitions>
-            <DataGrid Grid.Column="0" Grid.Row="0" x:Name="adminEmployeeTable" SelectionChanged="employeeTableInfoUpdate" RowHeight="30" RowHeaderWidth="0" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnHeaderHeight="50" BorderBrush="Gray" BorderThickness="2,2,2,2" AutoGenerateColumns="False" PreviewMouseDown="deselectTableColumn" Margin="20,10,20,49">
+            <DataGrid Grid.Column="0" Grid.Row="0" x:Name="adminEmployeeTable" RowHeight="30" RowHeaderWidth="0" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnHeaderHeight="50" BorderBrush="Gray" BorderThickness="2,2,2,2" AutoGenerateColumns="False" PreviewMouseDown="deselectTableColumn" Margin="20,10,20,49" PreviewMouseRightButtonDown="openEmployeeTableContextMenu" SelectionChanged="loadExistingEmployeeAccountInfo">
+                <DataGrid.ContextMenu>
+                    <ContextMenu Name="employeeTableMenu">
+                        <MenuItem Header="Dodaj" Click="employeeTableAddOption"/>
+                        <MenuItem Header="Izmijeni" Click="employeeTableChangeOption"/>
+                        <MenuItem Header="Izbriši" Click="employeeTableDeleteOption"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="employeeTableImeColumn" Header="Ime" Binding="{Binding Ime}" FontFamily="Agency FB" FontSize="24" Width="*" CanUserResize="False"/>
                     <materialDesign:DataGridTextColumn x:Name="employeeTablePrezimeColumn" Header="Prezime" Binding="{Binding Prezime}" FontFamily="Agency FB" FontSize="24" Width="*" CanUserResize="False"/>
@@ -94,42 +100,21 @@
                     <materialDesign:DataGridTextColumn x:Name="employeeTableMjestoColumn" Header="Mjesto" Binding="{Binding Mjesto}" FontFamily="Agency FB" FontSize="24" Width="*" CanUserResize="False"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Grid  x:Name="adminEmployeeInfoChangeGrid" Margin="20,10,20,49" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.Column="2" Grid.Row="0" MinHeight="580">
-                <Label Content="Informacije od zaposlenom" Margin="50,10,50,0" VerticalAlignment="Top" FontSize="36" FontFamily="Agency FB" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}"/>
-                <Label x:Name="employeeInfoNameLabel" Content="Ime:" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
-                <Label x:Name="employeeInfoLastnameLabel" Content="Prezime:" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.805,0.541" FontSize="24" FontFamily="Agency FB"/>
-                <Label x:Name="employeeInfoJMBLabel" Content="JMB:" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" FontFamily="Agency FB" FontSize="24"/>
-                <Label x:Name="emplyeeInfoPlaceLabel" Content="Poštanski Broj:" HorizontalAlignment="Left" Margin="10,420,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
-                <TextBox x:Name="employeeInfoBoxName" Margin="138,125,20,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="24" FontFamily="Agency FB"/>
-                <TextBox x:Name="employeeInfoBoxLastname" Margin="138,225,20,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
-                <TextBox x:Name="employeeInfoBoxJMB" Margin="138,325,20,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
-                <TextBox x:Name="employeeInfoBoxCity" Margin="138,425,20,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
-                <Button x:Name="employeeInfoBoxDeleteButton" Content="Izbrisi" Margin="0,0,50,50" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" HorizontalAlignment="Right" Width="100" Height="50" VerticalAlignment="Bottom" FontSize="24" FontFamily="Agency FB" Click="adminEmployeeInfoDelete" MinHeight="50"/>
-                <Button x:Name="employeeInfoBoxAddButton" Content="Dodaj" Margin="50,0,0,50" FontSize="24" FontFamily="Agency FB" HorizontalAlignment="Left" Width="100" Click="adminEmployeeInfoAdd" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="50" VerticalAlignment="Bottom" MinHeight="50"/>
-                <Button x:Name="employeeInfoBoxUpdateButton" Content="Izmjeni" Margin="50,0,0,50" FontSize="24" FontFamily="Agency FB" HorizontalAlignment="Left" Width="100" Height="50" VerticalAlignment="Bottom" Click="adminEmployeeInfoUpdate" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Visibility="Collapsed"/>
-                <Border BorderThickness="2,2,2,2">
-                    <Border.BorderBrush>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Black"/>
-                            <GradientStop Color="Gray" Offset="0"/>
-                        </LinearGradientBrush>
-                    </Border.BorderBrush>
-                </Border>
-            </Grid>
+
             <Grid Margin="10,30,20,30" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.ColumnSpan="3" Grid.Row="1">
                 <Button x:Name="adminEmployeeBackButton" Content="Nazad" HorizontalAlignment="Left" Margin="20,10,0,10" Click="mainViewShow" FontSize="17" FontFamily="Agency FB" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="50" Width="100"/>
                 <Border BorderBrush="Gray" BorderThickness="2,2,2,2" PreviewMouseDown="deselectTableColumn"/>
-                <Label Content="Lista Mjesta sa Postanskim Brojem:" Margin="0,0,180,0" FontFamily="Agency FB" FontSize="24" Height="40" VerticalAlignment="Center" HorizontalAlignment="Right" Width="276"/>
-                <Button x:Name="openListaMjestaButton" Margin="0,0,20,0" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="openListaMjestaClick" Height="40" VerticalAlignment="Center" HorizontalAlignment="Right" Width="158"/>
+                <Label Content="Postanski Brojevi:" Margin="0,0,178,0" FontFamily="Agency FB" FontSize="24" Height="40" VerticalAlignment="Center" HorizontalAlignment="Right" Width="153"/>
+                <Button x:Name="openListaMjestaButton" Margin="0,0,20,0" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="openListaMjestaClick" Height="40" VerticalAlignment="Center" HorizontalAlignment="Right" Width="158" Content="?"/>
             </Grid>
-            <Grid x:Name="adminEmployeeLoginAccountGrid" Grid.Column="1" Height="581" Margin="20,10,20,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Visibility="Collapsed">
+            <Grid x:Name="adminEmployeeLoginAccountGrid" Grid.Column="1" Height="581" Margin="20,10,20,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
                 <Label Content="Korisnički nalog" Margin="10,10,10,0" VerticalAlignment="Top" FontFamily="Agency FB" FontSize="36" HorizontalContentAlignment="Center"/>
                 <Label Content="zaposlenog" Margin="10,68,10,0" VerticalAlignment="Top" FontFamily="Agency FB" FontSize="36" BorderThickness="0,0,0,2" BorderBrush="Gray" HorizontalContentAlignment="Center"/>
                 <Label Content="Korisničko ime:" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top" FontSize="25" FontFamily="Agency FB"/>
                 <Label Content="Lozinka:" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="25" FontFamily="Agency FB" Height="38"/>
-                <TextBox x:Name="employeeAccountNameBox" Margin="0,182,5,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Right" Width="123" FontSize="20" FontFamily="Agency FB" Height="33"/>
-                <PasswordBox x:Name="employeeAccountPasswordBox" Height="33" Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Width="127" FontSize="20" FontFamily="Agency FB"/>
-                <PasswordBox x:Name="employeeAccountPasswordConfirmBox" Height="33" Margin="0,360,5,0" VerticalAlignment="Top" FontSize="20" FontFamily="Agency FB" HorizontalAlignment="Right" Width="127"/>
+                <TextBox x:Name="employeeAccountNameBox" Margin="174,182,5,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontFamily="Agency FB" Height="33"/>
+                <PasswordBox x:Name="employeeAccountPasswordBox" Height="33" Margin="174,0,5,0" VerticalAlignment="Center" FontSize="20" FontFamily="Agency FB"/>
+                <PasswordBox x:Name="employeeAccountPasswordConfirmBox" Height="33" Margin="174,360,5,0" VerticalAlignment="Top" FontSize="20" FontFamily="Agency FB"/>
                 <Label Content="Potvrda lozinke:" HorizontalAlignment="Left" Margin="10,355,0,0" VerticalAlignment="Top" FontSize="25" FontFamily="Agency FB" Height="38" Width="128"/>
                 <Button x:Name="employeeAccountConfirmButton" Margin="82,489,82,40" Content="Potvrdi" BorderBrush="Gray" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="confirmEmployeeAccountClick"/>
                 <Border BorderBrush="Gray" BorderThickness="2,2,2,2" Visibility="Hidden"/>

@@ -1,0 +1,23 @@
+﻿<Window x:Class="WpfApp1.EmployeeConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="EmployeeConfigWindow" Height="700" Width="600" Closing="employeeConfigClose">
+    <Grid  x:Name="adminEmployeeInfoChangeGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.Column="2" Grid.Row="0" MinHeight="580">
+        <Label Content="Informacije od zaposlenom" Margin="50,10,50,0" VerticalAlignment="Top" FontSize="36" FontFamily="Agency FB" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}"/>
+        <Label x:Name="employeeInfoNameLabel" Content="Ime:" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
+        <Label x:Name="employeeInfoLastnameLabel" Content="Prezime:" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.805,0.541" FontSize="24" FontFamily="Agency FB"/>
+        <Label x:Name="employeeInfoJMBLabel" Content="JMB:" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" FontFamily="Agency FB" FontSize="24"/>
+        <Label x:Name="emplyeeInfoPlaceLabel" Content="Poštanski Broj:" HorizontalAlignment="Left" Margin="10,420,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
+        <TextBox x:Name="employeeInfoBoxName" Margin="138,125,20,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" FontSize="24" FontFamily="Agency FB"/>
+        <TextBox x:Name="employeeInfoBoxLastname" Margin="138,225,20,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
+        <TextBox x:Name="employeeInfoBoxJMB" Margin="138,325,20,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
+        <TextBox x:Name="employeeInfoBoxCity" Margin="138,425,20,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
+        <Button x:Name="employeeInfoBoxDeleteButton" Content="Izbrisi" Margin="0,0,50,50" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" HorizontalAlignment="Right" Width="100" Height="50" VerticalAlignment="Bottom" FontSize="24" FontFamily="Agency FB" Click="adminEmployeeInfoDelete" MinHeight="50"/>
+        <Button x:Name="employeeInfoBoxAddButton" Content="Dodaj" Margin="50,0,0,50" FontSize="24" FontFamily="Agency FB" HorizontalAlignment="Left" Width="100" Click="adminEmployeeInfoAdd" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="50" VerticalAlignment="Bottom" MinHeight="50"/>
+        <Button x:Name="employeeInfoBoxUpdateButton" Content="Izmjeni" Margin="50,0,0,50" FontSize="24" FontFamily="Agency FB" HorizontalAlignment="Left" Width="100" Height="50" VerticalAlignment="Bottom" Click="adminEmployeeInfoUpdate" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Visibility="Collapsed"/>
+    </Grid>
+</Window>

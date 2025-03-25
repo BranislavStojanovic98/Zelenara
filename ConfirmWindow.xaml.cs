@@ -24,6 +24,7 @@ namespace WpfApp1
 
         private MainWindow _mainWindow;
         private ShipmentViewWindow _shipmentWindow;
+        private EmployeeConfigWindow _employeeConfigWindow;
         private string _action;
         private string _jmb;
 
@@ -47,6 +48,14 @@ namespace WpfApp1
             InitializeComponent();
         }
 
+        public ConfirmWindow(EmployeeConfigWindow employeeConfigWindow , string action, string jmb)
+        {
+            _employeeConfigWindow = employeeConfigWindow;
+            _action = action;
+            _jmb = jmb;
+            InitializeComponent();
+        }
+
         private void employeeConfirmationButtonNoClick(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -57,16 +66,16 @@ namespace WpfApp1
             if (_action == "add")
             {
                 // Call the method to add a new employee
-                _mainWindow.DodajNovogZaposlenog(); // Assuming DodajNovogZaposlenog is a method in MainWindow
+                _employeeConfigWindow.DodajNovogZaposlenog(); // Assuming DodajNovogZaposlenog is a method in MainWindow
             }
             else if (_action == "edit")
             {
                 // Call the method to edit the selected employee
-                _mainWindow.editTabelaZaposlenih(); // Assuming EditZaposleni is a method in MainWindow
+                _employeeConfigWindow.IzmjeniZaposlenog(); // Assuming EditZaposleni is a method in MainWindow
             }
             else if (_action == "delete")
             {
-                _mainWindow.IzbrisiZaposlenog();
+                _employeeConfigWindow.IzbrisiZaposlenog();
             }
             //TODO Napravi da se DataGrid refreshuje kad se doda nova nabavka!!!
             else if (_action == "addNewNabavka")

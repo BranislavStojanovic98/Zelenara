@@ -22,9 +22,9 @@ namespace WpfApp1.database.employee
         // Constructor
         public Zaposleni(string jmb, string ime, string prezime, string mjesto)
         {
-            if (jmb.Length != 12)
+            if (jmb.Length != 13)
             {
-                throw new ArgumentException("JMB treba biti u formatu od tacno 12 cifara");
+                throw new ArgumentException("JMB treba biti u formatu od tacno 13 cifara");
             }
 
             _jmb = jmb;
