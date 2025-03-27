@@ -76,6 +76,9 @@
                 </LinearGradientBrush>
             </Image.OpacityMask>
         </Image>
+
+        <!-- Pocetak Gridova -->
+
         <Grid x:Name="adminEmployeeViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.RowSpan="4" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" MinHeight="630"/>
@@ -98,6 +101,25 @@
                     <materialDesign:DataGridTextColumn x:Name="employeeTablePrezimeColumn" Header="Prezime" Binding="{Binding Prezime}" FontFamily="Agency FB" FontSize="24" Width="*" CanUserResize="False"/>
                     <materialDesign:DataGridTextColumn x:Name="employeeTableJMBColumn" Header="JMB" Binding="{Binding JMB}" FontFamily="Agency FB" FontSize="24" Width="*" CanUserResize="False"/>
                     <materialDesign:DataGridTextColumn x:Name="employeeTableMjestoColumn" Header="Mjesto" Binding="{Binding Mjesto}" FontFamily="Agency FB" FontSize="24" Width="*" CanUserResize="False"/>
+                    <DataGridTemplateColumn Header="Opcije" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Name="editButton" Width="40" Height="20" Click="editTabelaZaposlenih">
+                                        <Button.Content>
+                                            <TextBlock FontFamily="Segoe UI Symbol" FontSize="13" Text="&#x270E;" TextAlignment="Center" />
+                                        </Button.Content>
+                                    </Button>
+
+                                    <Button Name ="deleteButton"  Width="40" Height="20" Click="deleteEmployee">
+                                        <Button.Content>
+                                            <TextBlock FontFamily="Segoe UI Symbol" FontSize="13" Text="&#x1F5D1;" TextAlignment="Center"/>
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -120,6 +142,7 @@
                 <Border BorderBrush="Gray" BorderThickness="2,2,2,2" Visibility="Hidden"/>
                 <Button x:Name="employeeAccountConfirmChangesButton" Margin="82,489,82,40" Content="Izmijeni" BorderBrush="Gray" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="confirmEmployeeAccountChangeClick" Visibility="Collapsed"/>
             </Grid>
+            <Button x:Name="addEmployeeButton" Content="Dodaj" HorizontalAlignment="Left" Margin="20,0,0,9" Width="100" Click="addEmployee" Height="40" VerticalAlignment="Bottom" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="16" FontFamily="Agency FB"/>
         </Grid>
         <Grid x:Name="adminDeliveriesViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.RowSpan="4" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
@@ -211,6 +234,7 @@
                     </LinearGradientBrush>
                 </Label.BorderBrush>
             </Label>
+            <TextBlock x:Name="transporterNoDataBox" Grid.Column="1" Height="39" Margin="50,171,50,0" TextAlignment="Center" VerticalAlignment="Top" FontSize="30" Text="No data available" FontWeight="Bold" Visibility="Collapsed"/>
         </Grid>
         <Grid x:Name="storageViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.RowSpan="4" MinWidth="1100" Visibility="Collapsed">
             <Label Content="Dostupni produkti" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" FontSize="48" FontFamily="Agency FB" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,2" Width="458" Height="69">
@@ -253,6 +277,7 @@
                     </LinearGradientBrush>
                 </Label.BorderBrush>
             </Label>
+            <TextBlock x:Name="storageNoDataBox" Height="44" Margin="768,170,50,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="30" FontWeight="Bold" Text="No items in storage" Visibility="Collapsed"/>
         </Grid>
     </Grid>
 </Window>

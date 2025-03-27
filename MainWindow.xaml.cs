@@ -240,9 +240,18 @@ namespace WpfApp1
                         }
                     }
                 }
+                if(observablePregledIsporuka.Count == 0)
+                {
+                    transporterNoDataBox.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    transporterNoDataBox.Visibility= Visibility.Collapsed;
+                }
 
-                // Bind the ObservableCollection to the DataGrid
-                transporterDeliveriesListDataGrid.ItemsSource = null;
+
+                    // Bind the ObservableCollection to the DataGrid
+                    transporterDeliveriesListDataGrid.ItemsSource = null;
                 transporterDeliveriesListDataGrid.ItemsSource = observablePregledIsporuka;
 
             }
@@ -842,6 +851,14 @@ namespace WpfApp1
                         MessageBox.Show("Greska " + ex.Message);
                     }
                 }
+                if (observablePregledSpecificnihProdukta.Count == 0)
+                {
+                    storageNoDataBox.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    storageNoDataBox.Visibility = Visibility.Collapsed;
+                }
 
                 storageSpecificProductDataGrid.ItemsSource = null;
                 storageSpecificProductDataGrid.ItemsSource = observablePregledSpecificnihProdukta;
@@ -887,6 +904,11 @@ namespace WpfApp1
                                 if (observablePregledSpecificnihProdukta.Count == 0)
                                 {
                                     MessageBox.Show("Nepostojeci Produkt ID");
+                                    storageNoDataBox.Visibility = Visibility.Visible;
+                                }
+                                else
+                                {
+                                    storageNoDataBox.Visibility = Visibility.Collapsed;
                                 }
                             }
 
@@ -921,6 +943,21 @@ namespace WpfApp1
             {
                 MessageBox.Show("Unesite postojeći Produkt ID!");
             }
+        }
+
+        private void editTabelaZaposlenih(object sender, RoutedEventArgs e)
+        {
+            editTabelaZaposlenih();
+        }
+
+        private void deleteEmployee(object sender, RoutedEventArgs e)
+        {
+            deleteEmployee();
+        }
+
+        private void addEmployee(object sender, RoutedEventArgs e)
+        {
+            addNewEmployee();
         }
 
         //Treba poslagati ove funkicje nakon zavrsetka;

@@ -93,6 +93,7 @@ namespace WpfApp1
                     employeeConfigWindow.Show();
 
                     ConfirmWindow confirmWindow = new ConfirmWindow(employeeConfigWindow, "delete", _adminJmb);
+                    confirmWindow.Topmost = true;
                     confirmWindow.ShowDialog();
 
                     if (employeeConfigWindow != null)
