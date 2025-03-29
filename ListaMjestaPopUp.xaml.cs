@@ -25,9 +25,29 @@ namespace WpfApp1
     {
         private ObservableCollection<string> nazivMjestaCollection;
 
-        public ListaMjestaPopUp()
+        public ListaMjestaPopUp(string theme, string language)
         {
             InitializeComponent();
+            if (theme == "Theme1")
+            {
+                ListaMjestaPopUpDataGrid.Background = new SolidColorBrush(Colors.Beige);
+                mjestoGrid.Background = new SolidColorBrush(Colors.Bisque);
+            }
+            else if (theme == "Theme2")
+            {
+                ListaMjestaPopUpDataGrid.Background = new SolidColorBrush(Colors.Brown);
+                mjestoGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+            }
+
+            if(language == "Serbian")
+            {
+                MjestaPostanskiBroj.Header = "Poštanski Broj-Mjesto";
+            }
+            else if(language == "English")
+            {
+                MjestaPostanskiBroj.Header = "Postal Number-City";
+            }
+
             nazivMjestaCollection = new ObservableCollection<string>();
             loadListaMjesta();
 
@@ -49,7 +69,7 @@ namespace WpfApp1
                         string query = "SELECT infoMjesta FROM mjesto_sa_postanskimbr";
                         MySqlCommand getMjesta = new MySqlCommand(query, connection);
                         MySqlDataReader reader = getMjesta.ExecuteReader();
-                        while(reader.Read())
+                        while (reader.Read())
                         {
                             nazivMjestaCollection.Add(reader["infoMjesta"].ToString());
                         }
@@ -58,14 +78,14 @@ namespace WpfApp1
                         ListaMjestaPopUpDataGrid.ItemsSource = null;
                         ListaMjestaPopUpDataGrid.ItemsSource = nazivMjestaCollection;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show("Greska: " + ex.Message);
                     }
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Error connecting to database: " + ex.Message);
             }

@@ -44,7 +44,6 @@ namespace WpfApp1
         private void checkAccount(string username, string password)
         {
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword("1");
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))

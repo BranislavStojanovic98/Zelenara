@@ -24,32 +24,106 @@ namespace WpfApp1
     {
         private string _adminJmb;
         private string _action;
+        private string _theme;
+        private string _language = "Serbian";
 
         private ObservableCollection<Zaposleni> observableZaposleni;
         private ObservableCollection<string> mestoOptions;
         private Zaposleni _zaposleni;
         private ListaMjestaPopUp _listaMjestaPopUp;
 
-        public EmployeeConfigWindow(string action, string adminJmb)
+        public EmployeeConfigWindow(string action, string adminJmb, string theme, string language)
         {
             observableZaposleni = new ObservableCollection<Zaposleni>();
             _action = action;
             _adminJmb = adminJmb;
+            _language = language;
             InitializeComponent();
-            _listaMjestaPopUp = new ListaMjestaPopUp();
+            _listaMjestaPopUp = new ListaMjestaPopUp(theme, language);
             _listaMjestaPopUp.Top = 150;
             _listaMjestaPopUp.Left = 1150;
             _listaMjestaPopUp.Show();
+
+            if(theme == "Theme1")
+            {
+                adminEmployeeInfoChangeGrid.Background = new SolidColorBrush(Colors.Beige);
+            }
+            else if(theme == "Theme2")
+            {
+                adminEmployeeInfoChangeGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+            }
+
+            if(language == "Serbian")
+            {
+
+                label1.Content = "Informacije od zaposlenom";
+                employeeInfoNameLabel.Content = "Ime:";
+                employeeInfoLastnameLabel.Content = "Prezime:";
+                employeeInfoJMBLabel.Content = "JMB:";
+                emplyeeInfoPlaceLabel.Content = "Poštanski Broj:";
+
+                employeeInfoBoxAddButton.Content = "Dodaj";
+                employeeInfoBoxDeleteButton.Content = "Izbriši";
+            }
+            else if(language == "English")
+            {
+
+                label1.Content = "Employee Information";
+                employeeInfoNameLabel.Content = "Name:";
+                employeeInfoLastnameLabel.Content = "Surname:";
+                employeeInfoJMBLabel.Content = "SSN:";
+                emplyeeInfoPlaceLabel.Content = "Postal Number:";
+
+                employeeInfoBoxAddButton.Content = "Add";
+                employeeInfoBoxDeleteButton.Content = "Clear";
+            }
         }
 
-        public EmployeeConfigWindow(Zaposleni zaposleni, string action, string adminJmb)
+        public EmployeeConfigWindow(Zaposleni zaposleni, string action, string adminJmb, string theme, string language)
         {
             observableZaposleni = new ObservableCollection<Zaposleni>();
             mestoOptions = new ObservableCollection<string>();
             _zaposleni = zaposleni;
             _adminJmb = adminJmb;
             _action = action;
+            _language = language;
             InitializeComponent();
+
+            if (theme == "Theme1")
+            {
+                adminEmployeeInfoChangeGrid.Background = new SolidColorBrush(Colors.Beige);
+            }
+            else if (theme == "Theme2")
+            {
+                adminEmployeeInfoChangeGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+            }
+
+            if (language == "Serbian")
+            {
+
+                label1.Content = "Informacije od zaposlenom";
+                employeeInfoNameLabel.Content = "Ime:";
+                employeeInfoLastnameLabel.Content = "Prezime:";
+                employeeInfoJMBLabel.Content = "JMB:";
+                emplyeeInfoPlaceLabel.Content = "Poštanski Broj:";
+
+                employeeInfoBoxAddButton.Content = "Dodaj";
+                employeeInfoBoxDeleteButton.Content = "Izbriši";
+            }
+            else if (language == "English")
+            {
+
+                label1.Content = "Employee Information";
+                employeeInfoNameLabel.Content = "Name:";
+                employeeInfoLastnameLabel.Content = "Surname:";
+                employeeInfoJMBLabel.Content = "SSN:";
+                emplyeeInfoPlaceLabel.Content = "Postal Number:";
+
+                employeeInfoBoxAddButton.Content = "Add";
+                employeeInfoBoxDeleteButton.Content = "Clear";
+            }
+
+
             if (zaposleni != null)
             {
                 employeeInfoBoxName.Text = zaposleni.Ime;
@@ -63,7 +137,7 @@ namespace WpfApp1
                 employeeInfoBoxAddButton.Visibility = Visibility.Collapsed;
                 employeeInfoBoxUpdateButton.Visibility = Visibility.Visible;
 
-                _listaMjestaPopUp = new ListaMjestaPopUp();
+                _listaMjestaPopUp = new ListaMjestaPopUp(theme, language);
                 _listaMjestaPopUp.Top = 150;
                 _listaMjestaPopUp.Left = 1150;
                 _listaMjestaPopUp.Show();
@@ -82,7 +156,7 @@ namespace WpfApp1
         public void adminEmployeeInfoAdd(object sender, RoutedEventArgs e)
         {
 
-            ConfirmWindow confirmWindow = new ConfirmWindow(this, "add", _adminJmb);
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "add", _adminJmb, _language);
             confirmWindow.ShowDialog();
         }
 
@@ -98,7 +172,7 @@ namespace WpfApp1
         //Admin aplikacija, Izmjena inforamcija zaposlenih
         public void adminEmployeeInfoUpdate(object sender, RoutedEventArgs e)
         {
-            ConfirmWindow confirmWindow = new ConfirmWindow(this, "edit", _adminJmb);
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "edit", _adminJmb, _language);
             confirmWindow.ShowDialog();
         }
 

@@ -28,32 +28,68 @@ namespace WpfApp1
         private string _action;
         private string _jmb;
 
-        public ConfirmWindow()
-        {
-            InitializeComponent();
-        }
 
-        public ConfirmWindow(MainWindow mainWindow, string action, string jmb)
+        public ConfirmWindow(MainWindow mainWindow, string action, string jmb, string language)
         {
             _mainWindow = mainWindow;
             _action = action;
             _jmb = jmb;
+            
             InitializeComponent();
+
+            if(language == "Serbian")
+            {
+                employeeConfirmationLabel1.Content = "Želite li da potvrdite unos?";
+                employeeConfirmationButtonYes1.Content = "Da";
+                employeeConfirmationButtonNo1.Content = "Ne";
+            }
+            else if(language == "English")
+            {
+                employeeConfirmationLabel1.Content = "Do you wish to confirm?";
+                employeeConfirmationButtonYes1.Content = "Yes";
+                employeeConfirmationButtonNo1.Content = "No";
+            }
         }
 
-        public ConfirmWindow(ShipmentViewWindow shipmentViewWindow, string action)
+        public ConfirmWindow(ShipmentViewWindow shipmentViewWindow, string action, string language)
         {
             _shipmentWindow = shipmentViewWindow;
             _action = action;
             InitializeComponent();
+
+            if (language == "Serbian")
+            {
+                employeeConfirmationLabel1.Content = "Želite li da potvrdite unos?";
+                employeeConfirmationButtonYes1.Content = "Da";
+                employeeConfirmationButtonNo1.Content = "Ne";
+            }
+            else if (language == "English")
+            {
+                employeeConfirmationLabel1.Content = "Do you wish to confirm?";
+                employeeConfirmationButtonYes1.Content = "Yes";
+                employeeConfirmationButtonNo1.Content = "No";
+            }
         }
 
-        public ConfirmWindow(EmployeeConfigWindow employeeConfigWindow , string action, string jmb)
+        public ConfirmWindow(EmployeeConfigWindow employeeConfigWindow , string action, string jmb, string language)
         {
             _employeeConfigWindow = employeeConfigWindow;
             _action = action;
             _jmb = jmb;
             InitializeComponent();
+
+            if (language == "Serbian")
+            {
+                employeeConfirmationLabel1.Content = "Želite li da potvrdite unos?";
+                employeeConfirmationButtonYes1.Content = "Da";
+                employeeConfirmationButtonNo1.Content = "Ne";
+            }
+            else if (language == "English")
+            {
+                employeeConfirmationLabel1.Content = "Do you wish to confirm?";
+                employeeConfirmationButtonYes1.Content = "Yes";
+                employeeConfirmationButtonNo1.Content = "No";
+            }
         }
 
         private void employeeConfirmationButtonNoClick(object sender, RoutedEventArgs e)

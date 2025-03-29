@@ -116,7 +116,7 @@ namespace WpfApp1
         //Dugme za dodavanje korisnickog naloga
         private void confirmEmployeeAccountClick(object sender, RoutedEventArgs e)
         {
-            ConfirmWindow confirmWindow = new ConfirmWindow(this, "addEmployeeAccount", _adminJmb);
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "addEmployeeAccount", _adminJmb, _language);
             confirmWindow.ShowDialog();
         }
 
@@ -238,7 +238,7 @@ namespace WpfApp1
 
         private void confirmEmployeeAccountChangeClick(object sender, RoutedEventArgs e)
         {
-            ConfirmWindow confirmWindow = new ConfirmWindow(this, "changeEmployeeAccount", _adminJmb);
+            ConfirmWindow confirmWindow = new ConfirmWindow(this, "changeEmployeeAccount", _adminJmb, _language);
             confirmWindow.ShowDialog();
         }
 

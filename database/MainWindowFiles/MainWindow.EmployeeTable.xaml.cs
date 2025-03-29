@@ -15,7 +15,6 @@ namespace WpfApp1
     //Stavke za ucitavanje, dodavanje, izmijenu, i brisanje zaposlenog
     public partial class MainWindow
     {
-
         //Ucitavanje informacija tabele zaposlenih
         private void LoadDataTabelaZaposleni()
         {
@@ -68,7 +67,7 @@ namespace WpfApp1
         {
             try
             {
-                EmployeeConfigWindow employeeConfigWindow = new EmployeeConfigWindow("add", _adminJmb);
+                EmployeeConfigWindow employeeConfigWindow = new EmployeeConfigWindow("add", _adminJmb, _theme, _language);
                 employeeConfigWindow.ShowDialog();
 
                 adminEmployeeTable.SelectedItem = null;
@@ -89,10 +88,10 @@ namespace WpfApp1
                 var selectedZaposleni = adminEmployeeTable.SelectedItem as Zaposleni;
                 if (selectedZaposleni != null)
                 {
-                    EmployeeConfigWindow employeeConfigWindow = new EmployeeConfigWindow(selectedZaposleni, "delete", _adminJmb);
+                    EmployeeConfigWindow employeeConfigWindow = new EmployeeConfigWindow(selectedZaposleni, "delete", _adminJmb, _theme, _language);
                     employeeConfigWindow.Show();
 
-                    ConfirmWindow confirmWindow = new ConfirmWindow(employeeConfigWindow, "delete", _adminJmb);
+                    ConfirmWindow confirmWindow = new ConfirmWindow(employeeConfigWindow, "delete", _adminJmb, _language);
                     confirmWindow.Topmost = true;
                     confirmWindow.ShowDialog();
 
@@ -125,7 +124,7 @@ namespace WpfApp1
                 if (selectedZaposleni != null)
                 {
 
-                    EmployeeConfigWindow employeeConfigWindow = new EmployeeConfigWindow(selectedZaposleni, "edit", _adminJmb);
+                    EmployeeConfigWindow employeeConfigWindow = new EmployeeConfigWindow(selectedZaposleni, "edit", _adminJmb, _theme, _language);
                     employeeConfigWindow.ShowDialog();
 
                     // Optionally, deselect the row
@@ -178,5 +177,22 @@ namespace WpfApp1
         {
             deleteEmployee();
         }
+
+
+        //Pomocne funkcije//
+
+        private void editTabelaZaposlenih(object sender, RoutedEventArgs e)
+        {
+            editTabelaZaposlenih();
+        }
+        private void deleteEmployee(object sender, RoutedEventArgs e)
+        {
+            deleteEmployee();
+        }
+        private void addEmployee(object sender, RoutedEventArgs e)
+        {
+            addNewEmployee();
+        }
+    
     }
 }

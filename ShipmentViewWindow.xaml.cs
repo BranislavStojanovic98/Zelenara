@@ -1,4 +1,5 @@
-﻿using MySqlConnector;
+﻿using MaterialDesignThemes.Wpf;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,37 +20,122 @@ namespace WpfApp1
     /// <summary>
     /// Interaction logic for ShipmentViewWindow.xaml
     /// </summary>
+    /// 
+    
+
+
     public partial class ShipmentViewWindow : Window
     {
         private string _action;
         private MainWindow _mainWindow;
         private string _jmb;
+        private string _theme;
+        private string _language = "Serbian";
 
         public string Jmb
         {
             get { return _jmb; }
         }
 
-        public ShipmentViewWindow()
+        public ShipmentViewWindow(MainWindow mainWindow, string action, string theme, string language)
         {
             InitializeComponent();
-            loadShipmentViewCompanyNameComboBox();
-            loadShipmentViewProductComboBox();
-        }
-        public ShipmentViewWindow(MainWindow mainWindow, string action)
-        {
-            InitializeComponent();
+            if (theme == "Theme1")
+            {
+                shipmentViewGrid.Background = new SolidColorBrush(Colors.Beige);
+                bottomGrid.Background = new SolidColorBrush(Colors.Bisque);
+                shipmentViewDeliveriesListBox.Background = new SolidColorBrush(Colors.Bisque);
+            } 
+            else if(theme == "Theme2")
+            {
+                shipmentViewGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+                bottomGrid.Background = new SolidColorBrush(Colors.Brown);
+            }
+
+            if(language == "Serbian")
+            {
+
+                label1.Content = "Unesite podatke";
+                label2.Content = "Dostavljač:";
+                label3.Content = "Produkt:";
+                label4.Content = "Količina:";
+                label5.Content = "Proizvođač:";
+
+                shipmentViewProductAddButton.Content = "Dodaj";
+                shipmentViewProductRemoveButton.Content = "Ukloni";
+
+                shipmentViewConfirmButton.Content = "Potvrdi";
+                shipmentViewCancelButton.Content = "Nazad";
+            } 
+            else if (language == "English")
+            {
+
+                label1.Content = "Enter Data";
+                label2.Content = "Transporter:";
+                label3.Content = "Product:";
+                label4.Content = "Ammount:";
+                label5.Content = "Producer:";
+
+                shipmentViewProductAddButton.Content = "Add";
+                shipmentViewProductRemoveButton.Content = "Remove";
+
+                shipmentViewConfirmButton.Content = "Confirm";
+                shipmentViewCancelButton.Content = "Cancel";
+            }
+
+            _language = language;
             _mainWindow = mainWindow;
             _action = action;
             loadShipmentViewCompanyNameComboBox();
             loadShipmentViewProductComboBox();
         }
-        public ShipmentViewWindow(string action, string jmb)
+        public ShipmentViewWindow(string action, string jmb, string theme, string language)
         {
             _action = action;
             _mainWindow = null;
             _jmb = jmb;
+            _language = language;
             InitializeComponent();
+            if (theme == "Theme1")
+            {
+                shipmentViewGrid.Background = new SolidColorBrush(Colors.Beige);
+                bottomGrid.Background = new SolidColorBrush(Colors.Bisque);
+            }
+            else if (theme == "Theme2")
+            {
+                shipmentViewGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+                bottomGrid.Background = new SolidColorBrush(Colors.Brown);
+            }
+
+            if (language == "Serbian")
+            {
+                label1.Content = "Unesite podatke";
+                label2.Content = "Dostavljač:";
+                label3.Content = "Produkt:";
+                label4.Content = "Količina:";
+                label5.Content = "Proizvođač:";
+
+                shipmentViewProductAddButton.Content = "Dodaj";
+                shipmentViewProductRemoveButton.Content = "Ukloni";
+
+                shipmentViewConfirmButton.Content = "Potvrdi";
+                shipmentViewCancelButton.Content = "Nazad";
+            }
+            else if (language == "English")
+            {
+                label1.Content = "Enter Data";
+                label2.Content = "Transporter:";
+                label3.Content = "Product:";
+                label4.Content = "Ammount:";
+                label5.Content = "Producer:";
+
+                shipmentViewProductAddButton.Content = "Add";
+                shipmentViewProductRemoveButton.Content = "Remove";
+
+                shipmentViewConfirmButton.Content = "Confirm";
+                shipmentViewCancelButton.Content = "Cancel";
+            }
+
             loadShipmentViewCompanyNameComboBox();
             loadShipmentViewProductComboBox();
         }
@@ -69,13 +155,13 @@ namespace WpfApp1
             ConfirmWindow confirmWindow;
             if (_action == "addNewIsporuka")
             {
-                confirmWindow = new ConfirmWindow(this, "addNewIsporuka");
+                confirmWindow = new ConfirmWindow(this, "addNewIsporuka", _language);
                 confirmWindow.Owner = this;
                 confirmWindow.ShowDialog();
             }
             else if (_action == "addNewNabavka")
             {
-                confirmWindow = new ConfirmWindow(this, "addNewNabavka");
+                confirmWindow = new ConfirmWindow(this, "addNewNabavka", _language);
                 confirmWindow.ShowDialog();
                 if (this.Owner is MainWindow mainWindow)
                 {
@@ -85,7 +171,7 @@ namespace WpfApp1
             }
             else if (_action == "deleteSelectedNabavku")
             {
-                confirmWindow = new ConfirmWindow(this, "deleteSelectedNabavku");
+                confirmWindow = new ConfirmWindow(this, "deleteSelectedNabavku", _language);
                 confirmWindow.Owner = this;
                 confirmWindow.ShowDialog();
                 if (this.Owner is MainWindow mainWindow)
