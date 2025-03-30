@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="EmployeeWindow" Height="840" Width="1550" WindowStartupLocation="CenterScreen" WindowState="Maximized" MinWidth="900" MinHeight="710">
+        Title="EmployeeWindow" Height="840" Width="1550" WindowStartupLocation="CenterScreen" WindowState="Maximized" MinWidth="900" MinHeight="710" Closed="saveTheme">
     <Grid x:Name="employeeMainGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" MaxHeight="120"/>
             <RowDefinition Height="*" MaxHeight="590"/>
             <RowDefinition Height="*" MaxHeight="120"/>
         </Grid.RowDefinitions>
-        <Grid Margin="20,10,0,10" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" HorizontalAlignment="Left" Width="220" Grid.Row="1">
+        <Grid x:Name="menuGrid" Margin="20,10,0,10" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" HorizontalAlignment="Left" Width="220" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" MinHeight="320"/>
                 <RowDefinition Height="*" MinHeight="103"/>
@@ -20,56 +20,85 @@
             <Button x:Name="cashierViewOpenButton" Content="Kasa" Margin="40,150,40,0" FontSize="24" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="60" VerticalAlignment="Top" Click="openCashierWindowClick"/>
             <Button x:Name="employeeStorageShowButton" Content="Magacin" Margin="40,250,40,0" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" Height="60" VerticalAlignment="Top" Click="employeeOpenStorageClick"/>
             <Button x:Name="logoutButton" Content="Odjavi se" Margin="40,0,40,20" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" Height="60" VerticalAlignment="Bottom" Grid.Row="1" Click="logoutActionClick"/>
-            <Label Content="Meni" Margin="10,20,10,0" FontSize="36" FontWeight="Bold" HorizontalContentAlignment="Center" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" BorderThickness="0,0,0,2" Height="60" VerticalAlignment="Top"/>
+            <Label x:Name="menuLabel" Content="Meni" Margin="10,20,10,0" FontSize="36" FontWeight="Bold" HorizontalContentAlignment="Center" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" BorderThickness="0,0,0,2" Height="60" VerticalAlignment="Top"/>
             <Label Margin="10,0,10,100" Height="5" VerticalAlignment="Bottom" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" FontSize="26" Padding="0,0,0,0" Grid.Row="1"/>
+            <Menu Height="60" Margin="40,27,40,0" Grid.Row="1" VerticalAlignment="Top" FontSize="24">
+                <MenuItem x:Name="optionsMenu" BorderBrush="Gray" Header="Opcije" Height="60" Width="140" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="35,0,6,0" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}">
+                    <MenuItem x:Name="themeMenuItem" Header="Teme" FontSize="16">
+                        <MenuItem.Icon>
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE713;" FontSize="14" VerticalAlignment="Center" Foreground="Gray"/>
+                        </MenuItem.Icon>
+                        <MenuItem x:Name="themeMenuItem1" Header="Default" Click="changeThemeDefault"/>
+                        <MenuItem x:Name="themeMenuItem2" Header="Tema 1" Click="changeTheme1"/>
+                        <MenuItem x:Name="themeMenuItem3" Header="Tema 2" Click="changeTheme2"/>
+                    </MenuItem>
+                    <MenuItem x:Name="languageMenu" Header="Jezik" FontSize="16">
+                        <MenuItem.Icon>
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE774;" FontSize="14" VerticalAlignment="Center" Foreground="Gray"/>
+                        </MenuItem.Icon>
+                        <MenuItem x:Name="languageMenuItem1" Header="Srpski" Click="changeLanguageSerbian">
+                            <MenuItem.Icon>
+                                <TextBlock Text="SRB" VerticalAlignment="Center" Foreground="Black"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem x:Name="languageMenuItem2" Header="English" Click="changeLanguageEnglish">
+                            <MenuItem.Icon>
+                                <TextBlock Text="EN" VerticalAlignment="Center" Foreground="Black"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
         </Grid>
-        <Grid Margin="20,10,20,10" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
-            <Label Content="Dobrodošli" Margin="600,0,600,0" FontSize="72" FontFamily="Agency FB" HorizontalContentAlignment="Center"/>
+        <Grid x:Name="upperGrid" Margin="20,10,20,10" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+            <Label x:Name="welcomeLabel" Content="Dobrodošli" Margin="600,0,600,0" FontSize="72" FontFamily="Agency FB" HorizontalContentAlignment="Center"/>
         </Grid>
-        <Grid Margin="20,10,20,10" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.Row="2"/>
+        <Grid x:Name="bottomGrid" Margin="20,10,20,10" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.Row="2"/>
         <Image Margin="260,10,20,10" Grid.Row="1"/>
-        <Grid x:Name="storageViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.RowSpan="4" MinWidth="1100" Visibility="Collapsed">
-    <Label Content="Dostupni produkti" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" FontSize="48" FontFamily="Agency FB" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,2" Width="458" Height="69">
-        <Label.BorderBrush>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="Black"/>
-                <GradientStop Color="Gray" Offset="1"/>
-            </LinearGradientBrush>
-        </Label.BorderBrush>
-    </Label>
-    <Button x:Name="employeeStorageBackButton" Content="Nazad" HorizontalAlignment="Left" Margin="50,0,0,50" Height="60" VerticalAlignment="Bottom" Width="120" FontSize="24" FontFamily="Agency FB" Click="employeeViewShow" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
-    <DataGrid x:Name="storageAvailableProductsDataGrid" Height="434" Margin="50,140,0,0" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Width="410" AutoGenerateColumns="False" CanUserResizeColumns="False" ColumnHeaderHeight="30" RowHeaderWidth="0" SelectionChanged="loadstorageSpecificProductDataGrid">
-        <DataGrid.Columns>
-            <DataGridTextColumn CanUserResize="False" FontSize="14" Width="*" Binding="{Binding ProduktId}" Header="ID Produkta" CanUserSort="True" CanUserReorder="False" IsReadOnly="True"/>
-            <DataGridTextColumn Binding="{Binding Naziv}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Naziv" IsReadOnly="True" Width="*"/>
-            <DataGridTextColumn CanUserResize="False" FontSize="14" Width="*" Binding="{Binding Vrsta}" Header="Vrsta" CanUserSort="True" CanUserReorder="False" IsReadOnly="True"/>
-            <DataGridTextColumn CanUserResize="False" FontSize="14" Width="*" Binding="{Binding Kolicina}" Header="Kolicina" CanUserSort="True" CanUserReorder="False" IsReadOnly="True"/>
-            <DataGridTextColumn CanUserResize="False" FontSize="14" Width="*" Binding="{Binding Cena}" Header="Cena" CanUserReorder="False" IsReadOnly="True"/>
-        </DataGrid.Columns>
-    </DataGrid>
-    <Grid Margin="500,140,0,0" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="354" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left">
-        <Label Content="Pretraga" Margin="50,10,50,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20" BorderBrush="Gray" BorderThickness="0,0,0,2"/>
-        <TextBox x:Name="storageViewSearchBox" Margin="50,100,50,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Height="30" VerticalContentAlignment="Center"/>
-        <Button x:Name="storageViewSearchButton" Content="Pretraži" Height="40" Margin="50,180,50,0" VerticalAlignment="Top" FontSize="16" Click="storageViewSearchByProductId"/>
-    </Grid>
-    <DataGrid x:Name="storageSpecificProductDataGrid" Height="437" Margin="768,140,50,0" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" ColumnHeaderHeight="30" RowHeaderWidth="0">
-        <DataGrid.Columns>
-            <DataGridTextColumn Binding="{Binding IsporukaId}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="ID Isporuke" IsReadOnly="True" Width="*"/>
-            <DataGridTextColumn Binding="{Binding Kolicina}" CanUserResize="False" CanUserSort="True" CanUserReorder="False" FontSize="14" Header="Kolicina" IsReadOnly="True" Width="*"/>
-            <DataGridTextColumn Binding="{Binding Cena}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Cena" IsReadOnly="True" Width="*"/>
-            <DataGridTextColumn Binding="{Binding Dostavljac}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Dostavljac" IsReadOnly="True" Width="*"/>
-            <DataGridTextColumn Binding="{Binding Datum}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Datum Isporuke" IsReadOnly="True" Width="*"/>
-        </DataGrid.Columns>
-    </DataGrid>
-    <Label Content="Lista isporuka selektovanog produkta" Margin="768,10,20,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Agency FB" FontSize="48" BorderThickness="0,0,0,2">
-        <Label.BorderBrush>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="Black"/>
-                <GradientStop Color="Gray" Offset="1"/>
-            </LinearGradientBrush>
-        </Label.BorderBrush>
-    </Label>
-</Grid>
         
+        
+        <Grid x:Name="storageViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.RowSpan="4" MinWidth="1100" Visibility="Collapsed">
+            <Label x:Name="storageLabel1" Content="Dostupni produkti" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" FontSize="48" FontFamily="Agency FB" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,2" Width="458" Height="69">
+                <Label.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black"/>
+                        <GradientStop Color="Gray" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.BorderBrush>
+            </Label>
+            <Button x:Name="employeeStorageBackButton" Content="Nazad" HorizontalAlignment="Left" Margin="50,0,0,50" Height="60" VerticalAlignment="Bottom" Width="120" FontSize="24" FontFamily="Agency FB" Click="employeeViewShow" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
+            <DataGrid x:Name="storageAvailableProductsDataGrid" Height="434" Margin="50,140,0,0" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Width="410" AutoGenerateColumns="False" CanUserResizeColumns="False" ColumnHeaderHeight="30" RowHeaderWidth="0" SelectionChanged="loadstorageSpecificProductDataGrid">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="storageDataGrid1ProductId" CanUserResize="False" FontSize="14" Width="*" Binding="{Binding ProduktId}" Header="ID Produkta" CanUserSort="True" CanUserReorder="False" IsReadOnly="True"/>
+                    <DataGridTextColumn x:Name="storageDataGrid1Name" Binding="{Binding Naziv}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Naziv" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn x:Name="storageDataGrid1Type" CanUserResize="False" FontSize="14" Width="*" Binding="{Binding Vrsta}" Header="Vrsta" CanUserSort="True" CanUserReorder="False" IsReadOnly="True"/>
+                    <DataGridTextColumn x:Name="storageDataGrid1Amount" CanUserResize="False" FontSize="14" Width="*" Binding="{Binding Kolicina}" Header="Količina" CanUserSort="True" CanUserReorder="False" IsReadOnly="True"/>
+                    <DataGridTextColumn x:Name="storageDataGrid1Price" CanUserResize="False" FontSize="14" Width="*" Binding="{Binding Cena}" Header="Cijena" CanUserReorder="False" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid x:Name="searchGrid" Margin="500,140,0,0" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="354" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left">
+                <Label x:Name="searchLabel" Content="Pretraga" Margin="50,10,50,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20" BorderBrush="Gray" BorderThickness="0,0,0,2"/>
+                <TextBox x:Name="storageViewSearchBox" Margin="50,100,50,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Height="30" VerticalContentAlignment="Center"/>
+                <Button x:Name="storageViewSearchButton" Content="Pretraži" Height="40" Margin="50,180,50,0" VerticalAlignment="Top" FontSize="16" Click="storageViewSearchByProductId"/>
+            </Grid>
+            <DataGrid x:Name="storageSpecificProductDataGrid" Height="437" Margin="768,140,50,0" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" ColumnHeaderHeight="30" RowHeaderWidth="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="storageDataGrid2DeliveryId" Binding="{Binding IsporukaId}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="ID Isporuke" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn x:Name="storageDataGrid2Amount" Binding="{Binding Kolicina}" CanUserResize="False" CanUserSort="True" CanUserReorder="False" FontSize="14" Header="Količina" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn x:Name="storageDataGrid2Price" Binding="{Binding Cena}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Cijena" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn x:Name="storageDataGrid2Transporter" Binding="{Binding Dostavljac}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Dostavljač" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn x:Name="storageDataGrid2Date" Binding="{Binding Datum}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Datum Isporuke" IsReadOnly="True" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Label x:Name="storageLabel2" Content="Lista isporuka selektovanog produkta" Margin="768,10,20,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Agency FB" FontSize="48" BorderThickness="0,0,0,2">
+                <Label.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black"/>
+                        <GradientStop Color="Gray" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.BorderBrush>
+            </Label>
+        </Grid>
+
     </Grid>
 </Window>

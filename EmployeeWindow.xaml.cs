@@ -24,19 +24,33 @@ namespace WpfApp1
     {
 
         private string _employeeJmb;
+        private string _theme;
+        private string _language;
+
         private ObservableCollection<PregledSkladistaView> observablePregledSkladista;
         private ObservableCollection<PregledIsporukaPoProduktu> observablePregledSpecificnihProdukta;
         public EmployeeWindow(string employeeJmb)
         {
-            InitializeComponent();
             _employeeJmb = employeeJmb;
+            getTheme();
+            InitializeComponent();
+
+            if (_theme == "Theme1")
+            {
+                changeTheme1(null, null);
+            }
+            else if (_theme == "Theme2")
+            {
+                changeTheme2(null, null);
+            }
+
             observablePregledSkladista = new ObservableCollection<PregledSkladistaView>();
             observablePregledSpecificnihProdukta = new ObservableCollection<PregledIsporukaPoProduktu>();
         }
 
         private void openCashierWindowClick(object sender, RoutedEventArgs e)
         {
-            CashierWindow cashierWindow = new CashierWindow(_employeeJmb);
+            CashierWindow cashierWindow = new CashierWindow(_employeeJmb, _theme, _language);
             cashierWindow.Show();
         }
 
@@ -220,6 +234,199 @@ namespace WpfApp1
         {
             storageViewGrid.Visibility=Visibility.Visible;
             loadStorageView();
+        }
+
+        private void changeThemeDefault(object sender, RoutedEventArgs e)
+        {
+            _theme = "Default";
+
+            upperGrid.Background = SystemColors.ControlLightBrush;
+            menuGrid.Background = SystemColors.ControlLightBrush;
+            employeeMainGrid.Background = SystemColors.ControlLightLightBrush;
+            bottomGrid.Background = SystemColors.ControlLightBrush;
+
+            storageViewGrid.Background = new SolidColorBrush(Colors.Beige);
+            searchGrid.Background = new SolidColorBrush(Colors.Bisque);
+            storageAvailableProductsDataGrid.Background = new SolidColorBrush(Colors.Bisque);
+            storageSpecificProductDataGrid.Background = new SolidColorBrush(Colors.Bisque);
+            storageViewSearchButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
+        }
+
+        private void changeTheme1(object sender, RoutedEventArgs e)
+        {
+            _theme = "Theme1";
+
+            upperGrid.Background = new SolidColorBrush(Colors.Bisque);
+            menuGrid.Background = new SolidColorBrush(Colors.Bisque);
+            employeeMainGrid.Background = new SolidColorBrush(Colors.Beige);
+            bottomGrid.Background = new SolidColorBrush(Colors.Bisque);
+
+            storageViewGrid.Background = new SolidColorBrush(Colors.Beige);
+            searchGrid.Background = new SolidColorBrush(Colors.Bisque);
+            storageAvailableProductsDataGrid.Background = new SolidColorBrush(Colors.Bisque);
+            storageSpecificProductDataGrid.Background = new SolidColorBrush(Colors.Bisque);
+            storageViewSearchButton.Background = SystemColors.ControlLightLightBrush;
+        }
+
+        private void changeTheme2(object sender, RoutedEventArgs e)
+        {
+            _theme = "Theme2";
+
+            upperGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+            menuGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+            employeeMainGrid.Background = new SolidColorBrush(Colors.Brown);
+            bottomGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+
+            storageViewGrid.Background = new SolidColorBrush(Colors.Brown);
+            searchGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+            storageAvailableProductsDataGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+            storageSpecificProductDataGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+            storageViewSearchButton.Background = SystemColors.ControlLightLightBrush;
+        }
+
+        private void changeLanguageSerbian(object sender, RoutedEventArgs e)
+        {
+            _language = "Serbian";
+
+            welcomeLabel.Content = "Dobrodošli";
+            menuLabel.Content = "Meni";
+            cashierViewOpenButton.Content = "Kasa";
+            employeeStorageShowButton.Content = "Magacin";
+            optionsMenu.Padding = new Thickness(35, 0, 6, 0);
+            optionsMenu.Header = "Opcije";
+
+            themeMenuItem.Header = "Teme";
+            themeMenuItem2.Header = "Tema 1";
+            themeMenuItem3.Header = "Tema 2";
+
+            languageMenu.Header = "Jezik";
+            languageMenuItem1.Header = "Srpski";
+            languageMenuItem2.Header = "Engleski";
+
+            logoutButton.Content = "Odjavi se";
+
+            storageLabel1.Content = "Dostupni produkti";
+            storageLabel2.Content = "Lista isporuka selektovanog produkta";
+            searchLabel.Content = "Pretraga";
+            storageViewSearchButton.Content = "Pretraži";
+            storageDataGrid1ProductId.Header = "ID Produkta";
+            storageDataGrid1Name.Header = "Naziv";
+            storageDataGrid1Type.Header = "Vrsta";
+            storageDataGrid1Amount.Header = "Količina";
+            storageDataGrid1Price.Header = "Cijena";
+
+            storageDataGrid2DeliveryId.Header = "ID Isporuke";
+            storageDataGrid2Amount.Header = "količina";
+            storageDataGrid2Price.Header = "Cijena";
+            storageDataGrid2Transporter.Header = "Dostavljač";
+            storageDataGrid2Date.Header = "Datum Isporuke";
+
+            employeeStorageBackButton.Content = "Nazad";
+        }
+        private void changeLanguageEnglish(object sender, RoutedEventArgs e)
+        {
+            _language = "English";
+
+            welcomeLabel.Content = "Welcome";
+            menuLabel.Content = "Menu";
+            cashierViewOpenButton.Content = "Cashbox";
+            employeeStorageShowButton.Content = "Storage";
+            optionsMenu.Padding = new Thickness(27, 0, 6, 0);
+            optionsMenu.Header = "Options";
+
+            themeMenuItem.Header = "Theme";
+            themeMenuItem2.Header = "Theme 1";
+            themeMenuItem3.Header = "Theme 2";
+
+            languageMenu.Header = "Language";
+            languageMenuItem1.Header = "Serbian";
+            languageMenuItem2.Header = "English";
+
+            logoutButton.Content = "Log out";
+
+            storageLabel1.Content = "Available Products";
+            storageLabel2.Content = "List of Deliveries of Selected Product";
+            searchLabel.Content = "Search";
+            storageViewSearchButton.Content = "Search";
+            storageDataGrid1ProductId.Header = "Product ID";
+            storageDataGrid1Name.Header = "Name";
+            storageDataGrid1Type.Header = "Type";
+            storageDataGrid1Amount.Header = "Amount";
+            storageDataGrid1Price.Header = "Price";
+
+            storageDataGrid2DeliveryId.Header = "Delivery ID";
+            storageDataGrid2Amount.Header = "Amount";
+            storageDataGrid2Price.Header = "Price";
+            storageDataGrid2Transporter.Header = "Transporter";
+            storageDataGrid2Date.Header = "Date";
+
+            employeeStorageBackButton.Content = "Back";
+        }
+
+        //Sacuva trenutnu temu kao preferiranu u zaposleni_nalog tabelu database-a
+        private void saveTheme(object sender, EventArgs e)
+        {
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = "UPDATE zaposleni_nalog SET theme=@theme WHERE zaposleni_JMB = @zaposleni_JMB";
+
+                    try
+                    {
+                        using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@theme", _theme);
+                            cmd.Parameters.AddWithValue("@zaposleni_JMB", _employeeJmb);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        //Provjeri koju temu je korisnik sacuvao prilikom prosle sesije
+        private void getTheme()
+        {
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT theme FROM  zaposleni_nalog WHERE zaposleni_JMB = @zaposleni_JMB";
+
+                    try
+                    {
+                        using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@zaposleni_JMB", _employeeJmb);
+                            object result = cmd.ExecuteScalar();
+
+                            if (result != DBNull.Value && result != null)
+                            {
+                                _theme = result.ToString();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
         }
     }
 }

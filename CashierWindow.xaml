@@ -8,11 +8,11 @@
         Title="CashierWindow" Height="700" MinWidth="885" MinHeight="700" SizeToContent="WidthAndHeight" MaxWidth="1250" MaxHeight="800">
     <Grid x:Name="cashierViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" MinHeight="682" MinWidth="885">
         <ListBox x:Name="receiptListBox" HorizontalAlignment="Left" Margin="70,100,0,142" Width="339" d:ItemsSource="{d:SampleData ItemCount=5}" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="15" BorderBrush="#FF707070"/>
-        <Label Content="Račun" HorizontalAlignment="Left" Height="64" Margin="70,20,0,0" VerticalAlignment="Top" Width="339" FontSize="40" FontFamily="Agency FB" HorizontalContentAlignment="Center" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="70,0,0,122" TextWrapping="Wrap" Width="58" FontSize="15" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Text="Ukupno:" Height="20" VerticalAlignment="Bottom"/>
+        <Label x:Name="label1" Content="Račun" HorizontalAlignment="Left" Height="64" Margin="70,20,0,0" VerticalAlignment="Top" Width="339" FontSize="40" FontFamily="Agency FB" HorizontalContentAlignment="Center" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="70,0,0,122" TextWrapping="Wrap" Width="58" FontSize="15" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Text="Ukupno:" Height="20" VerticalAlignment="Bottom"/>
         <TextBlock x:Name="receiptTotalCostBox" HorizontalAlignment="Left" Margin="128,0,0,122" TextWrapping="Wrap" Width="281" FontSize="15" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FlowDirection="RightToLeft" Height="20" VerticalAlignment="Bottom"/>
         <Border BorderBrush="#FF707070" BorderThickness="1,0,1,1" HorizontalAlignment="Left" Margin="70,542,0,122" Width="339"/>
-        <Grid HorizontalAlignment="Left" Margin="70,0,0,20" Width="339" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="50" VerticalAlignment="Bottom">
+        <Grid x:Name="bottomGrid" HorizontalAlignment="Left" Margin="70,0,0,20" Width="339" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="50" VerticalAlignment="Bottom">
             <Button x:Name="cashierRecieptPrintButton" Content="Potvrdi" HorizontalAlignment="Left" Margin="10,10,0,10" Width="65" Click="confirmReceiptAdditionClick"/>
             <Button x:Name="cashierRecieptRemoveItemButton" Content="Poništi" Margin="0,10,10,10" HorizontalAlignment="Right" Width="65" Click="clearReceiptListClick"/>
         </Grid>
@@ -22,9 +22,9 @@
             <Button x:Name="addItemToListButton" Content="Dodaj" Margin="108,0,107,10" Height="43" VerticalAlignment="Bottom" Click="addItemToListClick" FontSize="20"/>
             <ComboBox x:Name="productListComboBox" Margin="0,107,20,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150" FontSize="15" IsReadOnly="True"/>
             <TextBox x:Name="amountItemBox" HorizontalAlignment="Right" Margin="0,0,20,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="150" FontSize="20"/>
-            <Label Content="Proizvod:" HorizontalAlignment="Left" Height="33" Margin="30,100,0,0" VerticalAlignment="Top" Width="126" FontSize="20"/>
-            <Label Content="Količina:" HorizontalAlignment="Left" Height="33" Margin="30,205,0,0" VerticalAlignment="Top" Width="126" FontSize="20"/>
+            <Label x:Name="label3" Content="Proizvod:" HorizontalAlignment="Left" Height="33" Margin="30,100,0,0" VerticalAlignment="Top" Width="126" FontSize="20"/>
+            <Label x:Name="label4" Content="Količina:" HorizontalAlignment="Left" Height="33" Margin="30,205,0,0" VerticalAlignment="Top" Width="126" FontSize="20"/>
         </Grid>
-        <Label Content="Dodaj proizvod" Height="64" Margin="0,20,76,0" VerticalAlignment="Top" FontSize="40" FontFamily="Agency FB" HorizontalContentAlignment="Center" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" HorizontalAlignment="Right" Width="339"/>
+        <Label x:Name="label2" Content="Dodaj proizvod" Height="64" Margin="0,20,76,0" VerticalAlignment="Top" FontSize="40" FontFamily="Agency FB" HorizontalContentAlignment="Center" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" HorizontalAlignment="Right" Width="339"/>
     </Grid>
 </Window>

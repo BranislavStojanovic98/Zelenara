@@ -25,11 +25,47 @@ namespace WpfApp1
 
         private string _employeeJmb;
         decimal ukupnaCena = (long)0.0;
-        public CashierWindow(string employeeJmb)
+        public CashierWindow(string employeeJmb, string theme, string language)
         {
 
             InitializeComponent();
-            loadProductListComboBoxComboBox();
+            if(theme == "Theme1")
+            {
+                cashierViewGrid.Background = new SolidColorBrush(Colors.Beige);
+                bottomGrid.Background = new SolidColorBrush(Colors.Bisque);
+                addItemGrid.Background = new SolidColorBrush(Colors.Bisque);
+                receiptListBox.Background = new SolidColorBrush(Colors.Bisque);
+                addItemToListButton.Background = SystemColors.ControlLightLightBrush;
+                cashierRecieptRemoveItemButton.Background = SystemColors.ControlLightLightBrush;
+                cashierRecieptPrintButton.Background = SystemColors.ControlLightLightBrush;
+            }
+            else if(theme == "Theme2")
+            {
+                cashierViewGrid.Background = new SolidColorBrush(Colors.Brown);
+                bottomGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+                addItemGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+                receiptListBox.Background = new SolidColorBrush(Colors.BurlyWood);
+                addItemToListButton.Background = SystemColors.ControlLightLightBrush;
+                cashierRecieptRemoveItemButton.Background = SystemColors.ControlLightLightBrush;
+                cashierRecieptPrintButton.Background = SystemColors.ControlLightLightBrush;
+            }
+
+            if(language == "English")
+            {
+                label1.Content = "Bill";
+                label2.Content = "Add Product";
+                label3.Content = "Product:";
+                label4.Content = "Amount";
+                textBlock.Text = "Total:";
+
+                addItemToListButton.Content = "Add";
+                cashierRemoveItem.Content = "Remove";
+                cashierRecieptPrintButton.Content = "Print";
+                cashierRecieptRemoveItemButton.Content = "Clear";
+                closeButton.Content = "Back";
+            }
+
+                loadProductListComboBoxComboBox();
             _employeeJmb = employeeJmb;
         }
 
