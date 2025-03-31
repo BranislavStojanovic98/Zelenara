@@ -355,6 +355,7 @@ namespace WpfApp1
 
             storageDataGrid2DeliveryId.Header = "ID Isporuke";
             storageDataGrid2Amount.Header = "Kolicina";
+            storageDataGrid2Producer.Header = "Proizvođač";
             storageDataGrid2Price.Header = "Cena";
             storageDataGrid2Transporter.Header = "Dostavljac";
             storageDataGrid2Date.Header = "Datum Isporuke";
@@ -465,6 +466,7 @@ namespace WpfApp1
 
             storageDataGrid2DeliveryId.Header = "Delivery ID";
             storageDataGrid2Amount.Header = "Amount";
+            storageDataGrid2Producer.Header = "Producer";
             storageDataGrid2Price.Header = "Price";
             storageDataGrid2Transporter.Header = "Transporter";
             storageDataGrid2Date.Header = "Date";

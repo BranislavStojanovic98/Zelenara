@@ -85,11 +85,13 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="storageDataGrid2DeliveryId" Binding="{Binding IsporukaId}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="ID Isporuke" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn x:Name="storageDataGrid2Amount" Binding="{Binding Kolicina}" CanUserResize="False" CanUserSort="True" CanUserReorder="False" FontSize="14" Header="Količina" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn x:Name="storageDataGrid2Producer" Binding="{Binding Proizvodjac}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Proizvođač" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn x:Name="storageDataGrid2Price" Binding="{Binding Cena}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Cijena" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn x:Name="storageDataGrid2Transporter" Binding="{Binding Dostavljac}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Dostavljač" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn x:Name="storageDataGrid2Date" Binding="{Binding Datum}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Datum Isporuke" IsReadOnly="True" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <TextBlock x:Name="storageNoDataBox" Height="44" Margin="768,170,50,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="30" FontWeight="Bold" Text="No items in storage" Visibility="Collapsed"/>
             <Label x:Name="storageLabel2" Content="Lista isporuka selektovanog produkta" Margin="768,10,20,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Agency FB" FontSize="48" BorderThickness="0,0,0,2">
                 <Label.BorderBrush>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

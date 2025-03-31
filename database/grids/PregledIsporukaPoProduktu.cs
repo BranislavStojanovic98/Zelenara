@@ -13,16 +13,18 @@ namespace WpfApp1.database.grids
         private int _nabavkaId;
         private int _isporukeId;
         private int _kolicina;
+        private string _proizvodjac;
         private decimal _cena;
         private string _dostavljac;
         private string _datum;
         private int _produktId;
 
-        public PregledIsporukaPoProduktu(int nabavkaId, int isporukeId, int kolicina, decimal cena, string dostavljac, string datum, int produktId)
+        public PregledIsporukaPoProduktu(int nabavkaId, int isporukeId, int kolicina, string proizvodjac, decimal cena, string dostavljac, string datum, int produktId)
         {
             _nabavkaId = nabavkaId;
             _isporukeId = isporukeId;
             _kolicina = kolicina;
+            _proizvodjac = proizvodjac;
             _cena = cena;
             _dostavljac = dostavljac;
             _datum = datum;
@@ -64,6 +66,19 @@ namespace WpfApp1.database.grids
                 {
                     _kolicina = value;
                     OnPropertyChanged(nameof(Kolicina));
+                }
+            }
+        }
+
+        public string Proizvodjac
+        {
+            get => _proizvodjac;
+            set
+            {
+                if (_proizvodjac != value)
+                {
+                    _proizvodjac = value;
+                    OnPropertyChanged(nameof(Proizvodjac));
                 }
             }
         }

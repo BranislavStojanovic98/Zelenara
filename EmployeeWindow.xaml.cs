@@ -125,13 +125,14 @@ namespace WpfApp1
                                 while (reader.Read())
                                 {
                                     observablePregledSpecificnihProdukta.Add(new PregledIsporukaPoProduktu(
-                                        reader.GetInt32(0),
-                                        reader.GetInt32(1),
-                                        reader.GetInt32(2),
-                                        reader.GetDecimal(3),
-                                        reader.GetString(4),
-                                        reader.GetString(5),
-                                        reader.GetInt32(6)
+                                        reader.GetInt32(0),         //ID Nabavke
+                                        reader.GetInt32(1),         //ID Isporuke
+                                        reader.GetInt32(2),         //Kolicina Produkta
+                                        reader.GetString(3),        //Proizvodjac
+                                        reader.GetDecimal(4),       //Cena
+                                        reader.GetString(5),        //Dostavljac
+                                        reader.GetString(6),        //Datum
+                                        reader.GetInt32(7)          //ID Produkta
                                         ));
                                 }
                             }
@@ -153,6 +154,7 @@ namespace WpfApp1
             }
         }
 
+        //Ucitavanje specificnog produkta preko pretrage sa Produkt ID u Skladiste gridu
         private void loadStorageSpecificProductDataGridSearch(int produktId)
         {
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
@@ -175,18 +177,24 @@ namespace WpfApp1
                                 while (reader.Read())
                                 {
                                     observablePregledSpecificnihProdukta.Add(new PregledIsporukaPoProduktu(
-                                        reader.GetInt32(0),
-                                        reader.GetInt32(1),
-                                        reader.GetInt32(2),
-                                        reader.GetDecimal(3),
-                                        reader.GetString(4),
-                                        reader.GetString(5),
-                                        reader.GetInt32(6)
+                                        reader.GetInt32(0),         //ID Nabavke
+                                        reader.GetInt32(1),         //ID Isporuke
+                                        reader.GetInt32(2),         //Kolicina
+                                        reader.GetString(3),        //Proizvodjac
+                                        reader.GetDecimal(4),       //Cena
+                                        reader.GetString(5),        //Dostavljac
+                                        reader.GetString(6),        //Datum
+                                        reader.GetInt32(7)          //ID Produkta
                                         ));
                                 }
                                 if (observablePregledSpecificnihProdukta.Count == 0)
                                 {
                                     MessageBox.Show("Nepostojeci Produkt ID");
+                                    storageNoDataBox.Visibility = Visibility.Visible;
+                                }
+                                else
+                                {
+                                    storageNoDataBox.Visibility = Visibility.Collapsed;
                                 }
                             }
 
@@ -208,18 +216,87 @@ namespace WpfApp1
             }
         }
 
-        //Dugme kada pritisnemo prerazi u storage View, za trazenje produkta po produkt ID-ju
+        //Ucitavanje specificnog produkta preko pretrage sa Produkt ID u Skladiste gridu
+        private void loadStorageSpecificProductDataGridSearch(string prodcer)
+        {
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    observablePregledSpecificnihProdukta.Clear();
+
+
+                    try
+                    {
+                        using (MySqlCommand cmd = new MySqlCommand("filter_by_producers", connection))
+                        {
+                            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                            cmd.Parameters.AddWithValue("@name", prodcer);
+                            using (MySqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    observablePregledSpecificnihProdukta.Add(new PregledIsporukaPoProduktu(
+                                        reader.GetInt32(0),         //ID Nabavke
+                                        reader.GetInt32(1),         //ID Isporuke
+                                        reader.GetInt32(2),         //Kolicina
+                                        reader.GetString(3),        //Proizvodjac
+                                        reader.GetDecimal(4),       //Cena
+                                        reader.GetString(5),        //Dostavljac
+                                        reader.GetString(6),        //Datum
+                                        reader.GetInt32(7)          //ID Produkta
+                                        ));
+                                }
+                                if (observablePregledSpecificnihProdukta.Count == 0)
+                                {
+                                    MessageBox.Show("Nepostojeci Dostavljač");
+                                    storageNoDataBox.Visibility = Visibility.Visible;
+                                }
+                                else
+                                {
+                                    storageNoDataBox.Visibility = Visibility.Collapsed;
+                                }
+                            }
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Greska " + ex.Message);
+                    }
+                }
+
+                storageSpecificProductDataGrid.ItemsSource = null;
+                storageSpecificProductDataGrid.ItemsSource = observablePregledSpecificnihProdukta;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in connectiong to database " + ex.Message);
+            }
+        }
+
+        //Dugme kada pritisnemo pretrazi u storage View, za trazenje produkta po produkt ID-ju
         private void storageViewSearchByProductId(object sender, RoutedEventArgs e)
         {
             string idStr = storageViewSearchBox.Text;
             if (idStr != "")
             {
-                int id = int.Parse(idStr);
-                loadStorageSpecificProductDataGridSearch(id);
+                if (int.TryParse(idStr, out int id))
+                {
+                    loadStorageSpecificProductDataGridSearch(id);
+                }
+                else
+                {
+                    loadStorageSpecificProductDataGridSearch(idStr);
+                }
             }
             else
             {
-                MessageBox.Show("Unesite postojeći Produkt ID!");
+                MessageBox.Show("Unesite postojeći Produkt ID ili Naziv Proizvođača!");
             }
         }
 
@@ -316,7 +393,8 @@ namespace WpfApp1
             storageDataGrid1Price.Header = "Cijena";
 
             storageDataGrid2DeliveryId.Header = "ID Isporuke";
-            storageDataGrid2Amount.Header = "količina";
+            storageDataGrid2Amount.Header = "Količina";
+            storageDataGrid2Producer.Header = "Proizvođač";
             storageDataGrid2Price.Header = "Cijena";
             storageDataGrid2Transporter.Header = "Dostavljač";
             storageDataGrid2Date.Header = "Datum Isporuke";
@@ -356,6 +434,7 @@ namespace WpfApp1
 
             storageDataGrid2DeliveryId.Header = "Delivery ID";
             storageDataGrid2Amount.Header = "Amount";
+            storageDataGrid2Producer.Header = "Producer";
             storageDataGrid2Price.Header = "Price";
             storageDataGrid2Transporter.Header = "Transporter";
             storageDataGrid2Date.Header = "Date";

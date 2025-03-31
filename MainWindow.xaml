@@ -235,6 +235,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="storageDataGrid2DeliveryId" Binding="{Binding IsporukaId}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="ID Isporuke" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn x:Name="storageDataGrid2Amount" Binding="{Binding Kolicina}" CanUserResize="False" CanUserSort="True" CanUserReorder="False" FontSize="14" Header="Kolicina" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn x:Name="storageDataGrid2Producer" Binding="{Binding Proizvodjac}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Proizvođač" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn x:Name="storageDataGrid2Price" Binding="{Binding Cena}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Cena" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn x:Name="storageDataGrid2Transporter" Binding="{Binding Dostavljac}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Dostavljac" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn x:Name="storageDataGrid2Date" Binding="{Binding Datum}" CanUserResize="False" CanUserReorder="False" FontSize="14" Header="Datum Isporuke" IsReadOnly="True" Width="*"/>
