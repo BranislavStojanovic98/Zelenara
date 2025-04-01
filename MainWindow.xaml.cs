@@ -101,9 +101,6 @@ namespace WpfApp1
         {
             adminEmployeeTable.SelectedItem = null;
             adminEmployeeTable.SelectedIndex = -1;
-            employeeAccountNameBox.Clear();
-            employeeAccountPasswordBox.Clear();
-            employeeAccountPasswordConfirmBox.Clear();
         }
 
         //Prelazi na Pocetnu stranu
@@ -155,7 +152,6 @@ namespace WpfApp1
             //Zaposleni
 
             adminEmployeeViewGrid.Background = SystemColors.ControlLightLightBrush;
-            adminEmployeeLoginAccountGrid.Background = SystemColors.ControlLightBrush;
             adminEmployeeTable.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF0F0F0"));
             empolyeeBottomGrid.Background = SystemColors.ControlLightBrush;
 
@@ -191,7 +187,6 @@ namespace WpfApp1
             //Zaposleni
 
             adminEmployeeViewGrid.Background = new SolidColorBrush(Colors.Beige);
-            adminEmployeeLoginAccountGrid.Background = new SolidColorBrush(Colors.Bisque);
             adminEmployeeTable.Background = new SolidColorBrush(Colors.Bisque);
             empolyeeBottomGrid.Background = new SolidColorBrush (Colors.Bisque);
 
@@ -227,7 +222,6 @@ namespace WpfApp1
             //Zaposleni
 
             adminEmployeeViewGrid.Background = new SolidColorBrush(Colors.Brown);
-            adminEmployeeLoginAccountGrid.Background = new SolidColorBrush(Colors.BurlyWood);
             adminEmployeeTable.Background = new SolidColorBrush(Colors.BurlyWood);
             empolyeeBottomGrid.Background = new SolidColorBrush(Colors.BurlyWood);
 
@@ -284,17 +278,9 @@ namespace WpfApp1
             employeeTableMenuChangeOption.Header = "Izmijeni";
             employeeTableMenuDeleteOption.Header = "Izbriši";
 
-            adminEmployeeBackButton.Content = "Nazad";
             employeeBottomLabel.Content = "Poštanski Brojevi:";
-            employeeLabel1.Content = "Korisnički nalog";
-            employeeLabel2.Content = "zaposlenog";
-            employeeLabel3.Content = "Korisničko ime:";
-            employeeLabel4.Content = "Lozinka:";
-            employeeLabel5.Content = "Potvrda lozinke:";
 
-            employeeAccountConfirmButton.Content = "Potvrdi";
             addEmployeeButton.Content = "Dodaj";
-            adminEmployeeBackButton.Content = "Nazad";
 
 
             //Isporuke
@@ -324,7 +310,6 @@ namespace WpfApp1
 
             transportersLabel1.Content = "Lista dostupnih dostavljača";
             transporterLabel2.Content = "Lista svih isporuka izabranog dostavljača";
-            adminDeliveriesViewBackButton_Copy.Content = "Nazad";
 
             transporterDataGridIDColumn.Header = "ID Dostavljaca";
             transporterDataGridNameColumn.Header = "Naziv";
@@ -360,7 +345,6 @@ namespace WpfApp1
             storageDataGrid2Transporter.Header = "Dostavljac";
             storageDataGrid2Date.Header = "Datum Isporuke";
 
-            adminDeliveriesViewBackButton_Copy1.Content = "Nazad";
 
             _language = "Serbian";
         }
@@ -396,17 +380,9 @@ namespace WpfApp1
             employeeTableMenuChangeOption.Header = "Edit";
             employeeTableMenuDeleteOption.Header = "Delete";
 
-            adminEmployeeBackButton.Content = "Back";
             employeeBottomLabel.Content = "Postal Number:";
-            employeeLabel1.Content = "User employee";
-            employeeLabel2.Content = "account";
-            employeeLabel3.Content = "Username:";
-            employeeLabel4.Content = "Password:";
-            employeeLabel5.Content = "Confirm Password:";
 
-            employeeAccountConfirmButton.Content = "Confirm";
             addEmployeeButton.Content = "Add";
-            adminEmployeeBackButton.Content = "Back";
 
 
             //Isporuke
@@ -436,7 +412,6 @@ namespace WpfApp1
 
             transportersLabel1.Content = "List of Available Transporters";
             transporterLabel2.Content = "List of All Deliveries of Selected Transporter";
-            adminDeliveriesViewBackButton_Copy.Content = "Back";
 
             transporterDataGridIDColumn.Header = "Transporter ID";
             transporterDataGridNameColumn.Header = "Name";
@@ -471,7 +446,6 @@ namespace WpfApp1
             storageDataGrid2Transporter.Header = "Transporter";
             storageDataGrid2Date.Header = "Date";
 
-            adminDeliveriesViewBackButton_Copy1.Content = "Back";
 
             _language = "English";
         }
@@ -505,6 +479,19 @@ namespace WpfApp1
             catch (Exception ex)
             {
             }
+        }
+
+        private void createEmployeeAccount(object sender, RoutedEventArgs e)
+        {
+            var selectedItem = adminEmployeeTable.SelectedItem as Zaposleni;
+            if (selectedItem == null)
+            {
+                MessageBox.Show("Izaberite zaposlenog za koga kreirate nalog!");
+                return;
+            }
+            string jmb = selectedItem.JMB;
+            EmployeeAccountWindow employeeAccountWindow = new EmployeeAccountWindow(selectedItem, jmb, _language, _theme);
+            employeeAccountWindow.Show();
         }
     }
 }

@@ -63,6 +63,7 @@ namespace WpfApp1
                 emplyeeInfoPlaceLabel.Content = "Poštanski Broj:";
 
                 employeeInfoBoxAddButton.Content = "Dodaj";
+                employeeInfoBoxUpdateButton.Content = "Izmijeni";
                 employeeInfoBoxDeleteButton.Content = "Izbriši";
             }
             else if(language == "English")
@@ -75,6 +76,7 @@ namespace WpfApp1
                 emplyeeInfoPlaceLabel.Content = "Postal Number:";
 
                 employeeInfoBoxAddButton.Content = "Add";
+                employeeInfoBoxUpdateButton.Content = "Change";
                 employeeInfoBoxDeleteButton.Content = "Clear";
             }
         }
@@ -108,6 +110,7 @@ namespace WpfApp1
                 emplyeeInfoPlaceLabel.Content = "Poštanski Broj:";
 
                 employeeInfoBoxAddButton.Content = "Dodaj";
+                employeeInfoBoxUpdateButton.Content = "Izmijeni";
                 employeeInfoBoxDeleteButton.Content = "Izbriši";
             }
             else if (language == "English")
@@ -120,6 +123,7 @@ namespace WpfApp1
                 emplyeeInfoPlaceLabel.Content = "Postal Number:";
 
                 employeeInfoBoxAddButton.Content = "Add";
+                employeeInfoBoxUpdateButton.Content = "Change";
                 employeeInfoBoxDeleteButton.Content = "Clear";
             }
 

@@ -1,19 +1,90 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using MySqlConnector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using WpfApp1.database.employee;
-using MySqlConnector;
 
 namespace WpfApp1
 {
-
-    //Stavke za kreiranje i mijenjanje naloga za zaposlenog
-    public partial class MainWindow
+    /// <summary>
+    /// Interaction logic for EmployeeAccountWindow.xaml
+    /// </summary>
+    public partial class EmployeeAccountWindow : Window
     {
+
+        private string _adminJmb;
+        private string _language;
+        private Zaposleni _zaposleni;
+        private bool _canClose = true;
+
+        public EmployeeAccountWindow(Zaposleni selectedItem, string jmb, string language, string theme)
+        {
+            _adminJmb = jmb;
+            _language = language;
+            _zaposleni = selectedItem;
+            InitializeComponent();
+
+            if(theme == "Default")
+            {
+                adminEmployeeLoginAccountGrid.Background = SystemColors.ControlLightBrush;
+            }
+            else if(theme == "Theme1")
+            {
+                adminEmployeeLoginAccountGrid.Background = new SolidColorBrush(Colors.Bisque);
+            }
+            else if(theme == "Theme2")
+            {
+                adminEmployeeLoginAccountGrid.Background = new SolidColorBrush(Colors.BurlyWood);
+            }
+
+            if(language == "Serbian")
+            {
+                employeeLabel1.Content = "Korisnički nalog";
+                employeeLabel2.Content = "zaposlenog";
+                employeeLabel3.Content = "Korisničko ime:";
+                employeeLabel4.Content = "Lozinka:";
+                employeeLabel5.Content = "Potvrda lozinke:";
+
+                employeeAccountConfirmButton.Content = "Potvrdi";
+                employeeAccountConfirmChangesButton.Content = "Izmijeni";
+            }
+            else if(language == "English")
+            {
+                employeeLabel1.Content = "User employee";
+                employeeLabel2.Content = "account";
+                employeeLabel3.Content = "Username:";
+                employeeLabel4.Content = "Password:";
+                employeeLabel5.Content = "Confirm Password:";
+
+                employeeAccountConfirmButton.Content = "Confirm";
+                employeeAccountConfirmChangesButton.Content = "Change";
+            }
+
+                loadExistingEmployeeAccountInfo(selectedItem);
+
+            if(employeeAccountNameBox.Text == "")
+            {
+                employeeAccountConfirmButton.Visibility = Visibility.Visible;
+                employeeAccountConfirmChangesButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                employeeAccountConfirmButton.Visibility = Visibility.Collapsed;
+                employeeAccountConfirmChangesButton.Visibility = Visibility.Visible;
+            }
+
+        }
 
         //Funkcija za dodavanje naloga zaposlenog
         public void addEmployeeAccount()
@@ -24,26 +95,24 @@ namespace WpfApp1
             string password = "";
             if (employeeAccountPasswordBox.Password == employeeAccountPasswordConfirmBox.Password)
             {
+                _canClose = false;
                 password = employeeAccountPasswordBox.Password;
             }
             else
             {
-                MessageBox.Show("Unijete sifre se ne poklapaju");
+                _canClose = false;
                 return;
             }
-
-            var selectedItem = adminEmployeeTable.SelectedItem as Zaposleni;
-            if (selectedItem == null)
-            {
-                MessageBox.Show("Izaberite zaposlenog za koga kreirate nalog!");
-                return;
-            }
-            string jmb = selectedItem.JMB;
-
 
             if (password == "")
             {
-                MessageBox.Show("Sifra nije unesena!");
+                _canClose = false;
+                return;
+            }
+
+            if(password.Length < 5)
+            {
+                _canClose = false;
                 return;
             }
 
@@ -60,12 +129,12 @@ namespace WpfApp1
                     try
                     {
                         MySqlCommand cmnd1 = new MySqlCommand(check, connection);
-                        cmnd1.Parameters.AddWithValue("@jmb", jmb);
+                        cmnd1.Parameters.AddWithValue("@jmb", _zaposleni.JMB);
                         MySqlDataReader reader = cmnd1.ExecuteReader();
                         while (reader.Read())
                         {
 
-                            if (jmb == reader.GetString(0))
+                            if (_zaposleni.JMB == reader.GetString(0))
                             {
                                 MessageBox.Show("Izabrani korisnik već posjeduje nalog!");
                                 return;
@@ -82,7 +151,7 @@ namespace WpfApp1
                     {
                         using (MySqlCommand cmd = new MySqlCommand(query, connection))
                         {
-                            cmd.Parameters.AddWithValue("@jmb", jmb);
+                            cmd.Parameters.AddWithValue("@jmb", _zaposleni.JMB);
                             cmd.Parameters.AddWithValue("@username", username);
                             cmd.Parameters.AddWithValue("@password", hashedPassword);
                             cmd.Parameters.AddWithValue("@isMenager", 0);
@@ -90,6 +159,7 @@ namespace WpfApp1
 
                             if (rowsAffected > 0)
                             {
+                                _canClose = true;
                                 MessageBox.Show("Nalog zaposlenog uspješno dodat!");
                                 employeeAccountNameBox.Clear();
                                 employeeAccountPasswordBox.Clear();
@@ -118,16 +188,16 @@ namespace WpfApp1
         {
             ConfirmWindow confirmWindow = new ConfirmWindow(this, "addEmployeeAccount", _adminJmb, _language);
             confirmWindow.ShowDialog();
+            this.Close();
         }
 
 
         //funkcija za ucitavanje postojeceg korisnickog naloga i sifre
-        private void loadExistingEmployeeAccountInfo(object sender, SelectionChangedEventArgs e)
+        private void loadExistingEmployeeAccountInfo(Zaposleni selectedZaposleni)
         {
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
             try
             {
-                var selectedZaposleni = adminEmployeeTable.SelectedItem as Zaposleni;
                 if (selectedZaposleni != null)
                 {
                     using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -170,20 +240,21 @@ namespace WpfApp1
         {
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
 
+            
             if (employeeAccountPasswordBox.Password == employeeAccountPasswordConfirmBox.Password)
             {
                 password = employeeAccountPasswordBox.Password;
             }
             else
             {
-                MessageBox.Show("Unijete sifre se ne poklapaju");
+                _canClose = false;
                 return;
             }
-
-            var selectedItem = adminEmployeeTable.SelectedItem as Zaposleni;
+            
+            var selectedItem = _zaposleni;
             if (selectedItem == null)
             {
-                MessageBox.Show("Izaberite zaposlenog za koga mijenjate nalog!");
+                _canClose = false;
                 return;
             }
             string jmb = selectedItem.JMB;
@@ -191,7 +262,13 @@ namespace WpfApp1
 
             if (password == "")
             {
-                MessageBox.Show("Sifra nije unesena!");
+                _canClose = false;
+                return;
+            }
+
+            if(password.Length < 5)
+            {
+                _canClose = false;
                 return;
             }
 
@@ -214,6 +291,7 @@ namespace WpfApp1
                             cmnd1.Parameters.AddWithValue("@password", hashedPassword);
                             cmnd1.ExecuteNonQuery();
                         }
+                        _canClose = true;
                         MessageBox.Show("Izmijene uspješno unesene!");
                     }
                     catch (Exception ex)
@@ -240,8 +318,38 @@ namespace WpfApp1
         {
             ConfirmWindow confirmWindow = new ConfirmWindow(this, "changeEmployeeAccount", _adminJmb, _language);
             confirmWindow.ShowDialog();
+            this.Close();
         }
 
+        private void EmployeeAccountWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (_canClose == false)
+            {
+                if (employeeAccountPasswordBox.Password != employeeAccountPasswordConfirmBox.Password)
+                {
+                    e.Cancel = true;
+                    MessageBox.Show("Unijete sifre se ne poklapaju");
+                }
 
+                if (employeeAccountPasswordBox.Password == "")
+                {
+                    e.Cancel = true;
+                    MessageBox.Show("Sifra nije unesena!");
+                }
+
+                if (employeeAccountPasswordBox.Password.Length < 5)
+                {
+                    e.Cancel = true;
+                    MessageBox.Show("Sifra mora biti najmanje 5 karaktera");
+                }
+
+                if (_zaposleni == null)
+                {
+                    e.Cancel = true;
+                    MessageBox.Show("Izaberite zaposlenog za koga mijenjate nalog!");
+                }
+            }
+            _canClose = true;
+        }
     }
 }

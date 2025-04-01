@@ -18,7 +18,7 @@ namespace WpfApp1
         //Ucitavanje informacija tabele zaposlenih
         private void LoadDataTabelaZaposleni()
         {
-            string connectionString = "Server=localhost,3306;Database=projektni;Uid=root;Pwd=root;"; // Replace with your connection string
+            string connectionString = "Server=localhost,3306;Database=projektni;Uid=root;Pwd=root;";
 
             try
             {

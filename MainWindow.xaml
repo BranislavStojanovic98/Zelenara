@@ -26,7 +26,7 @@
             </Border>
             <Label x:Name="welcomeLabel" Content="Dobrodošli" VerticalContentAlignment="Center" FontFamily="Agency FB" FontSize="72" HorizontalContentAlignment="Center" MinHeight="80"/>
         </Grid>
-        
+
         <Grid x:Name="bannerGrid" Grid.Row="3" Margin="10,30,10,10" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
             <Label Content="MOTD:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" BorderBrush="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" FontSize="16" FontFamily="Agency FB" FontWeight="Bold" BorderThickness="0,0,0,1"/>
             <Label x:Name="motdLabel" Content="Uz velikog čovjeka obično idu i velike greške" Margin="10,0,10,0" FontFamily="Algerian" FontSize="36" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
@@ -55,11 +55,7 @@
                 <RowDefinition Height="*" MinHeight="630"/>
                 <RowDefinition Height="*" MaxHeight="160" MinHeight="120"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="101*"/>
-                <ColumnDefinition Width="43*"/>
-            </Grid.ColumnDefinitions>
-            <DataGrid Grid.Column="0" Grid.Row="0" x:Name="adminEmployeeTable" RowHeight="30" RowHeaderWidth="0" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnHeaderHeight="50" BorderBrush="Gray" BorderThickness="2,2,2,2" AutoGenerateColumns="False" PreviewMouseDown="deselectTableColumn" Margin="50,60,20,49" PreviewMouseRightButtonDown="openEmployeeTableContextMenu" SelectionChanged="loadExistingEmployeeAccountInfo">
+            <DataGrid Grid.Column="0" Grid.Row="0" x:Name="adminEmployeeTable" RowHeight="30" RowHeaderWidth="0" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnHeaderHeight="50" BorderBrush="Gray" BorderThickness="2,2,2,2" AutoGenerateColumns="False" PreviewMouseDown="deselectTableColumn" Margin="50,150,20,0" PreviewMouseRightButtonDown="openEmployeeTableContextMenu">
                 <DataGrid.ContextMenu>
                     <ContextMenu Name="employeeTableMenu">
                         <MenuItem x:Name="employeeTableMenuAddOption" Header="Dodaj" Click="employeeTableAddOption"/>
@@ -95,25 +91,13 @@
             </DataGrid>
 
             <Grid x:Name="empolyeeBottomGrid" Margin="50,30,20,30" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.ColumnSpan="3" Grid.Row="1">
-                <Button x:Name="adminEmployeeBackButton" Content="Nazad" HorizontalAlignment="Left" Margin="20,10,0,10" Click="mainViewShow" FontSize="17" FontFamily="Agency FB" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="50" Width="100"/>
                 <Border BorderBrush="Gray" BorderThickness="2,2,2,2" PreviewMouseDown="deselectTableColumn"/>
                 <Label x:Name="employeeBottomLabel" Content="Poštanski Brojevi:" Margin="0,0,178,0" FontFamily="Agency FB" FontSize="24" Height="40" VerticalAlignment="Center" HorizontalAlignment="Right" Width="153"/>
                 <Button x:Name="openListaMjestaButton" Margin="0,0,20,0" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="openListaMjestaClick" Height="40" VerticalAlignment="Center" HorizontalAlignment="Right" Width="158" Content="?"/>
             </Grid>
-            <Grid x:Name="adminEmployeeLoginAccountGrid" Grid.Column="1" Height="581" Margin="20,60,20,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
-                <Label x:Name="employeeLabel1" Content="Korisnički nalog" Margin="10,10,10,0" VerticalAlignment="Top" FontFamily="Agency FB" FontSize="36" HorizontalContentAlignment="Center"/>
-                <Label x:Name="employeeLabel2" Content="zaposlenog" Margin="10,68,10,0" VerticalAlignment="Top" FontFamily="Agency FB" FontSize="36" BorderThickness="0,0,0,2" BorderBrush="Gray" HorizontalContentAlignment="Center"/>
-                <Label x:Name="employeeLabel3" Content="Korisničko ime:" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top" FontSize="25" FontFamily="Agency FB"/>
-                <Label x:Name="employeeLabel4" Content="Lozinka:" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="25" FontFamily="Agency FB" Height="38"/>
-                <TextBox x:Name="employeeAccountNameBox" Margin="174,182,5,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" FontFamily="Agency FB" Height="33"/>
-                <PasswordBox x:Name="employeeAccountPasswordBox" Height="33" Margin="174,0,5,0" VerticalAlignment="Center" FontSize="20" FontFamily="Agency FB"/>
-                <PasswordBox x:Name="employeeAccountPasswordConfirmBox" Height="33" Margin="174,360,5,0" VerticalAlignment="Top" FontSize="20" FontFamily="Agency FB"/>
-                <Label x:Name="employeeLabel5" Content="Potvrda lozinke:" HorizontalAlignment="Left" Margin="10,355,0,0" VerticalAlignment="Top" FontSize="25" FontFamily="Agency FB" Height="38" Width="128"/>
-                <Button x:Name="employeeAccountConfirmButton" Margin="82,489,82,40" Content="Potvrdi" BorderBrush="Gray" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="confirmEmployeeAccountClick"/>
-                <Border BorderBrush="Gray" BorderThickness="2,2,2,2" Visibility="Hidden"/>
-                <Button x:Name="employeeAccountConfirmChangesButton" Margin="82,489,82,40" Content="Izmijeni" BorderBrush="Gray" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="confirmEmployeeAccountChangeClick" Visibility="Collapsed"/>
-            </Grid>
-            <Button x:Name="addEmployeeButton" Content="Dodaj" HorizontalAlignment="Left" Margin="50,0,0,9" Width="100" Click="addEmployee" Height="40" VerticalAlignment="Bottom" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="16" FontFamily="Agency FB"/>
+
+            <Button x:Name="accountButton" Content="Korisnički Nalog" HorizontalAlignment="Left" Height="40" Margin="155,110,0,0" VerticalAlignment="Top" Width="110" FontFamily="Agency FB" FontSize="16" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Click="createEmployeeAccount"/>
+            <Button x:Name="addEmployeeButton" Content="Dodaj Zaposlenog" HorizontalAlignment="Left"  Height="40" Margin="50,110,0,624" VerticalAlignment="Top" Width="110" FontFamily="Agency FB" FontSize="16"  Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Click="addEmployee" Grid.RowSpan="2" />
         </Grid>
         <Grid x:Name="adminDeliveriesViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Grid.RowSpan="4" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
@@ -134,7 +118,6 @@
             </DataGrid>
 
             <Grid x:Name="adminDeliveriesListDeliveriesGrid" Margin="50,10,20,20" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.ColumnSpan="2">
-                <Button x:Name="adminDeliveriesViewBackButton" Content="Nazad" HorizontalAlignment="Left" Margin="20,0,0,20" Height="60" VerticalAlignment="Bottom" Width="120" FontSize="24" FontFamily="Agency FB" Click="mainViewShow" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
                 <Label x:Name="deliveriesBottomLabel1" Content="Nabavka" Margin="410,10,0,110" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="36" FontFamily="Agency FB" BorderBrush="Gray" BorderThickness="0,0,0,2" HorizontalAlignment="Left" MinWidth="130" Width="300"/>
                 <Label x:Name="deliveriesBottomLabel2" Content="Isporuke" Margin="0,10,100,0" Height="50" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="36" FontFamily="Agency FB" BorderBrush="Gray" BorderThickness="0,0,0,2" HorizontalAlignment="Right" MinWidth="130" Width="300"/>
                 <Button x:Name="adminDeliveriesOrderAdd" Content="Dodaj" HorizontalAlignment="Left" Margin="510,0,0,60" Width="100" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="addDeliveryOrderButton" Height="40" VerticalAlignment="Bottom"/>
@@ -170,7 +153,6 @@
                 <ColumnDefinition Width="*" MaxWidth="475"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="adminDeliveriesViewBackButton_Copy" Content="Nazad" HorizontalAlignment="Left" Margin="50,0,0,20" Width="120" FontSize="24" FontFamily="Agency FB" Click="mainViewShow" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="50" VerticalAlignment="Bottom"/>
             <Label x:Name="transportersLabel1" Content="Lista dostupnih dostavljača" Margin="25,60,25,0" VerticalAlignment="Top" FontSize="48" FontFamily="Agency FB" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,2" Height="69">
                 <Label.BorderBrush>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -205,7 +187,7 @@
                     </LinearGradientBrush>
                 </Label.BorderBrush>
             </Label>
-            <TextBlock x:Name="transporterNoDataBox" Grid.Column="1" Height="39" Margin="50,221,50,0" TextAlignment="Center" VerticalAlignment="Top" FontSize="30" Text="No data available" FontWeight="Bold" Visibility="Collapsed"/>
+            <TextBlock x:Name="transporterNoDataBox" Grid.Column="1" Height="39" Margin="50,221,50,0" TextAlignment="Center" VerticalAlignment="Top" FontSize="30" Text="No data available" FontWeight="Bold"/>
         </Grid>
         <Grid x:Name="storageViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Grid.RowSpan="4" MinWidth="1100" Visibility="Collapsed">
             <Label x:Name="storageLabel1" Content="Dostupni produkti" HorizontalAlignment="Left" Margin="20,60,0,0" VerticalAlignment="Top" FontSize="48" FontFamily="Agency FB" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,2" Width="458" Height="69">
@@ -216,7 +198,6 @@
                     </LinearGradientBrush>
                 </Label.BorderBrush>
             </Label>
-            <Button x:Name="adminDeliveriesViewBackButton_Copy1" Content="Nazad" HorizontalAlignment="Left" Margin="50,0,0,50" Height="60" VerticalAlignment="Bottom" Width="120" FontSize="24" FontFamily="Agency FB" Click="mainViewShow" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
             <DataGrid x:Name="storageAvailableProductsDataGrid" Height="434" Margin="50,190,0,0" VerticalAlignment="Top" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Width="410" AutoGenerateColumns="False" CanUserResizeColumns="False" ColumnHeaderHeight="30" RowHeaderWidth="0" SelectionChanged="loadstorageSpecificProductDataGrid">
                 <DataGrid.Columns>
                     <materialDesign:DataGridTextColumn x:Name="storageDataGrid1ProductId" CanUserResize="False" FontSize="14" Width="*" Binding="{Binding ProduktId}" Header="ID Produkta" CanUserSort="True" CanUserReorder="False" IsReadOnly="True"/>
@@ -249,7 +230,7 @@
                     </LinearGradientBrush>
                 </Label.BorderBrush>
             </Label>
-            <TextBlock x:Name="storageNoDataBox" Height="44" Margin="768,220,50,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="30" FontWeight="Bold" Text="No items in storage" Visibility="Collapsed"/>
+            <TextBlock x:Name="storageNoDataBox" Height="44" Margin="768,220,50,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="30" FontWeight="Bold" Text="No items in storage"/>
         </Grid>
         <Menu x:Name="mainMenu" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" FontFamily="Agency FB" RenderTransformOrigin="1,0.5" Margin="10,14,0,0" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
             <MenuItem x:Name="mainMenuItem1" Header="Početna" Click="mainViewShow" BorderBrush="Gray" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="30"/>

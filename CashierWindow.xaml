@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="CashierWindow" Height="700" MinWidth="885" MinHeight="700" SizeToContent="WidthAndHeight" MaxWidth="1250" MaxHeight="800">
     <Grid x:Name="cashierViewGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" MinHeight="682" MinWidth="885">
-        <ListBox x:Name="receiptListBox" HorizontalAlignment="Left" Margin="70,100,0,142" Width="339" d:ItemsSource="{d:SampleData ItemCount=5}" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="15" BorderBrush="#FF707070"/>
+        <ListBox x:Name="receiptListBox" HorizontalAlignment="Left" Margin="70,100,0,142" Width="340" d:ItemsSource="{d:SampleData ItemCount=5}" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="15" BorderBrush="#FF707070"/>
         <Label x:Name="label1" Content="Račun" HorizontalAlignment="Left" Height="64" Margin="70,20,0,0" VerticalAlignment="Top" Width="339" FontSize="40" FontFamily="Agency FB" HorizontalContentAlignment="Center" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}"/>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="70,0,0,122" TextWrapping="Wrap" Width="58" FontSize="15" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Text="Ukupno:" Height="20" VerticalAlignment="Bottom"/>
         <TextBlock x:Name="receiptTotalCostBox" HorizontalAlignment="Left" Margin="128,0,0,122" TextWrapping="Wrap" Width="281" FontSize="15" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FlowDirection="RightToLeft" Height="20" VerticalAlignment="Bottom"/>
@@ -26,5 +26,6 @@
             <Label x:Name="label4" Content="Količina:" HorizontalAlignment="Left" Height="33" Margin="30,205,0,0" VerticalAlignment="Top" Width="126" FontSize="20"/>
         </Grid>
         <Label x:Name="label2" Content="Dodaj proizvod" Height="64" Margin="0,20,76,0" VerticalAlignment="Top" FontSize="40" FontFamily="Agency FB" HorizontalContentAlignment="Center" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" HorizontalAlignment="Right" Width="339"/>
+        <TextBlock x:Name="noItemsLabel" HorizontalAlignment="Left" TextAlignment="Center" Height="40" Margin="70,100,0,0" TextWrapping="Wrap" Text="No items added" VerticalAlignment="Top" Width="340" FontSize="32" FontFamily="Agency FB"/>
     </Grid>
 </Window>

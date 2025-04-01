@@ -144,6 +144,15 @@ namespace WpfApp1
                     }
                 }
 
+                if (observablePregledSpecificnihProdukta.Count == 0)
+                {
+                    storageNoDataBox.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    storageNoDataBox.Visibility = Visibility.Collapsed;
+                }
+
                 storageSpecificProductDataGrid.ItemsSource = null;
                 storageSpecificProductDataGrid.ItemsSource = observablePregledSpecificnihProdukta;
 

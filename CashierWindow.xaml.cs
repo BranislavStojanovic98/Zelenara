@@ -146,6 +146,11 @@ namespace WpfApp1
             {
                 MessageBox.Show("Error connectiong to database: " + ex.Message);
             }
+
+            if (receiptListBox.Items.Count > 0)
+            {
+                noItemsLabel.Visibility = Visibility.Collapsed;
+            }
         }
 
         //Dodaj racun u database
@@ -230,8 +235,10 @@ namespace WpfApp1
                     }
                 }
                 receiptListBox.Items.Clear();
+                noItemsLabel.Visibility = Visibility.Visible;
                 ukupnaCena = (long)0.0;
                 receiptTotalCostBox.Text = ukupnaCena.ToString();
+                MessageBox.Show("Račun uspiješno odštampan.");
             }
             catch(Exception ex)
             {
@@ -259,6 +266,11 @@ namespace WpfApp1
             {
                 MessageBox.Show("Izaberite stavku koju zelite ukloniti!");
             }
+
+            if (receiptListBox.Items.Count == 0)
+            {
+                noItemsLabel.Visibility= Visibility.Visible;
+            }
         }
 
         //Uklanja sve produkte koji su na racunu
@@ -267,6 +279,7 @@ namespace WpfApp1
             receiptListBox.Items.Clear();
             ukupnaCena = (long)0.0;
             receiptTotalCostBox.Text = ukupnaCena.ToString();
+            noItemsLabel.Visibility = Visibility.Visible;
         }
 
         private void closeCashierWindowClick(object sender, RoutedEventArgs e)

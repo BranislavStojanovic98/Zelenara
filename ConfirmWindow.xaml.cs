@@ -25,6 +25,7 @@ namespace WpfApp1
         private MainWindow _mainWindow;
         private ShipmentViewWindow _shipmentWindow;
         private EmployeeConfigWindow _employeeConfigWindow;
+        private EmployeeAccountWindow _employeeAccountWindow;
         private string _action;
         private string _jmb;
 
@@ -92,6 +93,27 @@ namespace WpfApp1
             }
         }
 
+        public ConfirmWindow(EmployeeAccountWindow employeeAccountWindow, string action, string jmb, string language)
+        {
+            _employeeAccountWindow = employeeAccountWindow;
+            _action = action;
+            _jmb = jmb;
+            InitializeComponent();
+
+            if (language == "Serbian")
+            {
+                employeeConfirmationLabel1.Content = "Želite li da potvrdite unos?";
+                employeeConfirmationButtonYes1.Content = "Da";
+                employeeConfirmationButtonNo1.Content = "Ne";
+            }
+            else if (language == "English")
+            {
+                employeeConfirmationLabel1.Content = "Do you wish to confirm?";
+                employeeConfirmationButtonYes1.Content = "Yes";
+                employeeConfirmationButtonNo1.Content = "No";
+            }
+        }
+
         private void employeeConfirmationButtonNoClick(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -137,11 +159,11 @@ namespace WpfApp1
             }
             else if(_action == "addEmployeeAccount")
             {
-                _mainWindow.addEmployeeAccount();
+                _employeeAccountWindow.addEmployeeAccount();
             }
             else if (_action == "changeEmployeeAccount")
             {
-                _mainWindow.changeEmployeeAccountCall();
+                _employeeAccountWindow.changeEmployeeAccountCall();
             }
 
             if (this.Owner is ShipmentViewWindow shipmentViewWindow1)
