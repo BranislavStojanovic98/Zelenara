@@ -69,7 +69,7 @@ CREATE TABLE `isporuka` (
 
 LOCK TABLES `isporuka` WRITE;
 /*!40000 ALTER TABLE `isporuka` DISABLE KEYS */;
-INSERT INTO `isporuka` VALUES (1,1,'2025-03-25',1),(2,1,'2025-03-25',1),(3,1,'2025-03-25',1),(4,1,'2025-03-25',1),(5,1,'2025-03-25',1),(6,1,'2025-03-25',1),(7,1,'2025-03-25',1),(8,1,'2025-03-25',1);
+INSERT INTO `isporuka` VALUES (1,1,'2025-03-25',1),(2,1,'2025-03-25',1),(3,1,'2025-03-25',1),(4,1,'2025-03-25',1),(5,1,'2025-03-25',1),(6,1,'2025-03-25',1),(7,1,'2025-03-25',1),(8,1,'2025-03-25',1),(9,2,'2025-04-02',2),(10,2,'2025-04-02',2),(11,2,'2025-04-02',2),(12,2,'2025-04-02',2),(13,2,'2025-04-02',2),(14,2,'2025-04-02',2);
 /*!40000 ALTER TABLE `isporuka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `isporuka_produkta` (
 
 LOCK TABLES `isporuka_produkta` WRITE;
 /*!40000 ALTER TABLE `isporuka_produkta` DISABLE KEYS */;
-INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,2),(3,2,1),(4,2,3),(5,3,3),(6,3,3),(7,3,2),(8,3,2);
+INSERT INTO `isporuka_produkta` VALUES (1,1,1),(2,2,2),(3,2,1),(4,2,3),(5,3,3),(6,3,3),(7,3,2),(8,3,2),(9,2,23),(10,2,23),(11,2,23),(12,3,23),(13,3,23),(14,3,23);
 /*!40000 ALTER TABLE `isporuka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -335,7 +335,7 @@ CREATE TABLE `nabavka` (
 
 LOCK TABLES `nabavka` WRITE;
 /*!40000 ALTER TABLE `nabavka` DISABLE KEYS */;
-INSERT INTO `nabavka` VALUES (1,1,'2025-03-25','1111111111111',1);
+INSERT INTO `nabavka` VALUES (1,1,'2025-03-25','1111111111111',1),(2,1,'2025-04-02','1111111111111',2);
 /*!40000 ALTER TABLE `nabavka` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -366,7 +366,7 @@ CREATE TABLE `nabavka_produkta` (
 
 LOCK TABLES `nabavka_produkta` WRITE;
 /*!40000 ALTER TABLE `nabavka_produkta` DISABLE KEYS */;
-INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(2,2.50,1,2,2),(1,1.25,1,3,2),(3,3.75,1,4,2),(3,3.42,1,5,3),(3,3.42,1,6,3),(2,2.28,1,7,3),(2,2.28,1,8,3);
+INSERT INTO `nabavka_produkta` VALUES (1,4.26,1,1,1),(2,2.50,1,2,2),(1,1.25,1,3,2),(3,3.75,1,4,2),(3,3.42,1,5,3),(3,3.42,1,6,3),(2,2.28,1,7,3),(2,2.28,1,8,3),(23,28.75,2,9,2),(23,28.75,2,10,2),(23,28.75,2,11,2),(23,26.22,2,12,3),(23,26.22,2,13,3),(23,26.22,2,14,3);
 /*!40000 ALTER TABLE `nabavka_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -618,7 +618,7 @@ CREATE TABLE `produkt` (
 
 LOCK TABLES `produkt` WRITE;
 /*!40000 ALTER TABLE `produkt` DISABLE KEYS */;
-INSERT INTO `produkt` VALUES (1,'Paradajz','Crveni','Paramax',4.26),(2,'Jabuke','Crvene','Jabumax',1.25),(3,'Jabuke','Zelene','Jabumax',1.14);
+INSERT INTO `produkt` VALUES (1,'Paradajz','Crveni','Paramax',4.26),(2,'Jabuke','Crvene','Jabumax',1.25),(3,'Jabuke','Zelene','Jabumax',1.14),(4,'Kruske','Divlja','Kruskomax',1.01),(5,'Kruske','Trnovaca','Krusmix',1.20),(6,'Kruske','Angulemka','Kruskomax',1.17);
 /*!40000 ALTER TABLE `produkt` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -752,7 +752,7 @@ CREATE TABLE `sadrzaj_skladista` (
 
 LOCK TABLES `sadrzaj_skladista` WRITE;
 /*!40000 ALTER TABLE `sadrzaj_skladista` DISABLE KEYS */;
-INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',1,4.26),(1,2,'Jabuke','Crvene',6,7.50),(1,3,'Jabuke','Zelene',10,11.40);
+INSERT INTO `sadrzaj_skladista` VALUES (1,1,'Paradajz','Crveni',1,4.26),(1,2,'Jabuke','Crvene',75,93.75),(1,3,'Jabuke','Zelene',79,90.06);
 /*!40000 ALTER TABLE `sadrzaj_skladista` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1163,4 +1163,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-02 12:16:36
+-- Dump completed on 2025-04-02 13:37:34
