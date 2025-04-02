@@ -93,6 +93,9 @@ namespace WpfApp1
 
             string username = employeeAccountNameBox.Text;
             string password = "";
+            bool isAdmin = isAdminCheckBox.IsChecked == true;
+            bool isAdminTrue = false;
+
             if (employeeAccountPasswordBox.Password == employeeAccountPasswordConfirmBox.Password)
             {
                 _canClose = false;
@@ -154,8 +157,47 @@ namespace WpfApp1
                             cmd.Parameters.AddWithValue("@jmb", _zaposleni.JMB);
                             cmd.Parameters.AddWithValue("@username", username);
                             cmd.Parameters.AddWithValue("@password", hashedPassword);
-                            cmd.Parameters.AddWithValue("@isMenager", 0);
-                            int rowsAffected = cmd.ExecuteNonQuery();
+
+                            if (isAdmin)
+                            {
+
+                                string checkMenadzer = "SELECT * FROM projektni.menadzer WHERE ZAPOSLENI_JMB=@jmb";
+                                try
+                                {
+                                    MySqlCommand cmnd1 = new MySqlCommand(checkMenadzer, connection);
+                                    cmnd1.Parameters.AddWithValue("@jmb", _zaposleni.JMB);
+                                    MySqlDataReader reader = cmnd1.ExecuteReader();
+                                    while (reader.Read())
+                                    {
+
+                                        if (_zaposleni.JMB == reader.GetString(0))
+                                        {
+                                            isAdminTrue = true;
+                                        }
+                                    }
+                                    if (reader.HasRows != true)
+                                    {
+                                        MessageBox.Show("Korisnik nema svojstvo Menadzera!");
+                                        return;
+                                    }
+                                    reader.Close();
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("Greska prilikom provjere JMB! " + ex.Message);
+                                }
+                            }
+
+                            if(isAdminTrue)
+                            {
+                                cmd.Parameters.AddWithValue("@isMenager", 1);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@isMenager", 0);
+                            }
+
+                                int rowsAffected = cmd.ExecuteNonQuery();
 
                             if (rowsAffected > 0)
                             {
@@ -239,8 +281,9 @@ namespace WpfApp1
         public void changeEmployeeAccount(string username, string password)
         {
             string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root";
+            bool isAdmin = isAdminCheckBox.IsChecked == true;
+            bool isAdminTrue = false;
 
-            
             if (employeeAccountPasswordBox.Password == employeeAccountPasswordConfirmBox.Password)
             {
                 password = employeeAccountPasswordBox.Password;
@@ -281,7 +324,7 @@ namespace WpfApp1
                     connection.Open();
 
 
-                    string query = $"UPDATE projektni.zaposleni_nalog SET username = @username, sifra=@password WHERE zaposleni_JMB = @jmb";
+                    string query = $"UPDATE projektni.zaposleni_nalog SET username = @username, sifra=@password, is_menadzer=@isMenager WHERE zaposleni_JMB = @jmb";
                     try
                     {
                         using (MySqlCommand cmnd1 = new MySqlCommand(query, connection))
@@ -289,6 +332,47 @@ namespace WpfApp1
                             cmnd1.Parameters.AddWithValue("@jmb", jmb);
                             cmnd1.Parameters.AddWithValue("@username", username);
                             cmnd1.Parameters.AddWithValue("@password", hashedPassword);
+
+                            if (isAdmin)
+                            {
+
+                                string checkMenadzer = "SELECT * FROM projektni.menadzer WHERE ZAPOSLENI_JMB=@jmb";
+                                try
+                                {
+                                    MySqlCommand cmnd2 = new MySqlCommand(checkMenadzer, connection);
+                                    cmnd2.Parameters.AddWithValue("@jmb", _zaposleni.JMB);
+                                    MySqlDataReader reader = cmnd2.ExecuteReader();
+                                    while (reader.Read())
+                                    {
+
+                                        if (_zaposleni.JMB == reader.GetString(0))
+                                        {
+                                            isAdminTrue = true;
+                                        }
+                                    }
+                                    if (reader.HasRows != true)
+                                    {
+                                        MessageBox.Show("Korisnik nema svojstvo Menadzera!");
+                                        return;
+                                    }
+                                    reader.Close();
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("Greska prilikom provjere JMB! " + ex.Message);
+                                }
+                            }
+
+                            if (isAdminTrue)
+                            {
+                                cmnd1.Parameters.AddWithValue("@isMenager", 1);
+                            }
+                            else
+                            {
+                                cmnd1.Parameters.AddWithValue("@isMenager", 0);
+                            }
+
+
                             cmnd1.ExecuteNonQuery();
                         }
                         _canClose = true;

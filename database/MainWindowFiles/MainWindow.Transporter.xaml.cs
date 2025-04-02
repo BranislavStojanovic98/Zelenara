@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using WpfApp1.database.grids;
 
 namespace WpfApp1
@@ -18,6 +19,9 @@ namespace WpfApp1
         //Otvara Dostavljaci grid
         private void transportersViewOpen(object sender, RoutedEventArgs e)
         {
+            ResetMenuItems();
+            mainMenuItem4.Background = SystemColors.ActiveCaptionBrush;
+
             LoadDataTabelaDostavljaca();
             transportersViewGrid.Visibility = Visibility.Visible;
             adminEmployeeViewGrid.Visibility = Visibility.Hidden;

@@ -188,6 +188,7 @@ namespace WpfApp1
             string prezime = employeeInfoBoxLastname.Text;
             string jmb = employeeInfoBoxJMB.Text;
             string postBr = employeeInfoBoxCity.Text;
+            bool isAdmin = isAdminCheckBox.IsChecked == true;
 
             // Check if any field is empty
             if (string.IsNullOrWhiteSpace(ime) || string.IsNullOrWhiteSpace(prezime) || string.IsNullOrWhiteSpace(jmb) || string.IsNullOrWhiteSpace(postBr))
@@ -214,36 +215,50 @@ namespace WpfApp1
                 {
                     con.Open();
 
-                    // SQL query to insert a new employee
-                    string sql = "INSERT INTO Zaposleni (JMB, Ime, Prezime, MJESTO_PostanskiBroj) VALUES (@jmb, @ime, @prezime, @postBr)";
+                        // SQL query to insert a new employee
+                        string sql = "INSERT INTO Zaposleni (JMB, Ime, Prezime, MJESTO_PostanskiBroj) VALUES (@jmb, @ime, @prezime, @postBr)";
 
-                    // Create a command and set its parameters
-                    using (MySqlCommand cmd = new MySqlCommand(sql, con))
-                    {
+                        using (MySqlCommand cmd = new MySqlCommand(sql, con))
+                        {
                         cmd.Parameters.AddWithValue("@jmb", jmb);
                         cmd.Parameters.AddWithValue("@ime", ime);
                         cmd.Parameters.AddWithValue("@prezime", prezime);
                         cmd.Parameters.AddWithValue("@postBr", postBr);
 
-                        // Execute the query and check the result
                         int rowsAffected = cmd.ExecuteNonQuery();
 
-                        if (rowsAffected > 0)
-                        {
-                            MessageBox.Show("Novi zaposleni uspješno dodat");
-                            observableZaposleni.Add(new Zaposleni(jmb, ime, prezime, postBr)); // Add to the ObservableCollection
-                            // Optionally, clear the TextBoxes after adding the employee
-                            employeeInfoBoxName.Clear();
-                            employeeInfoBoxLastname.Clear();
-                            employeeInfoBoxJMB.Clear();
-                            employeeInfoBoxCity.Clear();
-                        }
-                        else
+                        if (rowsAffected == 0)
                         {
                             MessageBox.Show("Greška prilikom dodavanja zaposlenog");
+                            return;
                         }
-                    }
+                        }
+                        
+                        if (isAdmin)
+                        {
+                            string sqlInsertMenadzer = "INSERT INTO menadzer (ZAPOSLENI_JMB) VALUES (@jmb)";
+                            using (MySqlCommand cmdInsertMenadzer = new MySqlCommand(sqlInsertMenadzer, con))
+                            {
+                                cmdInsertMenadzer.Parameters.AddWithValue("@jmb", jmb);
+                                int rowsAffectedMenadzer = cmdInsertMenadzer.ExecuteNonQuery();
+                                if (rowsAffectedMenadzer == 0)
+                                {
+                                    MessageBox.Show("Greška prilikom dodavanja menadžera");
+                                    return;
+                                }
+                            }
+                        }
+                    
+
+                    MessageBox.Show("Novi zaposleni uspješno dodat");
+                    observableZaposleni.Add(new Zaposleni(jmb, ime, prezime, postBr));
+                    employeeInfoBoxName.Clear();
+                    employeeInfoBoxLastname.Clear();
+                    employeeInfoBoxJMB.Clear();
+                    employeeInfoBoxCity.Clear();
+
                 }
+
             }
             catch (Exception ex)
             {
@@ -270,7 +285,8 @@ namespace WpfApp1
             }
 
             string jmb = employeeInfoBoxJMB.Text;
-            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;"; // Your connection string
+
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;";
 
             try
             {
@@ -278,6 +294,7 @@ namespace WpfApp1
                 {
                     con.Open();
 
+                    
                     // Delete from 'menadzer' table where ZAPOSLENI_JMB matches
                     try
                     {
@@ -290,10 +307,9 @@ namespace WpfApp1
                     }
                     catch (Exception e)
                     {
-                        // Handle specific error for deleting from menadzer table
-                        MessageBox.Show("Error while deleting from menadzer: " + e.Message);
+                        MessageBox.Show("Greska prilikom brisanja u menadzer tabeli: " + e.Message);
                     }
-
+                    
                     // Delete from 'Zaposleni' table where JMB matches
                     try
                     {

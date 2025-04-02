@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using WpfApp1.database.grids;
 
 namespace WpfApp1
@@ -17,6 +18,9 @@ namespace WpfApp1
         //Otvara prozor sa listom svih dostupnih produkta koji se nalaze u prodavnici i njihovom kolicinom
         private void storageViewOpen(object sender, RoutedEventArgs e)
         {
+            ResetMenuItems();
+            mainMenuItem5.Background = SystemColors.ActiveCaptionBrush;
+
             loadStorageView();
             storageViewGrid.Visibility = Visibility.Visible;
             adminEmployeeViewGrid.Visibility = Visibility.Hidden;
@@ -270,6 +274,17 @@ namespace WpfApp1
             {
                 MessageBox.Show("Unesite postojeći Produkt ID ili Naziv Proizvođača!");
             }
+        }
+
+        //Vraca sva MenuItem dugmad u default boju
+        private void ResetMenuItems()
+        {
+            // Reset background for all items
+            mainMenuItem1.Background = SystemColors.ControlLightLightBrush;
+            mainMenuItem2.Background = SystemColors.ControlLightLightBrush;
+            mainMenuItem3.Background = SystemColors.ControlLightLightBrush;
+            mainMenuItem4.Background = SystemColors.ControlLightLightBrush;
+            mainMenuItem5.Background = SystemColors.ControlLightLightBrush;
         }
     }
 }

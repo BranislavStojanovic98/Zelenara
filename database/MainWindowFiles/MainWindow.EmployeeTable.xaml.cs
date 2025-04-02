@@ -38,7 +38,8 @@ namespace WpfApp1
                     reader1.Close();
 
                     // Load Zaposleni Data
-                    MySqlCommand cmd2 = new MySqlCommand("SELECT * FROM projektni.pregled_zaposlenih", con);
+                    MySqlCommand cmd2 = new MySqlCommand("SELECT * FROM projektni.pregled_zaposlenih WHERE JMB != @ExcludedJMB", con);
+                    cmd2.Parameters.AddWithValue("@ExcludedJMB", _adminJmb);
                     MySqlDataReader reader2 = cmd2.ExecuteReader();
                     while (reader2.Read())
                     {

@@ -19,5 +19,6 @@
         <Button x:Name="employeeInfoBoxDeleteButton" Content="Izbriši" Margin="0,0,50,50" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" HorizontalAlignment="Right" Width="100" Height="50" VerticalAlignment="Bottom" FontSize="24" FontFamily="Agency FB" Click="adminEmployeeInfoDelete" MinHeight="50"/>
         <Button x:Name="employeeInfoBoxAddButton" Content="Dodaj" Margin="50,0,0,50" FontSize="24" FontFamily="Agency FB" HorizontalAlignment="Left" Width="100" Click="adminEmployeeInfoAdd" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Height="50" VerticalAlignment="Bottom" MinHeight="50"/>
         <Button x:Name="employeeInfoBoxUpdateButton" Content="Izmijeni" Margin="50,0,0,50" FontSize="24" FontFamily="Agency FB" HorizontalAlignment="Left" Width="100" Height="50" VerticalAlignment="Bottom" Click="adminEmployeeInfoUpdate" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" Visibility="Collapsed"/>
+        <CheckBox x:Name="isAdminCheckBox" Content="Administrator" HorizontalAlignment="Left" Margin="138,520,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
     </Grid>
 </Window>

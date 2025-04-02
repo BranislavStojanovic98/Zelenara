@@ -18,5 +18,6 @@
         <Button x:Name="employeeAccountConfirmButton" Margin="82,489,82,40" Content="Potvrdi" BorderBrush="Gray" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="confirmEmployeeAccountClick"/>
         <Border BorderBrush="Gray" BorderThickness="2,2,2,2" Visibility="Hidden"/>
         <Button x:Name="employeeAccountConfirmChangesButton" Margin="82,489,82,40" Content="Izmijeni" BorderBrush="Gray" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" FontSize="24" FontFamily="Agency FB" Click="confirmEmployeeAccountChangeClick" Visibility="Collapsed"/>
+        <CheckBox x:Name="isAdminCheckBox" Content="Administrator" HorizontalAlignment="Left" Margin="174,427,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Agency FB"/>
     </Grid>
 </Window>

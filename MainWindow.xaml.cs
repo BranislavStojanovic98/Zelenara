@@ -106,6 +106,9 @@ namespace WpfApp1
         //Prelazi na Pocetnu stranu
         private void mainViewShow(object sender, RoutedEventArgs e)
         {
+            ResetMenuItems();
+            mainMenuItem1.Background = SystemColors.ActiveCaptionBrush;
+
             adminEmployeeViewGrid.Visibility = Visibility.Hidden;
             adminDeliveriesViewGrid.Visibility = Visibility.Hidden;
             transportersViewGrid.Visibility = Visibility.Hidden;
@@ -116,6 +119,9 @@ namespace WpfApp1
         //Prelazi na grid Zaposleni u kojem radimo sa zaposlenima i njihovim nalozima
         private void employeeViewOpen(object sender, RoutedEventArgs e)
         {
+            ResetMenuItems();
+            mainMenuItem2.Background = SystemColors.ActiveCaptionBrush;
+
             LoadDataTabelaZaposleni();
             adminEmployeeViewGrid.Visibility = Visibility.Visible;
             adminDeliveriesViewGrid.Visibility = Visibility.Hidden;

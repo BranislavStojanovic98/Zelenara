@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using WpfApp1.database.grids;
 
 namespace WpfApp1 
@@ -520,6 +521,9 @@ namespace WpfApp1
         //Otvara prozor ShipmentView za dodavanje isporuka i narudzbi
         private void deliveriesViewOpen(object sender, RoutedEventArgs e)
         {
+            ResetMenuItems();
+            mainMenuItem3.Background = SystemColors.ActiveCaptionBrush;
+
             loadAdminDeliveriesDataGridData();
             adminDeliveriesViewGrid.Visibility = Visibility.Visible;
             adminEmployeeViewGrid.Visibility = Visibility.Hidden;
