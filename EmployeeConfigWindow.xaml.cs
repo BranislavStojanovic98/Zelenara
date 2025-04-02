@@ -44,16 +44,16 @@ namespace WpfApp1
             _listaMjestaPopUp.Left = 1150;
             _listaMjestaPopUp.Show();
 
-            if(theme == "Theme1")
+            if (theme == "Theme1")
             {
                 adminEmployeeInfoChangeGrid.Background = new SolidColorBrush(Colors.Beige);
             }
-            else if(theme == "Theme2")
+            else if (theme == "Theme2")
             {
                 adminEmployeeInfoChangeGrid.Background = new SolidColorBrush(Colors.BurlyWood);
             }
 
-            if(language == "Serbian")
+            if (language == "Serbian")
             {
 
                 label1.Content = "Informacije od zaposlenom";
@@ -66,7 +66,7 @@ namespace WpfApp1
                 employeeInfoBoxUpdateButton.Content = "Izmijeni";
                 employeeInfoBoxDeleteButton.Content = "Izbriši";
             }
-            else if(language == "English")
+            else if (language == "English")
             {
 
                 label1.Content = "Employee Information";
@@ -154,7 +154,7 @@ namespace WpfApp1
                 employeeInfoBoxDeleteButton.Visibility = Visibility.Collapsed;
             }
         }
-    
+
 
         //Admin aplikacija, Dodavanje novog zaposlenog
         public void adminEmployeeInfoAdd(object sender, RoutedEventArgs e)
@@ -204,10 +204,7 @@ namespace WpfApp1
                 return;
             }
 
-
-
-            // Create a connection to the MySQL database
-            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;"; // Adjust as needed
+            string connectionString = "Server=localhost;Database=projektni;Uid=root;Pwd=root;";
 
             try
             {
@@ -215,11 +212,11 @@ namespace WpfApp1
                 {
                     con.Open();
 
-                        // SQL query to insert a new employee
-                        string sql = "INSERT INTO Zaposleni (JMB, Ime, Prezime, MJESTO_PostanskiBroj) VALUES (@jmb, @ime, @prezime, @postBr)";
+                    // SQL query to insert a new employee
+                    string sql = "INSERT INTO Zaposleni (JMB, Ime, Prezime, MJESTO_PostanskiBroj) VALUES (@jmb, @ime, @prezime, @postBr)";
 
-                        using (MySqlCommand cmd = new MySqlCommand(sql, con))
-                        {
+                    using (MySqlCommand cmd = new MySqlCommand(sql, con))
+                    {
                         cmd.Parameters.AddWithValue("@jmb", jmb);
                         cmd.Parameters.AddWithValue("@ime", ime);
                         cmd.Parameters.AddWithValue("@prezime", prezime);
@@ -232,23 +229,37 @@ namespace WpfApp1
                             MessageBox.Show("Greška prilikom dodavanja zaposlenog");
                             return;
                         }
-                        }
-                        
-                        if (isAdmin)
+                    }
+
+                    if (isAdmin)
+                    {
+                        string sqlInsertMenadzer = "INSERT INTO menadzer (ZAPOSLENI_JMB) VALUES (@jmb)";
+                        using (MySqlCommand cmdInsertMenadzer = new MySqlCommand(sqlInsertMenadzer, con))
                         {
-                            string sqlInsertMenadzer = "INSERT INTO menadzer (ZAPOSLENI_JMB) VALUES (@jmb)";
-                            using (MySqlCommand cmdInsertMenadzer = new MySqlCommand(sqlInsertMenadzer, con))
+                            cmdInsertMenadzer.Parameters.AddWithValue("@jmb", jmb);
+                            int rowsAffectedMenadzer = cmdInsertMenadzer.ExecuteNonQuery();
+                            if (rowsAffectedMenadzer == 0)
                             {
-                                cmdInsertMenadzer.Parameters.AddWithValue("@jmb", jmb);
-                                int rowsAffectedMenadzer = cmdInsertMenadzer.ExecuteNonQuery();
-                                if (rowsAffectedMenadzer == 0)
-                                {
-                                    MessageBox.Show("Greška prilikom dodavanja menadžera");
-                                    return;
-                                }
+                                MessageBox.Show("Greška prilikom dodavanja menadžera");
+                                return;
                             }
                         }
-                    
+                    }
+                    else
+                    {
+                        string sqlInsertRadnik = "INSERT INTO radnik (ZAPOSLENI_JMB) VALUES (@jmb)";
+                        using (MySqlCommand cmdInsertRadnik = new MySqlCommand(sqlInsertRadnik, con))
+                        {
+                            cmdInsertRadnik.Parameters.AddWithValue("@jmb", jmb);
+                            int rowsAffectedMenadzer = cmdInsertRadnik.ExecuteNonQuery();
+                            if (rowsAffectedMenadzer == 0)
+                            {
+                                MessageBox.Show("Greška prilikom dodavanja Radnika");
+                                return;
+                            }
+                        }
+                    }
+
 
                     MessageBox.Show("Novi zaposleni uspješno dodat");
                     observableZaposleni.Add(new Zaposleni(jmb, ime, prezime, postBr));
@@ -294,7 +305,7 @@ namespace WpfApp1
                 {
                     con.Open();
 
-                    
+
                     // Delete from 'menadzer' table where ZAPOSLENI_JMB matches
                     try
                     {
@@ -309,7 +320,22 @@ namespace WpfApp1
                     {
                         MessageBox.Show("Greska prilikom brisanja u menadzer tabeli: " + e.Message);
                     }
-                    
+
+                    // Delete from 'radnik' table where ZAPOSLENI_JMB matches
+                    try
+                    {
+                        string deleteRadnikSql = "DELETE FROM radnik WHERE ZAPOSLENI_JMB = @JMB";
+                        using (MySqlCommand cmd1 = new MySqlCommand(deleteRadnikSql, con))
+                        {
+                            cmd1.Parameters.AddWithValue("@JMB", jmb);
+                            cmd1.ExecuteNonQuery();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("Greska prilikom brisanja u radnik tabeli: " + e.Message);
+                    }
+
                     // Delete from 'Zaposleni' table where JMB matches
                     try
                     {

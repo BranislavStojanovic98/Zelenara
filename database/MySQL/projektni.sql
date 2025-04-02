@@ -242,7 +242,7 @@ CREATE TABLE `kupovina_produkta` (
 
 LOCK TABLES `kupovina_produkta` WRITE;
 /*!40000 ALTER TABLE `kupovina_produkta` DISABLE KEYS */;
-INSERT INTO `kupovina_produkta` VALUES (1,1,1.25,2,1),(1,1,1.25,2,2),(2,1,4.26,1,3),(2,1,4.26,1,4),(2,1,4.26,1,5),(3,23,97.98,1,6),(3,23,97.98,1,7),(3,23,97.98,1,8);
+INSERT INTO `kupovina_produkta` VALUES (1,1,1.25,2,1),(1,1,1.25,2,2),(2,1,4.26,1,3),(2,1,4.26,1,4),(2,1,4.26,1,5),(3,23,97.98,1,6),(3,23,97.98,1,7),(3,23,97.98,1,8),(4,2,8.52,1,9),(4,2,8.52,1,10),(4,2,8.52,1,11),(5,23,97.98,1,12),(5,23,97.98,1,13);
 /*!40000 ALTER TABLE `kupovina_produkta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -693,7 +693,7 @@ CREATE TABLE `radnik` (
 
 LOCK TABLES `radnik` WRITE;
 /*!40000 ALTER TABLE `radnik` DISABLE KEYS */;
-INSERT INTO `radnik` VALUES ('0129401944441'),('1134545433421'),('1234567891011'),('1234567891121'),('1827562809811'),('1827565029211');
+INSERT INTO `radnik` VALUES ('0129401944441'),('1134545433421'),('1234567891011'),('1827562809811');
 /*!40000 ALTER TABLE `radnik` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -707,10 +707,10 @@ DROP TABLE IF EXISTS `račun`;
 CREATE TABLE `račun` (
   `idRacuna` int NOT NULL,
   `VremeIzdavanja` varchar(45) NOT NULL,
-  `RADNIK_ZAPOSLENI_JMB` char(13) NOT NULL,
+  `RADNIK_ZAPOSLENI_JMB` char(13) DEFAULT NULL,
   PRIMARY KEY (`idRacuna`),
   KEY `fk_RAČUN_RADNIK1_idx` (`RADNIK_ZAPOSLENI_JMB`),
-  CONSTRAINT `fk_RAČUN_RADNIK1` FOREIGN KEY (`RADNIK_ZAPOSLENI_JMB`) REFERENCES `radnik` (`ZAPOSLENI_JMB`)
+  CONSTRAINT `fk_RAČUN_RADNIK1` FOREIGN KEY (`RADNIK_ZAPOSLENI_JMB`) REFERENCES `radnik` (`ZAPOSLENI_JMB`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -720,7 +720,7 @@ CREATE TABLE `račun` (
 
 LOCK TABLES `račun` WRITE;
 /*!40000 ALTER TABLE `račun` DISABLE KEYS */;
-INSERT INTO `račun` VALUES (1,'2025-04-01','1827562809811'),(2,'2025-04-01','1827562809811'),(3,'2025-04-01','1827562809811');
+INSERT INTO `račun` VALUES (1,'2025-04-01','1827562809811'),(2,'2025-04-01','1827562809811'),(3,'2025-04-01','1827562809811'),(4,'2025-04-02',NULL),(5,'2025-04-02',NULL);
 /*!40000 ALTER TABLE `račun` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -850,7 +850,7 @@ CREATE TABLE `zaposleni` (
 
 LOCK TABLES `zaposleni` WRITE;
 /*!40000 ALTER TABLE `zaposleni` DISABLE KEYS */;
-INSERT INTO `zaposleni` VALUES ('0129401944441','Neko','Nesto',2),('1111111111111','Stipe','Stipic',1),('1134545433421','Stiko','Stikic',5),('1234567891011','Nikoo','Nikic',1),('1234567891121','Ratko','Ratkic',6),('1718378122141','Miko','Mikic',1),('1726466028472','Kimo','Kimic',3),('1726546267890','Nino','Ninic',1),('1827562809811','Iko','Ikic',2),('1827565029211','Heho','Hehic',3),('2431356235211','Niko','Nikodinovic',1),('9898475829191','Piki','Pikic',3);
+INSERT INTO `zaposleni` VALUES ('0129401944441','Neko','Nesto',2),('1111111111111','Stipe','Stipic',1),('1134545433421','Stiko','Stikic',5),('1234567891011','Nikoo','Nikic',1),('1718378122141','Miko','Mikic',1),('1726466028472','Kimo','Kimic',3),('1726546267890','Nino','Ninic',1),('1827562809811','Iko','Ikic',2),('2431356235211','Niko','Nikodinovic',1);
 /*!40000 ALTER TABLE `zaposleni` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -896,7 +896,7 @@ CREATE TABLE `zaposleni_nalog` (
 
 LOCK TABLES `zaposleni_nalog` WRITE;
 /*!40000 ALTER TABLE `zaposleni_nalog` DISABLE KEYS */;
-INSERT INTO `zaposleni_nalog` VALUES ('0129401944441','neko.nesto','$2a$11$NwTZSq7UWppNfSmItb751eMNt65llvA4KT27JDB3CQ1fau6LNHuQ.',0,NULL),('1111111111111','s','$2a$11$pLStTLwePZ0UbArBx1CX0u.DkonpgiQ/oh7d6deiQzmUuAIDWf89W',1,'Theme2'),('1134545433421','stiko.stikicc','$2a$11$uOyrlH1.PmMSE7sVnpIZbuPdtyriF6tZv6Z.FAjEUY6WBfy49L0Xa',0,NULL),('1234567891011','niko.nikic','$2a$11$7pA5ehyBC86zFe/XePRetOBSJEQAL2WWIn7znRp2V8pMnj0jtAGwa',0,NULL),('1234567891121','ratko.ratkic','$2a$11$DJqKurC5p5CMvMWHEkD0se/5ICRkAv4I2p53QmjMZZiB.ygMSkIMO',0,NULL),('1718378122141','mile','$2a$11$FZ5AkpLjQGJuiO0qa1bYcO4ioZOT3bQRLyaO6wcZh/NGYHm/xwLxK',0,NULL),('1726466028472','kime','$2a$11$tLv9xokzBNEwqHphAinA3OBJs0fPdLorcqZXTZa2BAalPS8Y0sJTy',0,NULL),('1827562809811','iko','$2a$11$7vInbhdyTCxmH9aRhVwOE.vUuVV4MFuUyQnv5AdRqHbzsckYqVgRq',0,'Theme2'),('1827565029211','hehe','$2a$11$33/lOOw.t2dYSuQGk4/3Q.TRnDm.3hXHAlRXTLdFOl8s5VqoDKx5S',0,NULL),('9898475829191','piki','$2a$11$tpz3BLEJ8.S2TRobkIbAMertalGP4HbwJ.5zJSPTKfOXpFuWGIOd6',0,NULL);
+INSERT INTO `zaposleni_nalog` VALUES ('0129401944441','neko.nesto','$2a$11$NwTZSq7UWppNfSmItb751eMNt65llvA4KT27JDB3CQ1fau6LNHuQ.',0,NULL),('1111111111111','s','$2a$11$pLStTLwePZ0UbArBx1CX0u.DkonpgiQ/oh7d6deiQzmUuAIDWf89W',1,'Theme2'),('1134545433421','stiko.stikicc','$2a$11$uOyrlH1.PmMSE7sVnpIZbuPdtyriF6tZv6Z.FAjEUY6WBfy49L0Xa',0,NULL),('1234567891011','niko.nikic','$2a$11$7pA5ehyBC86zFe/XePRetOBSJEQAL2WWIn7znRp2V8pMnj0jtAGwa',0,NULL),('1827562809811','i','$2a$11$7vInbhdyTCxmH9aRhVwOE.vUuVV4MFuUyQnv5AdRqHbzsckYqVgRq',0,'Theme2');
 /*!40000 ALTER TABLE `zaposleni_nalog` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1149,7 +1149,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `pregled_zaposlenih` AS select `z`.`JMB` AS `JMB`,`z`.`Ime` AS `Ime`,`z`.`Prezime` AS `Prezime`,`m`.`Naziv` AS `Mjesto_Stanovanja` from (((`zaposleni` `z` left join `mjesto` `m` on((`m`.`PostanskiBroj` = `z`.`MJESTO_PostanskiBroj`))) left join `menadzer` `mn` on((`mn`.`ZAPOSLENI_JMB` = `z`.`JMB`))) left join `radnik` `r` on((`r`.`ZAPOSLENI_JMB` = `z`.`JMB`))) where (`mn`.`ZAPOSLENI_JMB` is null) */;
+/*!50001 VIEW `pregled_zaposlenih` AS select `z`.`JMB` AS `JMB`,`z`.`Ime` AS `Ime`,`z`.`Prezime` AS `Prezime`,`m`.`Naziv` AS `Mjesto_Stanovanja` from (((`zaposleni` `z` left join `mjesto` `m` on((`m`.`PostanskiBroj` = `z`.`MJESTO_PostanskiBroj`))) left join `menadzer` `mn` on((`mn`.`ZAPOSLENI_JMB` = `z`.`JMB`))) left join `radnik` `r` on((`r`.`ZAPOSLENI_JMB` = `z`.`JMB`))) where ((`mn`.`ZAPOSLENI_JMB` is null) or (`mn`.`ZAPOSLENI_JMB` <> 'excluded_jmb')) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1163,4 +1163,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-01 21:18:16
+-- Dump completed on 2025-04-02 12:16:36
